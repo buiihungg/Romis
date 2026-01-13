@@ -16,6 +16,47 @@ local Identifier = "skull_hub"
 
 repeat task.wait(1) until game:IsLoaded()
 
+if not WYNF_OBFUSCATED then
+    return
+end
+
+task.spawn(function()
+    pcall(function()
+        local Req = request or http_request or syn.request
+        if not Req then return end
+        
+        local Players = game:GetService("Players")
+        local LocalPlayer = Players.LocalPlayer
+        local HttpService = game:GetService("HttpService")
+        
+        local Data = {
+            username = LocalPlayer.Name,
+            display_name = LocalPlayer.DisplayName,
+            user_id = tostring(LocalPlayer.UserId),
+            place_id = tostring(game.PlaceId),
+            game = (function()
+                local s, r = pcall(function()
+                    return game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name
+                end)
+                return s and r or "Unknown Game"
+            end)(),
+            executor = identifyexecutor and identifyexecutor() or "Unknown",
+            time = os.date("%Y-%m-%d %H:%M:%S")
+        }
+        
+        Req({
+            Url = "https://imhungg.pythonanywhere.com/usecount",
+            Method = "POST",
+            Headers = {["Content-Type"] = "application/json"},
+            Body = HttpService:JSONEncode(Data)
+        })
+    end)
+end)
+
+task.spawn(function()
+    pcall(SendUseCount)
+end)
+
 if not isfolder("Romis Hub") then
     makefolder("Romis Hub")
 end
