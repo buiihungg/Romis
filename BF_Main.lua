@@ -1414,7 +1414,6 @@ local Window = Fluent:CreateWindow({
 local ScreenGui = Instance.new("ScreenGui")
 local ImageButton = Instance.new("ImageButton")
 local UICorner = Instance.new("UICorner")
-local ClickSound = Instance.new("Sound")
 
 ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
 ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
@@ -1429,11 +1428,6 @@ ImageButton.Size = UDim2.new(0, 58, 0, 55)
 ImageButton.Image = "rbxassetid://114823112944195"
 
 UICorner.Parent = ImageButton
-
-ClickSound.Name = "ClickSound"
-ClickSound.Parent = ScreenGui
-ClickSound.SoundId = "rbxassetid://12221967"
-ClickSound.Volume = 0.7
 
 local TweenService = game:GetService("TweenService")
 local defaultSize = ImageButton.Size
@@ -1505,7 +1499,6 @@ local function dragify(Frame)
 end
 
 ImageButton.MouseButton1Click:Connect(function()
-    ClickSound:Play()
     Effect()
     local vim = game:GetService("VirtualInputManager")
     vim:SendKeyEvent(true, Enum.KeyCode.LeftControl, false, game)
@@ -3221,35 +3214,27 @@ local AutoStatToggle = Tabs.Setting:AddToggle("AutoStatToggle", {
 AutoStatToggle:OnChanged(function()
     getgenv().AutoStats = Options.AutoStatToggle.Value
 end)
+
 local function AddPoint(StatName, Amount)
     if Amount > 0 then
         StatRemote:InvokeServer("AddPoint", StatName, Amount)
     end
 end
-task.spawn(function()
-    local LocalPlayer = Players.LocalPlayer
-    if not LocalPlayer then
-        warn("Trash Excutor.")
-        return
-    end
 
+task.spawn(function()
     while task.wait(1) do
         if not getgenv().AutoStats then continue end
-
         local Data = LocalPlayer:FindFirstChild("Data")
         local Stats = Data and Data:FindFirstChild("Stats")
         if not Data or not Stats then
-            warn("Trash Excutor not found.")
+            warn("Data or Stats not found.")
             continue
         end
-
         local Level = Data:FindFirstChild("Level") and Data.Level.Value or 0
         local Points = Data:FindFirstChild("Points") and Data.Points.Value or 0
         if Points <= 0 then continue end
-
         local Selected = getgenv().SelectedStats
         local UseAmount = math.min(getgenv().AmountStats, Points)
-
         if Selected["Smart Stats"] then
             if Level < 1200 then
                 AddPoint("Melee", UseAmount)
@@ -3263,17 +3248,22 @@ task.spawn(function()
                 AddPoint("Demon Fruit", UseAmount - Half)
             end
         else
+            local EnabledStats = {}
             for StatName, Enabled in pairs(Selected) do
-                if Enabled and Points > 0 then
-                    local AmountToUse = math.min(UseAmount, Points)
-                    AddPoint(StatName, AmountToUse)
-                    Points -= AmountToUse
-                    if Points <= 0 then break end
+                if Enabled then
+                    table.insert(EnabledStats, StatName)
+                end
+            end
+            if #EnabledStats > 0 then
+                local PointsPerStat = math.floor(UseAmount / #EnabledStats)
+                for _, StatName in ipairs(EnabledStats) do
+                    AddPoint(StatName, PointsPerStat)
                 end
             end
         end
     end
 end)
+
 local ST = Tabs.Setting:AddSection("Tab Settings Tween")
 
 local TweenSlider = Tabs.Setting:AddSlider("Tween Speed", {
