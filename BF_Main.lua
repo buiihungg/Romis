@@ -133,7 +133,6 @@ if not O then
     warn("Errorhuhuhuhu: " .. S)
 end
 
-print("check m/w")
 local PlaceMap = {
     [2753915549] = "World1",
     [4442272183] = "World2",
@@ -1106,31 +1105,21 @@ function FastAttack:Attack()
     
     local WeaponType = Equipped:GetAttribute('WeaponType')
     local ToolTip = Equipped.ToolTip
-    
-    -- Main Attack Logic with RemoteEvent validation
     if WeaponType == 'Melee' or WeaponType == 'Sword' or ToolTip == "Melee" or ToolTip == "Sword" then
         local AllHits = self:GetAllHits()
         
         if #AllHits > 0 then
             pcall(function()
-                -- Call require method
                 require(Net):RemoteEvent('RegisterHit', true)
-                
-                -- Fire RegisterAttack
                 RegisterAttack:FireServer()
                 
                 local HeadPart = AllHits[1][1]:FindFirstChild('Head')
                 
                 if HeadPart then
-                    -- Generate validation string
                     local userId = tostring(Player.UserId):sub(2, 4)
                     local coroutineId = tostring(coroutine.running()):sub(11, 15)
                     local validationString = userId .. coroutineId
-                    
-                    -- Fire normal RegisterHit
                     RegisterHit:FireServer(HeadPart, AllHits, {}, validationString)
-                    
-                    -- Fire advanced RemoteEvent if available
                     if RemoteEventCache and RemoteEventId then
                         local encryptedString = string.gsub('RE/RegisterHit', '.', function(char)
                             return string.char(bit32.bxor(string.byte(char), math.floor(workspace:GetServerTimeNow() / 10 % 10) + 1))
@@ -1155,24 +1144,20 @@ function FastAttack:Attack()
     end
 end
 
--- Initialize Fast Attack
 local AttackInstance = FastAttack.new()
 
--- Main Attack Loop (Primary method)
 task.spawn(function()
     while task.wait(Config.AttackCooldown) do
         AttackInstance:Attack()
     end
 end)
 
--- Backup RunService connection
 table.insert(AttackInstance.Connections, RunService.Stepped:Connect(function()
     pcall(function()
         AttackInstance:Attack()
     end)
 end))
 
--- Hook existing functions
 for _, v in pairs(getgc(true)) do
     if typeof(v) == "function" and iscclosure(v) then
         local name = debug.getinfo(v).name
@@ -1441,7 +1426,7 @@ ImageButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
 ImageButton.BorderSizePixel = 0
 ImageButton.Position = UDim2.new(0.103761353, 0, 0.214939028, 0)
 ImageButton.Size = UDim2.new(0, 58, 0, 55)
-ImageButton.Image = "rbxassetid://85920884061840"
+ImageButton.Image = "rbxassetid://114823112944195"
 
 UICorner.Parent = ImageButton
 
