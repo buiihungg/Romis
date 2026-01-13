@@ -16,23 +16,65 @@ local Identifier = "skull_hub"
 
 repeat task.wait(1) until game:IsLoaded()
 
-if not isfolder("Skull Hub") then
-    makefolder("Skull Hub")
+if not isfolder("Romis Hub") then
+    makefolder("Romis Hub")
 end
 
 if getgenv().SkullHubExecuted then
-    warn("[Skull Hub] Script has already been executed.")
+    warn("[Romis Hub] Script has already been executed.")
     return
 end
 
--- Detect platform
+function WYNF_OBFUSCATED(func)
+    return func
+end
+
+function WYNF_NO_VIRTUALIZE(func)
+    return func
+end
+
+function WYNF_CRASH(func)
+    return func
+end
+
+function WYNF_IS_CALLER_WYNFUSCATE(func)
+    return func
+end
+
+function WYNF_ENC_STRING(func)
+    return func
+end 
+
+function WYNF_ENC_NUM(func)
+    return func
+end 
+
+function WYNF_LINE(func)
+    return func
+end
+
+function WYNF_NO_UPVALUES(func)
+    return func
+end
+
+function WYNF_SECURE_CALL(func)
+    return func
+end
+
+function WYNF_SECURE_CALLBACK(func)
+    return func
+end
+
+function WYNF_ENC_FUNCTION(func)
+    return func
+end
+
 local function IsMobile()
     return UserInputService.TouchEnabled and not UserInputService.KeyboardEnabled
 end
 
 local IS_MOBILE = IsMobile()
 
--- Responsive sizes based on platform
 local UI_CONFIG = {
     MainFrame = {
         PC = {width = 420, height = 580},
@@ -105,23 +147,13 @@ local function Encode(str)
 end
 
 function AUTHENIC()
-    getgenv().SkullHubExecuted = true
-    getgenv().AUTHENIC_6b0502df8ccf4ad7b6dc3169b1d0aa18 = true
-    local Id = tostring(game.GameId)
-    local E = Encode(Id)
-    local Url = string.format("https://raw.githubusercontent.com/xxhumggxx/SkullHub/refs/heads/main/%s.lua", E)
-    local Suc, Result = pcall(function()
-        return loadstring(game:HttpGet(Url))()
-    end)
-    if not Suc then
-        game.Players.LocalPlayer:Kick("[Skull Hub] Failed to load script ID "..E.."")
-    end
+    print("[Romis Hub] Running script...")
 end
 
 local function ReadKeyFromFile()
-    if isfile("Skull Hub/key.txt") then
+    if isfile("Romis Hub/key.txt") then
         local success, key = pcall(function()
-            return readfile("Skull Hub/key.txt")
+            return readfile("Romis Hub/key.txt")
         end)
         if success and key and key ~= "" then
             return key
@@ -132,22 +164,22 @@ end
 
 local function save_key(key)
     local success, error = pcall(function()
-        writefile("Skull Hub/key.txt", key)
+        writefile("Romis Hub/key.txt", key)
     end)
     if not success then
-        setclipboard("[Skull Hub] Error when saving key: " .. tostring(error))
-        warn("[Skull Hub] Failed to save key: " .. tostring(error))
+        setclipboard("[Romis Hub] Error when saving key: " .. tostring(error))
+        warn("[Romis Hub] Failed to save key: " .. tostring(error))
     end
 end
 
 local function DeleteKeyFile()
-    if isfile("Skull Hub/key.txt") then
+    if isfile("Romis Hub/key.txt") then
         local success, error = pcall(function()
-            delfile("Skull Hub/key.txt")
+            delfile("Romis Hub/key.txt")
         end)
         if not success then
-            setclipboard("[Skull Hub] Failed to delete key file: " .. tostring(error))
-            warn("[Skull Hub] Failed to delete key file: " .. tostring(error))
+            setclipboard("[Romis Hub] Failed to delete key file: " .. tostring(error))
+            warn("[Romis Hub] Failed to delete key file: " .. tostring(error))
         end
     end
 end
@@ -194,12 +226,12 @@ function ValidateKey(k, serid, idh)
             })
         end)
     else
-        warn("[Skull Hub] No HTTP request method available.")
+        warn("[Romis Hub] No HTTP request method available.")
         return false, "No HTTP request method available"
     end
     
     if not success then
-        warn("[Skull Hub] HTTP request failed. Error: " .. tostring(response))
+        warn("[Romis Hub] HTTP request failed. Error: " .. tostring(response))
         return false, "Request error: " .. tostring(response)
     end
     
@@ -214,22 +246,22 @@ function ValidateKey(k, serid, idh)
         end)
         
         if not success then
-            warn("[Skull Hub] JSON decode failed. Error: " .. tostring(jsonData))
+            warn("[Romis Hub] JSON decode failed. Error: " .. tostring(jsonData))
             return false, "JSON decode error: " .. tostring(jsonData)
         end
         
         if jsonData and jsonData["V2_Authentication"] == "success" then
-            print("[Skull Hub] Authenticated successfully.")
+            print("[Romis Hub] Authenticated successfully.")
             return true, "Authenticated"
         else
             local reason = jsonData and jsonData["reason"] or "Unknown reason"
-            warn("[Skull Hub] Authentication failed. Reason: " .. reason)
+            warn("[Romis Hub] Authentication failed. Reason: " .. reason)
             return false, "Authentication failed: " .. reason
         end
     else
         local stcode = response.StatusCode or "Unknown"
         local stmes = response.StatusMessage or "Unknown error"
-        warn("[Skull Hub] HTTP request failed. Code: " .. tostring(stcode) .. " Message: " .. tostring(stmes))
+        warn("[Romis Hub] HTTP request failed. Code: " .. tostring(stcode) .. " Message: " .. tostring(stmes))
         return false, "HTTP request failed: " .. tostring(stcode) .. " - " .. tostring(stmes)
     end
 end
@@ -343,7 +375,7 @@ local Title = Instance.new("TextLabel")
 Title.Size = UDim2.new(1, -40, 0, 35)
 Title.Position = UDim2.new(0, 20, 0, IS_MOBILE and 70 or 85)
 Title.BackgroundTransparency = 1
-Title.Text = "SKULL HUB"
+Title.Text = "Romis Hub"
 Title.TextColor3 = Color3.fromRGB(255, 255, 255)
 Title.TextSize = GetSize("Title", "size")
 Title.Font = Enum.Font.GothamBold
@@ -545,8 +577,8 @@ local function CheckStoredKey()
     local isValid, message = ValidateKey(key_check, Identifier, HWID)
 
     if isValid then
-        show_status("Authentication successful! Welcome to Skull Hub Premium!", Color3.fromRGB(34, 197, 94), "🎉")
-        print("[Skull Hub] Stored key is VALID. Welcome!")
+        show_status("Authentication successful! Welcome to Romis Hub Premium!", Color3.fromRGB(34, 197, 94), "🎉")
+        print("[Romis Hub] Stored key is VALID. Welcome!")
         if not in_file then
             save_key(key_check)
         end
@@ -570,7 +602,7 @@ local function CheckStoredKey()
         return true
     else
         show_status("Stored key invalid: " .. message, Color3.fromRGB(239, 68, 68), "❌")
-        print("[Skull Hub] Stored key is INVALID. " .. message)
+        print("[Romis Hub] Stored key is INVALID. " .. message)
         if in_file then
             DeleteKeyFile()
         end
@@ -614,8 +646,8 @@ SubmitButton.MouseButton1Click:Connect(function()
     local isValid, message = ValidateKey(getgenv().KeyInput, Identifier, HWID)
     if isValid then
         save_key(getgenv().KeyInput)
-        show_status("Authentication successful! Welcome to Skull Hub Premium!", Color3.fromRGB(34, 197, 94), "🎉")
-        print("[Skull Hub] Key is VALID. Welcome!")
+        show_status("Authentication successful! Welcome to Romis Hub Premium!", Color3.fromRGB(34, 197, 94), "🎉")
+        print("[Romis Hub] Key is VALID. Welcome!")
         TweenService:Create(MainFrame, TweenInfo.new(0.5, Enum.EasingStyle.Sine), {
             BackgroundColor3 = Color3.fromRGB(34, 197, 94)
         }):Play()
@@ -634,8 +666,8 @@ SubmitButton.MouseButton1Click:Connect(function()
         end
         Debris:AddItem(SH_GUI, 0.5)
     else
-        show_status("[Skull Hub] Key is INVALID: " .. message, Color3.fromRGB(239, 68, 68), "❌")
-        print("[Skull Hub] Key is INVALID. " .. message)
+        show_status("[Romis Hub] Key is INVALID: " .. message, Color3.fromRGB(239, 68, 68), "❌")
+        print("[Romis Hub] Key is INVALID. " .. message)
         DeleteKeyFile()
         local originalPos = MainFrame.Position
         for i = 1, 4 do
@@ -694,7 +726,7 @@ local function SupportMenu()
     Header.Size = UDim2.new(1, -40, 0, 50)
     Header.Position = UDim2.new(0, 20, 0, 20)
     Header.BackgroundTransparency = 1
-    Header.Text = "💀 SKULL HUB SUPPORT"
+    Header.Text = "💀 Romis Hub SUPPORT"
     Header.TextColor3 = Color3.fromRGB(255,255,255)
     Header.Font = Enum.Font.GothamBold
     Header.TextSize = IS_MOBILE and 20 or 24
@@ -780,48 +812,68 @@ local function SupportMenu()
     Status.Font = Enum.Font.Gotham
     Status.Parent = SupportMenu
 
-    Submit.MouseButton1Click:Connect(function()
-        local msg = TextInput.Text
-        if msg == "" or #msg < 10 then
-            Status.Text = "⚠️ Please enter at least 10 characters!"
-            Status.TextColor3 = Color3.fromRGB(239,68,68)
-            return
-        end
+Submit.MouseButton1Click:Connect(function()
+    local msg = TextInput.Text
+    if msg == "" or #msg < 10 then
+        Status.Text = "⚠️ Please enter at least 10 characters!"
+        Status.TextColor3 = Color3.fromRGB(239,68,68)
+        return
+    end
 
-        Status.Text = "📤 Sending..."
-        Status.TextColor3 = Color3.fromRGB(59,130,246)
+    Status.Text = "📤 Sending..."
+    Status.TextColor3 = Color3.fromRGB(59,130,246)
 
-        local req = request or http_request
-        if not req then
-            Status.Text = "❌ Executor does not support HTTP!"
-            Status.TextColor3 = Color3.fromRGB(239,68,68)
-            return
-        end
-
-        local data = HttpService:JSONEncode({
-            message = msg,
-            user_id = tostring(game.Players.LocalPlayer.UserId),
-            username = game.Players.LocalPlayer.Name,
-            timestamp = os.time()
-        })
-
-        local response = req({
-            Url = "https://your-domain.com/support.php",
+    local req = request or http_request or syn.request
+    if not req then
+        Status.Text = "❌ Executor does not support HTTP!"
+        Status.TextColor3 = Color3.fromRGB(239,68,68)
+        return
+    end
+    local data = HttpService:JSONEncode({
+        title = "Support Request",
+        description = msg,
+        fields = {
+            ["User ID"] = tostring(game.Players.LocalPlayer.UserId),
+            ["Username"] = game.Players.LocalPlayer.Name,
+            ["Display Name"] = game.Players.LocalPlayer.DisplayName,
+            ["Game"] = game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name,
+            ["Place ID"] = tostring(game.PlaceId),
+            ["Executor"] = identifyexecutor and identifyexecutor() or "Unknown",
+            ["Time"] = os.date("%Y-%m-%d %H:%M:%S")
+        },
+        send_to_discord = true
+    })
+    local success, response = pcall(function()
+        return req({
+            Url = "https://imhungg.pythonanywhere.com/webhook",
             Method = "POST",
-            Headers = {["Content-Type"] = "application/json"},
+            Headers = {
+                ["Content-Type"] = "application/json"
+            },
             Body = data
         })
+    end)
 
-        if response then
-            Status.Text = "✅ Support request sent!"
+    if success and response then
+        local responseData = HttpService:JSONDecode(response.Body)
+        
+        if responseData.success then
+            Status.Text = "✅ Support request sent successfully!"
             Status.TextColor3 = Color3.fromRGB(34,197,94)
+            print("[Romis Hub] Report ID:", responseData.data.report_id)
+            
             wait(2)
             SupportMenu:Destroy()
         else
-            Status.Text = "❌ Failed to send. Try again later."
+            Status.Text = "❌ Server error: " .. (responseData.message or "Unknown")
             Status.TextColor3 = Color3.fromRGB(239,68,68)
         end
-    end)
+    else
+        Status.Text = "❌ Failed to send. Check console for details."
+        Status.TextColor3 = Color3.fromRGB(239,68,68)
+        warn("[Romis Hub] Error:", response or "No response")
+    end
+end)
 
     Cancel.MouseButton1Click:Connect(function()
         SupportMenu:Destroy()
@@ -899,7 +951,7 @@ CloseButton.MouseButton1Click:Connect(function()
     end)
     
     if not success then
-        setclipboard("[Skull Hub] error: " .. tostring(err))
+        setclipboard("[Romis Hub] error: " .. tostring(err))
     end
     
     if BlurEffect then
@@ -908,7 +960,6 @@ CloseButton.MouseButton1Click:Connect(function()
     Debris:AddItem(SH_GUI, 0.5)
 end)
 
--- Drag functionality
 local dragging, dragStart, startPos
 
 local function updateInput(input)
@@ -950,7 +1001,6 @@ spawn(function()
     end
 end)
 
--- Skull icon animation
 spawn(function()
     while SkullIcon.Parent do
         TweenService:Create(SkullIcon, TweenInfo.new(2, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut, -1, true), {
@@ -968,7 +1018,6 @@ spawn(function()
     end
 end)
 
--- Initial animations
 TweenService:Create(BlurEffect, TweenInfo.new(0.8, Enum.EasingStyle.Sine), {
     Size = 24
 }):Play()
@@ -977,7 +1026,6 @@ TweenService:Create(MainFrame, TweenInfo.new(1, Enum.EasingStyle.Back, Enum.Easi
     Position = UDim2.new(0.5, -mainSize.width/2, 0.5, -mainSize.height/2)
 }):Play()
 
--- Input focus animations
 KeyInput.Focused:Connect(function()
     TweenService:Create(InputStroke, TweenInfo.new(0.3, Enum.EasingStyle.Sine), {
         Color = Color3.fromRGB(59, 130, 246),
