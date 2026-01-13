@@ -4762,7 +4762,7 @@ local Queue = {
                         end
                     end
                 else
-                    Tween(QuestCheck()[7][1] * CFrame.new(0, 55, 0))
+                    Tween(QuestCheck()[2])
                 end
             end
             return false
