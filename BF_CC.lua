@@ -378,4 +378,5 @@ function Gui(visible)
     X.Enabled = visible
 end
 
-Gui(getgenv().ShowPanel and getgenv().ChestFarm)
+Gui(true)
+
