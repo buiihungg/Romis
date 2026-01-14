@@ -1,273 +1,246 @@
-local X = Instance.new("ScreenGui")
-X.Name = "VVVVu4"
-X.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
-X.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = "ModernGlassUI"
+ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+ScreenGui.ResetOnSpawn = false
 
--- Main Frame (Smaller)
+-- Main Container
 local MainFrame = Instance.new("Frame")
 MainFrame.Name = "MainFrame"
-MainFrame.Parent = X
-MainFrame.Size = UDim2.new(0, 340, 0, 200)
-MainFrame.Position = UDim2.new(0.5, -170, 0.5, -100)
-MainFrame.BackgroundColor3 = Color3.fromRGB(25, 28, 35)
+MainFrame.Parent = ScreenGui
+MainFrame.Size = UDim2.new(0, 320, 0, 220)
+MainFrame.Position = UDim2.new(0.5, -160, 0.5, -110)
+MainFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 25)
+MainFrame.BackgroundTransparency = 0.15
 MainFrame.BorderSizePixel = 0
 
 local MainCorner = Instance.new("UICorner")
-MainCorner.CornerRadius = UDim.new(0, 12)
+MainCorner.CornerRadius = UDim.new(0, 16)
 MainCorner.Parent = MainFrame
 
-local MainGradient = Instance.new("UIGradient")
-MainGradient.Parent = MainFrame
-MainGradient.Color = ColorSequence.new{
-    ColorSequenceKeypoint.new(0, Color3.fromRGB(25, 28, 35)),
-    ColorSequenceKeypoint.new(1, Color3.fromRGB(35, 40, 50))
+-- Glass Effect (Blur simulation)
+local GlassOverlay = Instance.new("Frame")
+GlassOverlay.Name = "GlassOverlay"
+GlassOverlay.Parent = MainFrame
+GlassOverlay.Size = UDim2.new(1, 0, 1, 0)
+GlassOverlay.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+GlassOverlay.BackgroundTransparency = 0.95
+GlassOverlay.BorderSizePixel = 0
+
+local GlassCorner = Instance.new("UICorner")
+GlassCorner.CornerRadius = UDim.new(0, 16)
+GlassCorner.Parent = GlassOverlay
+
+-- Border Glow
+local BorderStroke = Instance.new("UIStroke")
+BorderStroke.Parent = MainFrame
+BorderStroke.Color = Color3.fromRGB(120, 140, 255)
+BorderStroke.Thickness = 1.2
+BorderStroke.Transparency = 0.5
+
+local BorderGradient = Instance.new("UIGradient")
+BorderGradient.Parent = BorderStroke
+BorderGradient.Color = ColorSequence.new{
+    ColorSequenceKeypoint.new(0, Color3.fromRGB(120, 140, 255)),
+    ColorSequenceKeypoint.new(0.5, Color3.fromRGB(200, 120, 255)),
+    ColorSequenceKeypoint.new(1, Color3.fromRGB(120, 140, 255))
 }
-MainGradient.Rotation = 135
 
-local MainStroke = Instance.new("UIStroke")
-MainStroke.Parent = MainFrame
-MainStroke.Color = Color3.fromRGB(88, 101, 242)
-MainStroke.Thickness = 1.5
-MainStroke.Transparency = 0.3
-
--- Header (Compact)
-local HeaderFrame = Instance.new("Frame")
-HeaderFrame.Name = "HeaderFrame"
-HeaderFrame.Parent = MainFrame
-HeaderFrame.Size = UDim2.new(1, 0, 0, 45)
-HeaderFrame.Position = UDim2.new(0, 0, 0, 0)
-HeaderFrame.BackgroundColor3 = Color3.fromRGB(88, 101, 242)
-HeaderFrame.BorderSizePixel = 0
-
-local HeaderCorner = Instance.new("UICorner")
-HeaderCorner.CornerRadius = UDim.new(0, 12)
-HeaderCorner.Parent = HeaderFrame
-
-local HeaderGradient = Instance.new("UIGradient")
-HeaderGradient.Parent = HeaderFrame
-HeaderGradient.Color = ColorSequence.new{
-    ColorSequenceKeypoint.new(0, Color3.fromRGB(88, 101, 242)),
-    ColorSequenceKeypoint.new(1, Color3.fromRGB(255, 94, 166))
-}
-HeaderGradient.Rotation = 45
+-- Header
+local Header = Instance.new("Frame")
+Header.Name = "Header"
+Header.Parent = MainFrame
+Header.Size = UDim2.new(1, 0, 0, 50)
+Header.BackgroundTransparency = 1
 
 local TitleLabel = Instance.new("TextLabel")
-TitleLabel.Name = "TitleLabel"
-TitleLabel.Parent = HeaderFrame
-TitleLabel.Size = UDim2.new(1, 0, 1, 0)
+TitleLabel.Name = "Title"
+TitleLabel.Parent = Header
+TitleLabel.Size = UDim2.new(1, -40, 1, 0)
+TitleLabel.Position = UDim2.new(0, 20, 0, 0)
 TitleLabel.BackgroundTransparency = 1
-TitleLabel.Text = "Romis Hub"
+TitleLabel.Text = "✨ Romis Hub"
 TitleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-TitleLabel.TextSize = 18
+TitleLabel.TextSize = 20
 TitleLabel.Font = Enum.Font.GothamBold
-TitleLabel.TextXAlignment = Enum.TextXAlignment.Center
+TitleLabel.TextXAlignment = Enum.TextXAlignment.Left
+TitleLabel.TextYAlignment = Enum.TextYAlignment.Center
 
--- Stats Container (Compact Grid)
+-- Minimize Button
+local MinimizeBtn = Instance.new("TextButton")
+MinimizeBtn.Name = "MinimizeBtn"
+MinimizeBtn.Parent = Header
+MinimizeBtn.Size = UDim2.new(0, 30, 0, 30)
+MinimizeBtn.Position = UDim2.new(1, -40, 0.5, -15)
+MinimizeBtn.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+MinimizeBtn.BackgroundTransparency = 0.9
+MinimizeBtn.Text = "−"
+MinimizeBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+MinimizeBtn.TextSize = 20
+MinimizeBtn.Font = Enum.Font.GothamBold
+MinimizeBtn.BorderSizePixel = 0
+
+local MinCorner = Instance.new("UICorner")
+MinCorner.CornerRadius = UDim.new(0, 8)
+MinCorner.Parent = MinimizeBtn
+
+-- Stats Container
 local StatsContainer = Instance.new("Frame")
-StatsContainer.Name = "StatsContainer"
+StatsContainer.Name = "Stats"
 StatsContainer.Parent = MainFrame
-StatsContainer.Size = UDim2.new(1, -20, 0, 85)
-StatsContainer.Position = UDim2.new(0, 10, 0, 55)
+StatsContainer.Size = UDim2.new(1, -30, 0, 90)
+StatsContainer.Position = UDim2.new(0, 15, 0, 60)
 StatsContainer.BackgroundTransparency = 1
 
-local StatsLayout = Instance.new("UIGridLayout")
+local StatsLayout = Instance.new("UIListLayout")
 StatsLayout.Parent = StatsContainer
-StatsLayout.CellSize = UDim2.new(0.32, 0, 1, 0)
-StatsLayout.CellPadding = UDim2.new(0.02, 0, 0, 0)
 StatsLayout.SortOrder = Enum.SortOrder.LayoutOrder
+StatsLayout.Padding = UDim.new(0, 10)
 
--- Time Stat
-local TimeFrame = Instance.new("Frame")
-TimeFrame.Name = "TimeFrame"
-TimeFrame.Parent = StatsContainer
-TimeFrame.BackgroundColor3 = Color3.fromRGB(40, 45, 55)
-TimeFrame.BorderSizePixel = 0
-TimeFrame.LayoutOrder = 1
+-- Function to create stat card
+local function createStatCard(name, icon, color, layoutOrder)
+    local Card = Instance.new("Frame")
+    Card.Name = name
+    Card.Parent = StatsContainer
+    Card.Size = UDim2.new(1, 0, 0, 25)
+    Card.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    Card.BackgroundTransparency = 0.92
+    Card.BorderSizePixel = 0
+    Card.LayoutOrder = layoutOrder
+    
+    local CardCorner = Instance.new("UICorner")
+    CardCorner.CornerRadius = UDim.new(0, 10)
+    CardCorner.Parent = Card
+    
+    local CardStroke = Instance.new("UIStroke")
+    CardStroke.Parent = Card
+    CardStroke.Color = color
+    CardStroke.Thickness = 1
+    CardStroke.Transparency = 0.7
+    
+    local IconLabel = Instance.new("TextLabel")
+    IconLabel.Parent = Card
+    IconLabel.Size = UDim2.new(0, 30, 1, 0)
+    IconLabel.Position = UDim2.new(0, 10, 0, 0)
+    IconLabel.BackgroundTransparency = 1
+    IconLabel.Text = icon
+    IconLabel.TextColor3 = color
+    IconLabel.TextSize = 16
+    IconLabel.Font = Enum.Font.GothamBold
+    
+    local NameLabel = Instance.new("TextLabel")
+    NameLabel.Parent = Card
+    NameLabel.Size = UDim2.new(0.4, 0, 1, 0)
+    NameLabel.Position = UDim2.new(0, 45, 0, 0)
+    NameLabel.BackgroundTransparency = 1
+    NameLabel.Text = name
+    NameLabel.TextColor3 = Color3.fromRGB(200, 200, 220)
+    NameLabel.TextSize = 13
+    NameLabel.Font = Enum.Font.Gotham
+    NameLabel.TextXAlignment = Enum.TextXAlignment.Left
+    
+    local ValueLabel = Instance.new("TextLabel")
+    ValueLabel.Name = "Value"
+    ValueLabel.Parent = Card
+    ValueLabel.Size = UDim2.new(0.45, -10, 1, 0)
+    ValueLabel.Position = UDim2.new(0.55, 0, 0, 0)
+    ValueLabel.BackgroundTransparency = 1
+    ValueLabel.Text = "0"
+    ValueLabel.TextColor3 = color
+    ValueLabel.TextSize = 14
+    ValueLabel.Font = Enum.Font.GothamBold
+    ValueLabel.TextXAlignment = Enum.TextXAlignment.Right
+    
+    return Card, ValueLabel
+end
 
-local TimeCorner = Instance.new("UICorner")
-TimeCorner.CornerRadius = UDim.new(0, 8)
-TimeCorner.Parent = TimeFrame
+-- Create stat cards
+local TimeCard, TimeValue = createStatCard("Time", "⏱️", Color3.fromRGB(100, 180, 255), 1)
+local CurrentCard, CurrentValue = createStatCard("Current", "💰", Color3.fromRGB(255, 200, 80), 2)
+local EarnedCard, EarnedValue = createStatCard("Earned", "📈", Color3.fromRGB(100, 255, 150), 3)
 
-local TimeStroke = Instance.new("UIStroke")
-TimeStroke.Parent = TimeFrame
-TimeStroke.Color = Color3.fromRGB(100, 150, 255)
-TimeStroke.Thickness = 1
-TimeStroke.Transparency = 0.6
-
-local TimeLabel = Instance.new("TextLabel")
-TimeLabel.Parent = TimeFrame
-TimeLabel.Size = UDim2.new(1, 0, 0.4, 0)
-TimeLabel.Position = UDim2.new(0, 0, 0.1, 0)
-TimeLabel.BackgroundTransparency = 1
-TimeLabel.Text = "Time"
-TimeLabel.TextColor3 = Color3.fromRGB(160, 170, 190)
-TimeLabel.TextSize = 12
-TimeLabel.Font = Enum.Font.Gotham
-
-local TimeValue = Instance.new("TextLabel")
-TimeValue.Name = "TimeValue"
-TimeValue.Parent = TimeFrame
-TimeValue.Size = UDim2.new(1, 0, 0.5, 0)
-TimeValue.Position = UDim2.new(0, 0, 0.45, 0)
-TimeValue.BackgroundTransparency = 1
-TimeValue.Text = "00:00:00"
-TimeValue.TextColor3 = Color3.fromRGB(100, 150, 255)
-TimeValue.TextSize = 14
-TimeValue.Font = Enum.Font.GothamBold
-
--- Current Beli Stat
-local CurrentBeliFrame = Instance.new("Frame")
-CurrentBeliFrame.Name = "CurrentBeliFrame"
-CurrentBeliFrame.Parent = StatsContainer
-CurrentBeliFrame.BackgroundColor3 = Color3.fromRGB(40, 45, 55)
-CurrentBeliFrame.BorderSizePixel = 0
-CurrentBeliFrame.LayoutOrder = 2
-
-local CurrentBeliCorner = Instance.new("UICorner")
-CurrentBeliCorner.CornerRadius = UDim.new(0, 8)
-CurrentBeliCorner.Parent = CurrentBeliFrame
-
-local CurrentBeliStroke = Instance.new("UIStroke")
-CurrentBeliStroke.Parent = CurrentBeliFrame
-CurrentBeliStroke.Color = Color3.fromRGB(255, 215, 0)
-CurrentBeliStroke.Thickness = 1
-CurrentBeliStroke.Transparency = 0.6
-
-local CurrentBeliLabel = Instance.new("TextLabel")
-CurrentBeliLabel.Parent = CurrentBeliFrame
-CurrentBeliLabel.Size = UDim2.new(1, 0, 0.4, 0)
-CurrentBeliLabel.Position = UDim2.new(0, 0, 0.1, 0)
-CurrentBeliLabel.BackgroundTransparency = 1
-CurrentBeliLabel.Text = "Current"
-CurrentBeliLabel.TextColor3 = Color3.fromRGB(160, 170, 190)
-CurrentBeliLabel.TextSize = 12
-CurrentBeliLabel.Font = Enum.Font.Gotham
-
-local CurrentBeliValue = Instance.new("TextLabel")
-CurrentBeliValue.Name = "CurrentBeliValue"
-CurrentBeliValue.Parent = CurrentBeliFrame
-CurrentBeliValue.Size = UDim2.new(1, 0, 0.5, 0)
-CurrentBeliValue.Position = UDim2.new(0, 0, 0.45, 0)
-CurrentBeliValue.BackgroundTransparency = 1
-CurrentBeliValue.Text = "0"
-CurrentBeliValue.TextColor3 = Color3.fromRGB(255, 215, 0)
-CurrentBeliValue.TextSize = 14
-CurrentBeliValue.Font = Enum.Font.GothamBold
-
--- Beli Earned Stat
-local BeliEarnedFrame = Instance.new("Frame")
-BeliEarnedFrame.Name = "BeliEarnedFrame"
-BeliEarnedFrame.Parent = StatsContainer
-BeliEarnedFrame.BackgroundColor3 = Color3.fromRGB(40, 45, 55)
-BeliEarnedFrame.BorderSizePixel = 0
-BeliEarnedFrame.LayoutOrder = 3
-
-local BeliEarnedCorner = Instance.new("UICorner")
-BeliEarnedCorner.CornerRadius = UDim.new(0, 8)
-BeliEarnedCorner.Parent = BeliEarnedFrame
-
-local BeliEarnedStroke = Instance.new("UIStroke")
-BeliEarnedStroke.Parent = BeliEarnedFrame
-BeliEarnedStroke.Color = Color3.fromRGB(0, 255, 127)
-BeliEarnedStroke.Thickness = 1
-BeliEarnedStroke.Transparency = 0.6
-
-local BeliEarnedLabel = Instance.new("TextLabel")
-BeliEarnedLabel.Parent = BeliEarnedFrame
-BeliEarnedLabel.Size = UDim2.new(1, 0, 0.4, 0)
-BeliEarnedLabel.Position = UDim2.new(0, 0, 0.1, 0)
-BeliEarnedLabel.BackgroundTransparency = 1
-BeliEarnedLabel.Text = "Earned"
-BeliEarnedLabel.TextColor3 = Color3.fromRGB(160, 170, 190)
-BeliEarnedLabel.TextSize = 12
-BeliEarnedLabel.Font = Enum.Font.Gotham
-
-local BeliEarnedValue = Instance.new("TextLabel")
-BeliEarnedValue.Name = "BeliEarnedValue"
-BeliEarnedValue.Parent = BeliEarnedFrame
-BeliEarnedValue.Size = UDim2.new(1, 0, 0.5, 0)
-BeliEarnedValue.Position = UDim2.new(0, 0, 0.45, 0)
-BeliEarnedValue.BackgroundTransparency = 1
-BeliEarnedValue.Text = "+0"
-BeliEarnedValue.TextColor3 = Color3.fromRGB(0, 255, 127)
-BeliEarnedValue.TextSize = 14
-BeliEarnedValue.Font = Enum.Font.GothamBold
-
--- Discord Button (Compact)
-local DiscordButton = Instance.new("TextButton")
-DiscordButton.Name = "DiscordButton"
-DiscordButton.Parent = MainFrame
-DiscordButton.Size = UDim2.new(1, -20, 0, 35)
-DiscordButton.Position = UDim2.new(0, 10, 1, -45)
-DiscordButton.BackgroundColor3 = Color3.fromRGB(88, 101, 242)
-DiscordButton.BorderSizePixel = 0
-DiscordButton.Text = "Join Discord"
-DiscordButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-DiscordButton.TextSize = 14
-DiscordButton.Font = Enum.Font.GothamBold
-
-local DiscordGradient = Instance.new("UIGradient")
-DiscordGradient.Parent = DiscordButton
-DiscordGradient.Color = ColorSequence.new{
-    ColorSequenceKeypoint.new(0, Color3.fromRGB(88, 101, 242)),
-    ColorSequenceKeypoint.new(1, Color3.fromRGB(255, 94, 166))
-}
-DiscordGradient.Rotation = 45
+-- Discord Button
+local DiscordBtn = Instance.new("TextButton")
+DiscordBtn.Name = "DiscordBtn"
+DiscordBtn.Parent = MainFrame
+DiscordBtn.Size = UDim2.new(1, -30, 0, 38)
+DiscordBtn.Position = UDim2.new(0, 15, 1, -50)
+DiscordBtn.BackgroundColor3 = Color3.fromRGB(88, 101, 242)
+DiscordBtn.BackgroundTransparency = 0.2
+DiscordBtn.BorderSizePixel = 0
+DiscordBtn.Text = "🌐 Join Discord"
+DiscordBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+DiscordBtn.TextSize = 14
+DiscordBtn.Font = Enum.Font.GothamBold
 
 local DiscordCorner = Instance.new("UICorner")
-DiscordCorner.CornerRadius = UDim.new(0, 8)
-DiscordCorner.Parent = DiscordButton
+DiscordCorner.CornerRadius = UDim.new(0, 10)
+DiscordCorner.Parent = DiscordBtn
 
 local DiscordStroke = Instance.new("UIStroke")
-DiscordStroke.Parent = DiscordButton
-DiscordStroke.Color = Color3.fromRGB(255, 255, 255)
+DiscordStroke.Parent = DiscordBtn
+DiscordStroke.Color = Color3.fromRGB(88, 101, 242)
 DiscordStroke.Thickness = 1
-DiscordStroke.Transparency = 0.7
+DiscordStroke.Transparency = 0.5
+
+-- Services
+local TweenService = game:GetService("TweenService")
+local UserInputService = game:GetService("UserInputService")
 
 -- Animations
-local TweenService = game:GetService("TweenService")
-
 spawn(function()
-    while X.Parent do
-        TweenService:Create(HeaderGradient, TweenInfo.new(4, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut, -1, true), {Rotation = 405}):Play()
-        wait(0.1)
+    while ScreenGui.Parent do
+        TweenService:Create(BorderGradient, TweenInfo.new(3, Enum.EasingStyle.Linear), {Rotation = 360}):Play()
+        wait(3)
+        BorderGradient.Rotation = 0
     end
 end)
 
--- Button Hover Effect
-DiscordButton.MouseEnter:Connect(function()
-    TweenService:Create(DiscordButton, TweenInfo.new(0.3, Enum.EasingStyle.Quad), {BackgroundColor3 = Color3.fromRGB(255, 94, 166)}):Play()
-    TweenService:Create(DiscordStroke, TweenInfo.new(0.3), {Transparency = 0.3, Thickness = 1.5}):Play()
+-- Button hover effects
+MinimizeBtn.MouseEnter:Connect(function()
+    TweenService:Create(MinimizeBtn, TweenInfo.new(0.2), {BackgroundTransparency = 0.7}):Play()
 end)
 
-DiscordButton.MouseLeave:Connect(function()
-    TweenService:Create(DiscordButton, TweenInfo.new(0.3, Enum.EasingStyle.Quad), {BackgroundColor3 = Color3.fromRGB(88, 101, 242)}):Play()
-    TweenService:Create(DiscordStroke, TweenInfo.new(0.3), {Transparency = 0.7, Thickness = 1}):Play()
+MinimizeBtn.MouseLeave:Connect(function()
+    TweenService:Create(MinimizeBtn, TweenInfo.new(0.2), {BackgroundTransparency = 0.9}):Play()
 end)
 
-DiscordButton.MouseButton1Click:Connect(function()
-    if W then
-        setclipboard(W)
-    end
-    local originalText = DiscordButton.Text
-    DiscordButton.Text = "✓ Link Copied!"
-    TweenService:Create(DiscordButton, TweenInfo.new(0.2), {TextColor3 = Color3.fromRGB(0, 255, 127)}):Play()
+DiscordBtn.MouseEnter:Connect(function()
+    TweenService:Create(DiscordBtn, TweenInfo.new(0.3), {BackgroundTransparency = 0, Size = UDim2.new(1, -28, 0, 40)}):Play()
+    TweenService:Create(DiscordStroke, TweenInfo.new(0.3), {Transparency = 0.2}):Play()
+end)
+
+DiscordBtn.MouseLeave:Connect(function()
+    TweenService:Create(DiscordBtn, TweenInfo.new(0.3), {BackgroundTransparency = 0.2, Size = UDim2.new(1, -30, 0, 38)}):Play()
+    TweenService:Create(DiscordStroke, TweenInfo.new(0.3), {Transparency = 0.5}):Play()
+end)
+
+DiscordBtn.MouseButton1Click:Connect(function()
+    if W then setclipboard(W) end
+    DiscordBtn.Text = "✓ Copied!"
+    TweenService:Create(DiscordBtn, TweenInfo.new(0.2), {BackgroundColor3 = Color3.fromRGB(0, 255, 127)}):Play()
     wait(2)
-    DiscordButton.Text = originalText
-    TweenService:Create(DiscordButton, TweenInfo.new(0.2), {TextColor3 = Color3.fromRGB(255, 255, 255)}):Play()
+    DiscordBtn.Text = "🌐 Join Discord"
+    TweenService:Create(DiscordBtn, TweenInfo.new(0.2), {BackgroundColor3 = Color3.fromRGB(88, 101, 242)}):Play()
+end)
+
+-- Minimize functionality
+local isMinimized = false
+MinimizeBtn.MouseButton1Click:Connect(function()
+    isMinimized = not isMinimized
+    if isMinimized then
+        TweenService:Create(MainFrame, TweenInfo.new(0.3, Enum.EasingStyle.Quad), {Size = UDim2.new(0, 320, 0, 50)}):Play()
+        MinimizeBtn.Text = "+"
+    else
+        TweenService:Create(MainFrame, TweenInfo.new(0.3, Enum.EasingStyle.Quad), {Size = UDim2.new(0, 320, 0, 220)}):Play()
+        MinimizeBtn.Text = "−"
+    end
 end)
 
 -- Dragging
-local UserInputService = game:GetService("UserInputService")
 local dragging, dragInput, dragStart, startPos
 
-local function updateInput(input)
-    local delta = input.Position - dragStart
-    local position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
-    TweenService:Create(MainFrame, TweenInfo.new(0.1), {Position = position}):Play()
-end
-
-HeaderFrame.InputBegan:Connect(function(input)
+Header.InputBegan:Connect(function(input)
     if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
         dragging = true
         dragStart = input.Position
@@ -280,7 +253,7 @@ HeaderFrame.InputBegan:Connect(function(input)
     end
 end)
 
-HeaderFrame.InputChanged:Connect(function(input)
+Header.InputChanged:Connect(function(input)
     if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
         dragInput = input
     end
@@ -288,7 +261,8 @@ end)
 
 UserInputService.InputChanged:Connect(function(input)
     if input == dragInput and dragging then
-        updateInput(input)
+        local delta = input.Position - dragStart
+        MainFrame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
     end
 end)
 
@@ -301,7 +275,7 @@ local function formatNumber(num)
     elseif num >= 1000 then
         return string.format("%.1fK", num / 1000)
     else
-        return tostring(num)
+        return tostring(math.floor(num))
     end
 end
 
@@ -315,7 +289,7 @@ end
 -- Data Management
 local function loadSavedData()
     local filePath = "Romis Hub/ChestCollect_INFO.json"
-    if isfile(filePath) then
+    if isfile and isfile(filePath) then
         local success, data = pcall(function()
             return game:GetService("HttpService"):JSONDecode(readfile(filePath))
         end)
@@ -325,6 +299,7 @@ local function loadSavedData()
 end
 
 local function saveStats(timeElapsed, beliEarned, initialBeli, sessionStartTime)
+    if not writefile then return end
     local data = {
         TimeElapsed = timeElapsed,
         BeliEarned = beliEarned,
@@ -349,34 +324,24 @@ getgenv().InitialBeli = initialBeli
 
 -- Update Loop
 spawn(function()
-    while X.Parent do
+    while ScreenGui.Parent do
         local totalTime = totalTimeElapsed + (os.time() - sessionStartTime)
         TimeValue.Text = formatTime(totalTime)
         
         local currentBeli = game.Players.LocalPlayer.Data.Beli.Value
-        CurrentBeliValue.Text = formatNumber(currentBeli)
+        CurrentValue.Text = formatNumber(currentBeli)
         
         local beliEarned = currentBeli - initialBeli
-        BeliEarnedValue.Text = "+" .. formatNumber(beliEarned)
+        EarnedValue.Text = "+" .. formatNumber(beliEarned)
         
         saveStats(totalTime, beliEarned, initialBeli, sessionStartTime)
         wait(1)
     end
 end)
 
--- Subtle Animations
-spawn(function()
-    while X.Parent do
-        TweenService:Create(TimeStroke, TweenInfo.new(2, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut, -1, true), {Transparency = 0.3}):Play()
-        TweenService:Create(CurrentBeliStroke, TweenInfo.new(2.5, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut, -1, true), {Transparency = 0.3}):Play()
-        TweenService:Create(BeliEarnedStroke, TweenInfo.new(2.2, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut, -1, true), {Transparency = 0.3}):Play()
-        wait(0.1)
-    end
-end)
-
+-- Toggle Function
 function Gui(visible)
-    X.Enabled = visible
+    ScreenGui.Enabled = visible
 end
 
 Gui(true)
-
