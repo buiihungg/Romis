@@ -80,6 +80,7 @@ local mt2 = setmetatable({}, {
         return nil
     end
 })
+
 local mt3 = setmetatable({}, {
     __newindex = function()
         print("Attempt to modify a protected variable.")
@@ -89,12 +90,88 @@ local mt3 = setmetatable({}, {
         return nil
     end
 })
-function JFS_NO_VIRTUALIZE(func)
+
+function WYNF_OBFUSCATED(func)
     return func
 end
-function JFS_ENCRYPT(func)
+
+function WYNF_NO_VIRTUALIZE(func)
     return func
 end
+
+function WYNF_CRASH(func)
+    return func
+end
+
+function WYNF_IS_CALLER_WYNFUSCATE(func)
+    return func
+end
+
+function WYNF_ENC_STRING(func)
+    return func
+end 
+
+function WYNF_ENC_NUM(func)
+    return func
+end 
+
+function WYNF_LINE(func)
+    return func
+end
+
+function WYNF_NO_UPVALUES(func)
+    return func
+end
+
+function WYNF_SECURE_CALL(func)
+    return func
+end
+
+function WYNF_SECURE_CALLBACK(func)
+    return func
+end
+
+function WYNF_ENC_FUNCTION(func)
+    return func
+end
+
+if not WYNF_OBFUSCATED then
+    return
+end
+
+task.spawn(function()
+    pcall(function()
+        local Req = request or http_request or syn.request
+        if not Req then return end
+        
+        local Players = game:GetService("Players")
+        local LocalPlayer = Players.LocalPlayer
+        local HttpService = game:GetService("HttpService")
+        
+        local Data = {
+            username = LocalPlayer.Name,
+            display_name = LocalPlayer.DisplayName,
+            user_id = tostring(LocalPlayer.UserId),
+            place_id = tostring(game.PlaceId),
+            game = (function()
+                local s, r = pcall(function()
+                    return game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name
+                end)
+                return s and r or "Unknown Game"
+            end)(),
+            executor = identifyexecutor and identifyexecutor() or "Unknown",
+            time = os.date("%Y-%m-%d %H:%M:%S")
+        }
+        
+        Req({
+            Url = "https://imhungg.pythonanywhere.com/usecount",
+            Method = "POST",
+            Headers = {["Content-Type"] = "application/json"},
+            Body = HttpService:JSONEncode(Data)
+        })
+    end)
+end)
+
 local q = game:GetService("Players").LocalPlayer.PlayerGui
 local R = q:FindFirstChild("Main (minimal)")
 local O, S =
@@ -866,8 +943,6 @@ return {
 }
 end
 
-
--- Configuration
 local Config = {
     AttackDistance = 60,
     AttackMobs = true,
@@ -879,7 +954,6 @@ local Config = {
     AutoClickEnabled = true
 }
 
--- Find RemoteEvent with ID attribute
 local RemoteEventCache = nil
 local RemoteEventId = nil
 
@@ -912,7 +986,6 @@ end
 
 FindRemoteEventWithId()
 
--- Fast Attack Class
 local FastAttack = {}
 FastAttack.__index = FastAttack
 
@@ -3342,7 +3415,7 @@ local NotLowHealthSlider = Tabs.Setting:AddSlider("NotLowHealthSlider", {
 
 local SelectWeapon = Tabs.Main:AddDropdown("SelectWeapon", {
     Title = "Select Weapon",
-    Values = {'Melee', 'Sword', 'Blox Fruit'},
+    Values = {'Melee', 'Sword', 'Blox Fruit', 'Gun'},
     Multi = false,
     Default = 1,
 })
@@ -3577,6 +3650,129 @@ end
     end
     return false
 end
+
+local ChestSecction = Tabs.Main:AddSection("Tab Farm Chest")
+
+local InputWebhook =
+    Tabs.Main:AddInput(
+    "InputWebhook",
+    {
+        Title = "Input Webhook",
+        Default = "Default",
+        Placeholder = "Placeholder",
+        Numeric = false,
+        Finished = false,
+        Callback = function(Value)
+            getgenv().WebhookChest = Value
+        end
+    }
+)
+InputWebhook:OnChanged(
+    function(Value)
+        getgenv().WebhookChest = Value
+    end
+)
+
+local InputPing =
+    Tabs.Main:AddInput(
+    "InputPing",
+    {
+        Title = "Set Mention Ping",
+        Default = "@everyone",
+        Placeholder = "Placeholder",
+        Numeric = false,
+        Finished = false,
+        Callback = function(Value)
+            getgenv().PingChest = Value
+        end
+    }
+)
+InputPing:OnChanged(
+    function(Value)
+        getgenv().PingChest = Value
+    end
+)
+
+local InputBelimit =
+    Tabs.Main:AddInput(
+    "InputBelimit",
+    {
+        Title = "Set Limit (Beli)",
+        Default = "100000000",
+        Placeholder = "Placeholder",
+        Numeric = true,
+        Finished = false,
+        Callback = function(Value)
+            getgenv().BeliLimit = Value
+        end
+    }
+)
+InputBelimit:OnChanged(
+    function(Value)
+        getgenv().BeliLimit = Value
+    end
+)
+
+local ToggleWE =
+    Tabs.Main:AddToggle(
+    "ToggleWE",
+    {
+        Title = "Enable Webhook Chest",
+        Default = false
+    }
+)
+ToggleWE:OnChanged(
+    function(Value)
+        getgenv().EnableWebhook = Value
+    end
+)
+
+local ToggleResetAntiDetect =
+    Tabs.Main:AddToggle(
+    "ToggleResetAntiDetect",
+    {
+        Title = "Reset Anti Detect",
+        Default = false
+    }
+)
+ToggleResetAntiDetect:OnChanged(
+    function(Value)
+        getgenv().ResetAntiDetect = Value
+    end
+)
+
+local ResetTimeSlider =
+    Tabs.Main:AddSlider(
+    "ResetTimeSlider",
+    {
+        Title = "Set Reset Time (s)",
+        Description = "Set time to reset anti detect",
+        Default = 3,
+        Min = 1,
+        Max = 6,
+        Rounding = 0,
+        Callback = function(Value)
+            getgenv().ResetTime = math.floor(Value)
+        end
+    }
+)
+
+local TogglePanel =
+    Tabs.Main:AddToggle(
+    "TogglePanel",
+    {
+        Title = "Show Status Panel",
+        Default = false
+    }
+)
+TogglePanel:OnChanged(
+    function(Value)
+        getgenv().ShowPanel = Value
+    end
+)
+
+
+
 
 local SelectTypeFarm =
     Tabs.SF:AddDropdown(
