@@ -40,6 +40,9 @@ local Remote = game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):Wait
 local functions = {print,warn,error,rconsoleprint,setclipboard,rconsoleerr,rconsolewarn}
 local hell_nah = {"githubusercontent","Yourgithubusername"}
 local UserInputService = game:GetService("UserInputService")
+local RandomCFrame = CFrame.new(0, 30, 0)
+local _B = false
+local r = game.PlaceId
 if UserInputService.TouchEnabled and not UserInputService.KeyboardEnabled then
     print("Mobile")
 else
