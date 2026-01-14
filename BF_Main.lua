@@ -3678,7 +3678,7 @@ local InputPing =
     "InputPing",
     {
         Title = "Set Mention Ping",
-        Default = "@everyone",
+        Default = "everyone",
         Placeholder = "Placeholder",
         Numeric = false,
         Finished = false,
@@ -3771,8 +3771,710 @@ TogglePanel:OnChanged(
     end
 )
 
+local ToggleSniperLegendaryItem =
+    Tabs.Main:AddToggle(
+    "ToggleSniperLegendaryItem",
+    {
+        Title = "Sniper Legendary Item",
+        Default = false
+    }
+)
+ToggleSniperLegendaryItem:OnChanged(
+    function(Value)
+        getgenv().SniperLegendaryItem = Value
+    end
+)
 
+local ToggleStartFarmChest =
+    Tabs.Main:AddToggle(
+    "ToggleStartFarmChest",
+    {
+        Title = "Start Farm Chest",
+        Default = false
+    }
+)
+ToggleStartFarmChest:OnChanged(
+    function(Value)
+        getgenv().StartFarmChest = Value
+    end
+)
 
+-- Chest Farm Function --
+
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = "ModernGlassUI"
+ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+ScreenGui.ResetOnSpawn = false
+
+local MainFrame = Instance.new("Frame")
+MainFrame.Name = "MainFrame"
+MainFrame.Parent = ScreenGui
+MainFrame.Size = UDim2.new(0, 320, 0, 220)
+MainFrame.Position = UDim2.new(0.5, -160, 0.5, -110)
+MainFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 25)
+MainFrame.BackgroundTransparency = 0.15
+MainFrame.BorderSizePixel = 0
+
+local MainCorner = Instance.new("UICorner")
+MainCorner.CornerRadius = UDim.new(0, 16)
+MainCorner.Parent = MainFrame
+
+local GlassOverlay = Instance.new("Frame")
+GlassOverlay.Name = "GlassOverlay"
+GlassOverlay.Parent = MainFrame
+GlassOverlay.Size = UDim2.new(1, 0, 1, 0)
+GlassOverlay.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+GlassOverlay.BackgroundTransparency = 0.95
+GlassOverlay.BorderSizePixel = 0
+
+local GlassCorner = Instance.new("UICorner")
+GlassCorner.CornerRadius = UDim.new(0, 16)
+GlassCorner.Parent = GlassOverlay
+
+local BorderStroke = Instance.new("UIStroke")
+BorderStroke.Parent = MainFrame
+BorderStroke.Color = Color3.fromRGB(120, 140, 255)
+BorderStroke.Thickness = 1.2
+BorderStroke.Transparency = 0.5
+
+local BorderGradient = Instance.new("UIGradient")
+BorderGradient.Parent = BorderStroke
+BorderGradient.Color = ColorSequence.new{
+    ColorSequenceKeypoint.new(0, Color3.fromRGB(120, 140, 255)),
+    ColorSequenceKeypoint.new(0.5, Color3.fromRGB(200, 120, 255)),
+    ColorSequenceKeypoint.new(1, Color3.fromRGB(120, 140, 255))
+}
+
+local Header = Instance.new("Frame")
+Header.Name = "Header"
+Header.Parent = MainFrame
+Header.Size = UDim2.new(1, 0, 0, 50)
+Header.BackgroundTransparency = 1
+
+local TitleLabel = Instance.new("TextLabel")
+TitleLabel.Name = "Title"
+TitleLabel.Parent = Header
+TitleLabel.Size = UDim2.new(1, -40, 1, 0)
+TitleLabel.Position = UDim2.new(0, 20, 0, 0)
+TitleLabel.BackgroundTransparency = 1
+TitleLabel.Text = "✨ Romis Hub"
+TitleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+TitleLabel.TextSize = 20
+TitleLabel.Font = Enum.Font.GothamBold
+TitleLabel.TextXAlignment = Enum.TextXAlignment.Left
+TitleLabel.TextYAlignment = Enum.TextYAlignment.Center
+
+local MinimizeBtn = Instance.new("TextButton")
+MinimizeBtn.Name = "MinimizeBtn"
+MinimizeBtn.Parent = Header
+MinimizeBtn.Size = UDim2.new(0, 30, 0, 30)
+MinimizeBtn.Position = UDim2.new(1, -40, 0.5, -15)
+MinimizeBtn.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+MinimizeBtn.BackgroundTransparency = 0.9
+MinimizeBtn.Text = "−"
+MinimizeBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+MinimizeBtn.TextSize = 20
+MinimizeBtn.Font = Enum.Font.GothamBold
+MinimizeBtn.BorderSizePixel = 0
+
+local MinCorner = Instance.new("UICorner")
+MinCorner.CornerRadius = UDim.new(0, 8)
+MinCorner.Parent = MinimizeBtn
+
+local StatsContainer = Instance.new("Frame")
+StatsContainer.Name = "Stats"
+StatsContainer.Parent = MainFrame
+StatsContainer.Size = UDim2.new(1, -30, 0, 90)
+StatsContainer.Position = UDim2.new(0, 15, 0, 60)
+StatsContainer.BackgroundTransparency = 1
+
+local StatsLayout = Instance.new("UIListLayout")
+StatsLayout.Parent = StatsContainer
+StatsLayout.SortOrder = Enum.SortOrder.LayoutOrder
+StatsLayout.Padding = UDim.new(0, 10)
+
+local function createStatCard(name, icon, color, layoutOrder)
+    local Card = Instance.new("Frame")
+    Card.Name = name
+    Card.Parent = StatsContainer
+    Card.Size = UDim2.new(1, 0, 0, 25)
+    Card.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    Card.BackgroundTransparency = 0.92
+    Card.BorderSizePixel = 0
+    Card.LayoutOrder = layoutOrder
+    
+    local CardCorner = Instance.new("UICorner")
+    CardCorner.CornerRadius = UDim.new(0, 10)
+    CardCorner.Parent = Card
+    
+    local CardStroke = Instance.new("UIStroke")
+    CardStroke.Parent = Card
+    CardStroke.Color = color
+    CardStroke.Thickness = 1
+    CardStroke.Transparency = 0.7
+    
+    local IconLabel = Instance.new("TextLabel")
+    IconLabel.Parent = Card
+    IconLabel.Size = UDim2.new(0, 30, 1, 0)
+    IconLabel.Position = UDim2.new(0, 10, 0, 0)
+    IconLabel.BackgroundTransparency = 1
+    IconLabel.Text = icon
+    IconLabel.TextColor3 = color
+    IconLabel.TextSize = 16
+    IconLabel.Font = Enum.Font.GothamBold
+    
+    local NameLabel = Instance.new("TextLabel")
+    NameLabel.Parent = Card
+    NameLabel.Size = UDim2.new(0.4, 0, 1, 0)
+    NameLabel.Position = UDim2.new(0, 45, 0, 0)
+    NameLabel.BackgroundTransparency = 1
+    NameLabel.Text = name
+    NameLabel.TextColor3 = Color3.fromRGB(200, 200, 220)
+    NameLabel.TextSize = 13
+    NameLabel.Font = Enum.Font.Gotham
+    NameLabel.TextXAlignment = Enum.TextXAlignment.Left
+    
+    local ValueLabel = Instance.new("TextLabel")
+    ValueLabel.Name = "Value"
+    ValueLabel.Parent = Card
+    ValueLabel.Size = UDim2.new(0.45, -10, 1, 0)
+    ValueLabel.Position = UDim2.new(0.55, 0, 0, 0)
+    ValueLabel.BackgroundTransparency = 1
+    ValueLabel.Text = "0"
+    ValueLabel.TextColor3 = color
+    ValueLabel.TextSize = 14
+    ValueLabel.Font = Enum.Font.GothamBold
+    ValueLabel.TextXAlignment = Enum.TextXAlignment.Right
+    
+    return Card, ValueLabel
+end
+
+local TimeCard, TimeValue = createStatCard("Time", "⏱️", Color3.fromRGB(100, 180, 255), 1)
+local CurrentCard, CurrentValue = createStatCard("Current", "💰", Color3.fromRGB(255, 200, 80), 2)
+local EarnedCard, EarnedValue = createStatCard("Earned", "📈", Color3.fromRGB(100, 255, 150), 3)
+
+local DiscordBtn = Instance.new("TextButton")
+DiscordBtn.Name = "DiscordBtn"
+DiscordBtn.Parent = MainFrame
+DiscordBtn.Size = UDim2.new(1, -30, 0, 38)
+DiscordBtn.Position = UDim2.new(0, 15, 1, -50)
+DiscordBtn.BackgroundColor3 = Color3.fromRGB(88, 101, 242)
+DiscordBtn.BackgroundTransparency = 0.2
+DiscordBtn.BorderSizePixel = 0
+DiscordBtn.Text = "🌐 Join Discord"
+DiscordBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+DiscordBtn.TextSize = 14
+DiscordBtn.Font = Enum.Font.GothamBold
+
+local DiscordCorner = Instance.new("UICorner")
+DiscordCorner.CornerRadius = UDim.new(0, 10)
+DiscordCorner.Parent = DiscordBtn
+
+local DiscordStroke = Instance.new("UIStroke")
+DiscordStroke.Parent = DiscordBtn
+DiscordStroke.Color = Color3.fromRGB(88, 101, 242)
+DiscordStroke.Thickness = 1
+DiscordStroke.Transparency = 0.5
+
+local TweenService = game:GetService("TweenService")
+local UserInputService = game:GetService("UserInputService")
+
+spawn(function()
+    while ScreenGui.Parent do
+        TweenService:Create(BorderGradient, TweenInfo.new(3, Enum.EasingStyle.Linear), {Rotation = 360}):Play()
+        wait(3)
+        BorderGradient.Rotation = 0
+    end
+end)
+
+MinimizeBtn.MouseEnter:Connect(function()
+    TweenService:Create(MinimizeBtn, TweenInfo.new(0.15), {BackgroundTransparency = 0.7}):Play()
+end)
+
+MinimizeBtn.MouseLeave:Connect(function()
+    TweenService:Create(MinimizeBtn, TweenInfo.new(0.15), {BackgroundTransparency = 0.9}):Play()
+end)
+
+DiscordBtn.MouseEnter:Connect(function()
+    TweenService:Create(DiscordBtn, TweenInfo.new(0.2), {BackgroundTransparency = 0, Size = UDim2.new(1, -28, 0, 40)}):Play()
+    TweenService:Create(DiscordStroke, TweenInfo.new(0.2), {Transparency = 0.2}):Play()
+end)
+
+DiscordBtn.MouseLeave:Connect(function()
+    TweenService:Create(DiscordBtn, TweenInfo.new(0.2), {BackgroundTransparency = 0.2, Size = UDim2.new(1, -30, 0, 38)}):Play()
+    TweenService:Create(DiscordStroke, TweenInfo.new(0.2), {Transparency = 0.5}):Play()
+end)
+
+DiscordBtn.MouseButton1Click:Connect(function()
+    if W then setclipboard(W) end
+    DiscordBtn.Text = "✓ Copied!"
+    TweenService:Create(DiscordBtn, TweenInfo.new(0.15), {BackgroundColor3 = Color3.fromRGB(0, 255, 127)}):Play()
+    wait(1.5)
+    DiscordBtn.Text = "🌐 Join Discord"
+    TweenService:Create(DiscordBtn, TweenInfo.new(0.15), {BackgroundColor3 = Color3.fromRGB(88, 101, 242)}):Play()
+end)
+
+local isMinimized = false
+MinimizeBtn.MouseButton1Click:Connect(function()
+    isMinimized = not isMinimized
+    if isMinimized then
+        StatsContainer.Visible = false
+        DiscordBtn.Visible = false
+        TweenService:Create(MainFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quad), {Size = UDim2.new(0, 320, 0, 50)}):Play()
+        MinimizeBtn.Text = "+"
+    else
+        TweenService:Create(MainFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quad), {Size = UDim2.new(0, 320, 0, 220)}):Play()
+        MinimizeBtn.Text = "−"
+        wait(0.15)
+        StatsContainer.Visible = true
+        DiscordBtn.Visible = true
+    end
+end)
+
+local dragging, dragInput, dragStart, startPos
+
+Header.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+        dragging = true
+        dragStart = input.Position
+        startPos = MainFrame.Position
+        input.Changed:Connect(function()
+            if input.UserInputState == Enum.UserInputState.End then
+                dragging = false
+            end
+        end)
+    end
+end)
+
+Header.InputChanged:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+        dragInput = input
+    end
+end)
+
+UserInputService.InputChanged:Connect(function(input)
+    if input == dragInput and dragging then
+        local delta = input.Position - dragStart
+        MainFrame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+    end
+end)
+
+local function formatNumber(num)
+    if num >= 1000000000 then
+        return string.format("%.1fB", num / 1000000000)
+    elseif num >= 1000000 then
+        return string.format("%.1fM", num / 1000000)
+    elseif num >= 1000 then
+        return string.format("%.1fK", num / 1000)
+    else
+        return tostring(math.floor(num))
+    end
+end
+
+local function formatTime(seconds)
+    local hours = math.floor(seconds / 3600)
+    local minutes = math.floor((seconds % 3600) / 60)
+    local secs = seconds % 60
+    return string.format("%02d:%02d:%02d", hours, minutes, secs)
+end
+
+function Gui(visible)
+    ScreenGui.Enabled = visible
+end
+
+local function loadSavedData()
+    local filePath = "Romis Hub/ChestCollect_INFO.json"
+    if isfile and isfile(filePath) then
+        local success, data = pcall(function()
+            return game:GetService("HttpService"):JSONDecode(readfile(filePath))
+        end)
+        return success and data or nil
+    end
+    return nil
+end
+
+local function saveStats(timeElapsed, beliEarned, initialBeli, sessionStartTime)
+    if not writefile then return end
+    local data = {
+        TimeElapsed = timeElapsed,
+        BeliEarned = beliEarned,
+        InitialBeli = initialBeli,
+        SessionStartTime = sessionStartTime,
+        Timestamp = os.time()
+    }
+    if not isfolder("Romis Hub") then
+        makefolder("Romis Hub")
+    end
+    pcall(function()
+        writefile("Romis Hub/ChestCollect_INFO.json", game:GetService("HttpService"):JSONEncode(data))
+    end)
+end
+
+spawn(function()
+    while ScreenGui.Parent do
+        local totalTime = totalTimeElapsed + (os.time() - sessionStartTime)
+        TimeValue.Text = formatTime(totalTime)
+        
+        local CurrentBeli = game.Players.LocalPlayer.Data.Beli.Value
+        CurrentValue.Text = formatNumber(CurrentBeli)
+        
+        local beliEarned = CurrentBeli - initialBeli
+        EarnedValue.Text = "+" .. formatNumber(beliEarned)
+        
+        saveStats(totalTime, beliEarned, initialBeli, sessionStartTime)
+        wait(1)
+    end
+end)
+
+local savedData = loadSavedData()
+local sessionStartTime = os.time()
+local totalTimeElapsed = savedData and savedData.TimeElapsed or 0
+local initialBeli = savedData and savedData.InitialBeli or game.Players.LocalPlayer.Data.Beli.Value
+getgenv().InitialBeli = initialBeli
+
+if savedData and getgenv().ChestFarm then
+    totalTimeElapsed = savedData.TimeElapsed or 0
+    initialBeli = savedData.InitialBeli or game.Players.LocalPlayer.Data.Beli.Value
+    sessionStartTime = os.time()
+else
+    sessionStartTime = os.time()
+    totalTimeElapsed = 0
+    initialBeli = game.Players.LocalPlayer.Data.Beli.Value
+    getgenv().InitialBeli = initialBeli
+    print("- Initial Beli:", formatNumber(initialBeli))
+end
+
+Gui(getgenv().ShowPanel and getgenv().StartFarmChest)
+
+local a0 = {}
+local a1 = ""
+local a2 = os.date("!*t").hour
+local a3 = false
+local a4 =
+    pcall(
+    function()
+        a0 = game:GetService("HttpService"):JSONDecode(readfile("ChestCollect.RomisHub"))
+    end
+)
+if not a4 then
+    table.insert(a0, a2)
+    writefile("ChestCollect.RomisHub", game:GetService("HttpService"):JSONEncode(a0))
+end
+
+function SendWebhook()
+    if getgenv().EnableWebhook and getgenv().WebhookChest ~= "" then
+        local CurrentBeli = game:GetService("Players").LocalPlayer.Data.Beli.Value
+        local beliEarned = CurrentBeli - getgenv().LastBeli
+        getgenv().LastBeli = CurrentBeli
+        local LockBeli = getgenv().BeliLimit
+        local StatusMessage = "Server hopped successfully"
+        local PingMessage = ""
+
+        if CurrentBeli >= LockBeli then
+            StatusMessage = "Congratulations! You've reached your Beli goal! Keep shining!"
+            local pingUserID = getgenv().PingChest
+            if pingUserID and pingUserID ~= "" then
+                PingMessage = "<@" .. pingUserID .. "> "
+            end
+        end
+
+        local universeId = nil
+        local success, response =
+            pcall(
+            function()
+                local ApiUrl = "https://apis.roblox.com/universes/v1/places/" .. game.PlaceId .. "/universe"
+                local result = http_request({Url = ApiUrl, Method = "GET"})
+                if result.Success then
+                    return game:GetService("HttpService"):JSONDecode(result.Body).universeId
+                end
+            end
+        )
+
+        if success and response then
+            universeId = response
+        else
+            warn("Failed to fetch Universe ID: " .. tostring(response))
+            universeId = game.PlaceId
+        end
+
+        local username = game.Players.LocalPlayer.Name
+        local jobId = game.JobId or "N/A"
+        local PlayerCount = #game:GetService("Players"):GetPlayers()
+
+        local WebhookData = {
+            ["content"] = PingMessage,
+            ["embeds"] = {
+                {
+                    ["title"] = "🎮 Romis Hub Notification",
+                    ["description"] = "AFK Status in **Blox Fruits**!",
+                    ["color"] = 5763719,
+                    ["fields"] = {
+                        {
+                            ["name"] = "👤 Username",
+                            ["value"] = username,
+                            ["inline"] = true
+                        },
+                        {
+                            ["name"] = "🌟 Status",
+                            ["value"] = StatusMessage,
+                            ["inline"] = false
+                        },
+                        {
+                            ["name"] = "💰 Current Beli",
+                            ["value"] = tostring(CurrentBeli) .. " Beli",
+                            ["inline"] = true
+                        },
+                        {
+                            ["name"] = "🎯 Initial Beli",
+                            ["value"] = tostring(getgenv().InitialBeli) .. " Beli",
+                            ["inline"] = true
+                        },
+                        {
+                            ["name"] = "📈 Beli Earned",
+                            ["value"] = tostring(beliEarned) .. " Beli",
+                            ["inline"] = true
+                        },
+                        {
+                            ["name"] = "🔒 Lock Beli",
+                            ["value"] = tostring(LockBeli) .. " Beli",
+                            ["inline"] = true
+                        },
+                        {
+                            ["name"] = "🖥️ Server Job ID",
+                            ["value"] = jobId,
+                            ["inline"] = true
+                        },
+                        {
+                            ["name"] = "👥 Players in Server",
+                            ["value"] = tostring(PlayerCount) .. " player(s)",
+                            ["inline"] = true
+                        },
+                        {
+                            ["name"] = "🔗 Join Server",
+                            ["value"] = "[Join Game](https://www.roblox.com/games/" ..
+                                game.PlaceId .. "/) | Job ID: " .. jobId,
+                            ["inline"] = true
+                        }
+                    },
+                    ["footer"] = {
+                        ["text"] = "Romis Hub | " .. os.date("%Y-%m-%d %H:%M:%S"),
+                        ["icon_url"] = "https://cdn.discordapp.com/attachments/1099613542543527946/1460612373051211776/image.png?ex=6968de46&is=69678cc6&hm=ca9766d023310405f04cd8e9490623b5f6f5a0fa22f770245d3a1b0934fa1f4a&"
+                    },
+                    ["thumbnail"] = {
+                        ["url"] = "https://cdn.discordapp.com/attachments/1099613542543527946/1460612373051211776/image.png?ex=6968de46&is=69678cc6&hm=ca9766d023310405f04cd8e9490623b5f6f5a0fa22f770245d3a1b0934fa1f4a&"
+                    },
+                    ["author"] = {
+                        ["name"] = "Romios Hub",
+                        ["icon_url"] = "https://cdn.discordapp.com/attachments/1099613542543527946/1460612373051211776/image.png?ex=6968de46&is=69678cc6&hm=ca9766d023310405f04cd8e9490623b5f6f5a0fa22f770245d3a1b0934fa1f4a&"
+                    },
+                    ["timestamp"] = os.date("!%Y-%m-%dT%H:%M:%SZ")
+                }
+            }
+        }
+
+        local success, response =
+            pcall(
+            function()
+                return http_request(
+                    {
+                        Url = getgenv().WebhookChest,
+                        Method = "POST",
+                        Headers = {
+                            ["Content-Type"] = "application/json"
+                        },
+                        Body = game:GetService("HttpService"):JSONEncode(WebhookData)
+                    }
+                )
+            end
+        )
+
+        if not success then
+            warn("Failed to send webhook: " .. tostring(response))
+        end
+    end
+end
+function TPReturner()
+    local a5
+    if a1 == "" then
+        a5 =
+            game.HttpService:JSONDecode(
+            game:HttpGet("https://games.roblox.com/v1/games/" .. r .. "/servers/Public?sortOrder=Asc&limit=100")
+        )
+    else
+        a5 =
+            game.HttpService:JSONDecode(
+            game:HttpGet(
+                "https://games.roblox.com/v1/games/" .. r .. "/servers/Public?sortOrder=Asc&limit=100&cursor=" .. a1
+            )
+        )
+    end
+    local a6 = ""
+    if a5.nextPageCursor and a5.nextPageCursor ~= "null" and a5.nextPageCursor ~= nil then
+        a1 = a5.nextPageCursor
+    end
+    local a7 = 0
+    for D, E in pairs(a5.data) do
+        local a8 = true
+        a6 = tostring(E.id)
+        if tonumber(E.maxPlayers) > tonumber(E.playing) then
+            for a9, aa in pairs(a0) do
+                if a7 ~= 0 then
+                    if a6 == tostring(aa) then
+                        a8 = false
+                    end
+                else
+                    if tonumber(a2) ~= tonumber(aa) then
+                        local ab =
+                            pcall(
+                            function()
+                                delfile("ChestCollect.RomisHub")
+                                a0 = {}
+                                table.insert(a0, a2)
+                            end
+                        )
+                    end
+                end
+                a7 = a7 + 1
+            end
+            if a8 == true then
+                table.insert(a0, a6)
+                wait()
+                pcall(
+                    function()
+                        writefile("ChestCollect.RomisHub", game:GetService("HttpService"):JSONEncode(a0))
+                        SendWebhook()
+                        wait()
+                        game:GetService("TeleportService"):TeleportToPlaceInstance(r, a6, game.Players.LocalPlayer)
+                    end
+                )
+                wait(4)
+            end
+        end
+    end
+end
+function Teleport()
+    while wait() do
+        pcall(
+            function()
+                TPReturner()
+                if a1 ~= "" then
+                    TPReturner()
+                end
+            end
+        )
+    end
+end
+
+getgenv().FoundStop =
+    game.Players.LocalPlayer.Backpack:FindFirstChild("Fist of Darkness") or
+    game.Players.LocalPlayer.Character:FindFirstChild("Fist of Darkness") or
+    game.Players.LocalPlayer.Backpack:FindFirstChild("Sweet Chalice") or
+    game.Players.LocalPlayer.Character:FindFirstChild("Sweet Chalice") or
+    game.Players.LocalPlayer.Backpack:FindFirstChild("God's Chalice") or
+    game.Players.LocalPlayer.Character:FindFirstChild("God's Chalice") or
+    game.ReplicatedStorage:FindFirstChild("rip_indra True Form [Lv. 5000] [Raid Boss]") or
+    game.Workspace.Enemies:FindFirstChild("rip_indra True Form [Lv. 5000] [Raid Boss]") or
+    game.ReplicatedStorage:FindFirstChild("Darkbeard [Lv. 1000] [Raid Boss]") or
+    game.Workspace.Enemies:FindFirstChild("Darkbeard [Lv. 1000] [Raid Boss]") or
+    game.ReplicatedStorage:FindFirstChild("Dough King [Lv. 9999] [Raid Boss]") or
+    game.Workspace.Enemies:FindFirstChild("Dough King [Lv. 9999] [Raid Boss]")
+
+task.spawn(function()
+    while true do
+        repeat task.wait(1) until
+            getgenv().StartFarmChest
+            and getgenv().ResetAntiDetect
+            and not getgenv().FoundStop
+            and game.Players.LocalPlayer.Character
+            and game.Players.LocalPlayer.Character:FindFirstChild("Humanoid")
+            and game.Players.LocalPlayer.Character.Humanoid.Health > 0
+        task.wait(getgenv().SH_Settings.Settings["Reset Time Delay"])
+        if getgenv().StartFarmChest
+            and getgenv().ResetAntiDetect
+            and not getgenv().FoundStop
+            and game.Players.LocalPlayer.Character
+            and game.Players.LocalPlayer.Character:FindFirstChild("Humanoid")
+            and game.Players.LocalPlayer.Character.Humanoid.Health > 0 then
+            game.Players.LocalPlayer.Character.Humanoid.Health = 0
+        end
+    end
+end)
+
+function StartFarmChest()
+    if not getgenv().StartFarmChest then
+        return false
+    end
+
+    local character = LocalPlayer.Character
+    if not character then
+        return false
+    end
+
+    local crewTag = character:FindFirstChild("CrewBBG", true)
+    if crewTag then
+        crewTag:Destroy()
+    end
+
+    local humanoid = character:FindFirstChild("Humanoid")
+    if not humanoid then
+        return false
+    end
+
+    local position = character:GetPivot().Position
+    local chests = CollectionService:GetTagged("_ChestTagged")
+    local distance, nearest = math.huge, nil
+
+    for _, chest in ipairs(chests) do
+        if not chest:GetAttribute("IsDisabled") then
+            local magnitude = (chest:GetPivot().Position - position).Magnitude
+            if magnitude < distance then
+                distance, nearest = magnitude, chest
+            end
+        end
+    end
+
+    if getgenv().SniperLegendaryItem then
+        if getgenv().FoundStop then
+            if getgenv().ResetAntiDetect then
+                getgenv().ResetAntiDetect = false
+            end
+            return true
+        end
+    end
+
+    if nearest then
+        local chestPosition = nearest:GetPivot().Position
+        getgenv().ResetAntiDetect = true
+
+        local success =
+            pcall(
+            function()
+                character:PivotTo(CFrame.new(chestPosition))
+
+                local rootPart = nearest:FindFirstChild("RootPart")
+                if rootPart then
+                    firesignal(rootPart.Touched, character.HumanoidRootPart)
+                end
+            end
+        )
+
+        return success
+    else
+        if getgenv().ResetAntiDetect then
+            getgenv().ResetAntiDetect = false
+        end
+
+        local success =
+            pcall(
+            function()
+                Teleport()
+            end
+        )
+
+        return success
+    end
+end
 
 local SelectTypeFarm =
     Tabs.SF:AddDropdown(
@@ -4982,10 +5684,24 @@ local Queue = {
             return result
         end
     },
-    
+
+    {
+        Name = "StartFarmChest",
+        Prio = 5,
+        LastResult = false,
+        ConditionCheck = nil,
+        Func = function()
+            local result = StartFarmChest()
+            if ShouldInterrupt("StartFarmChest") then
+                return false
+            end
+            return result
+        end
+    },
+
     {
         Name = "AutoRaid",
-        Prio = 5,
+        Prio = 6,
         LastResult = false,
         ConditionCheck = nil,
         Func = function()
@@ -4999,7 +5715,7 @@ local Queue = {
 
     {
         Name = "TweenIsland",
-        Prio = 6,
+        Prio = 7,
         LastResult = false,
         ConditionCheck = nil,
         Func = function()
@@ -5013,7 +5729,7 @@ local Queue = {
 
     {
         Name = "TweenToNpc",
-        Prio = 7,
+        Prio = 8,
         LastResult = false,
         ConditionCheck = nil,
         Func = function()
