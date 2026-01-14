@@ -229,11 +229,41 @@ local isMinimized = false
 MinimizeBtn.MouseButton1Click:Connect(function()
     isMinimized = not isMinimized
     if isMinimized then
-        TweenService:Create(MainFrame, TweenInfo.new(0.3, Enum.EasingStyle.Quad), {Size = UDim2.new(0, 320, 0, 50)}):Play()
+        -- Hide all content except header
+        TweenService:Create(StatsContainer, TweenInfo.new(0.2), {
+            Size = UDim2.new(1, -30, 0, 0),
+            Position = UDim2.new(0, 15, 0, 60)
+        }):Play()
+        TweenService:Create(DiscordBtn, TweenInfo.new(0.2), {
+            Size = UDim2.new(1, -30, 0, 0),
+            BackgroundTransparency = 1,
+            TextTransparency = 1
+        }):Play()
+        TweenService:Create(DiscordStroke, TweenInfo.new(0.2), {Transparency = 1}):Play()
+        
+        wait(0.2)
+        TweenService:Create(MainFrame, TweenInfo.new(0.3, Enum.EasingStyle.Quad), {
+            Size = UDim2.new(0, 320, 0, 50)
+        }):Play()
         MinimizeBtn.Text = "+"
     else
-        TweenService:Create(MainFrame, TweenInfo.new(0.3, Enum.EasingStyle.Quad), {Size = UDim2.new(0, 320, 0, 220)}):Play()
+        -- Show all content
+        TweenService:Create(MainFrame, TweenInfo.new(0.3, Enum.EasingStyle.Quad), {
+            Size = UDim2.new(0, 320, 0, 220)
+        }):Play()
         MinimizeBtn.Text = "−"
+        
+        wait(0.3)
+        TweenService:Create(StatsContainer, TweenInfo.new(0.2), {
+            Size = UDim2.new(1, -30, 0, 90),
+            Position = UDim2.new(0, 15, 0, 60)
+        }):Play()
+        TweenService:Create(DiscordBtn, TweenInfo.new(0.2), {
+            Size = UDim2.new(1, -30, 0, 38),
+            BackgroundTransparency = 0.2,
+            TextTransparency = 0
+        }):Play()
+        TweenService:Create(DiscordStroke, TweenInfo.new(0.2), {Transparency = 0.5}):Play()
     end
 end)
 
