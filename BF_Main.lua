@@ -3763,6 +3763,7 @@ local sessionStartTime = os.time()
 local totalTimeElapsed = savedData and savedData.TimeElapsed or 0
 local initialBeli = savedData and savedData.InitialBeli or game.Players.LocalPlayer.Data.Beli.Value
 getgenv().InitialBeli = initialBeli
+getgenv().LastBeli = getgenv().InitialBeli
 
 local ScreenGui = Instance.new("ScreenGui")
 ScreenGui.Name = "ModernGlassUI"
