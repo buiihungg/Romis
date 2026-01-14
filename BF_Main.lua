@@ -2,7 +2,6 @@ repeat
     task.wait()
 until game:IsLoaded() and game:GetService("Players").LocalPlayer and game:GetService("Players").LocalPlayer.PlayerGui
 local Players = game:GetService("Players")
-local TeleportService = game:GetService("TeleportService")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local registerAttack = ReplicatedStorage.Modules.Net:FindFirstChild("RE/RegisterAttack")
 local registerHit = ReplicatedStorage.Modules.Net:FindFirstChild("RE/RegisterHit")
@@ -46,50 +45,6 @@ if UserInputService.TouchEnabled and not UserInputService.KeyboardEnabled then
 else
     print("PC")
 end
-
-for i,v in pairs(functions) do
-    local old
-    old = hookfunction(v, function(...)
-        local content = {...}
-        for i2,v2 in pairs(content) do
-            for i3,v3 in pairs(hell_nah) do
-                if string.find(string.lower(tostring(i2)),string.lower(tostring(v3))) or string.find(string.lower(tostring(v2)),string.lower(tostring(v3))) then
-                    content = " So Let's raise the bar"
-                    game.Players.LocalPlayer:Kick("test1")
-                    return
-                end
-            end
-        end
-        return old(...)
-    end)
-end
-local mt = setmetatable({}, {
-    __tostring = function()
-        print("HOOK CAI L")
-        game.Players.LocalPlayer:Kick("dit me con cho hook cl")
-        wait(2)
-        game:Shutdown()
-        return "HOOKED"
-    end
-})
-local mt2 = setmetatable({}, {
-    __index = function()
-        print("con cho ngu oi may lam gi vay??")
-        game.Players.LocalPlayer:Kick("con cho ngu oi may lam gi vay??.")
-         game:Shutdown()
-        return nil
-    end
-})
-
-local mt3 = setmetatable({}, {
-    __newindex = function()
-        print("Attempt to modify a protected variable.")
-        game.Players.LocalPlayer:Kick("stop lam dieu ngu ngok.")
-        wait(2)
-        game:Shutdown()
-        return nil
-    end
-})
 
 function WYNF_OBFUSCATED(func)
     return func
@@ -943,6 +898,8 @@ return {
 }
 end
 
+
+-- Fast Attack Modules --
 local Config = {
     AttackDistance = 60,
     AttackMobs = true,
@@ -1062,9 +1019,10 @@ function FastAttack:GetAllHits()
         ProcessFolder(Workspace.Enemies)
     end
     if Config.AttackPlayers then
+    if Workspace:FindFirstChild("Characters") then
         ProcessFolder(Workspace.Characters)
     end
-    
+end
     return AllHits
 end
 
