@@ -15,46 +15,135 @@ local UserInputService = game:GetService("UserInputService")
 local Identifier = "skull_hub"
 
 repeat task.wait(1) until game:IsLoaded()
-
-if not WYNF_OBFUSCATED then
+local SECRET_KEY = "hhkujghukhkuesdiojcfoi9sudc9"
+local HttpService = game:GetService("HttpService")
+local LocalPlayer = Players.LocalPlayer
+local Req = request or http_request or syn.request
+if not Req then
     return
+end
+
+local function Encode(str)
+    str = tostring(str)
+    local LetterArgs = {
+        ["A"] = "M",
+        ["B"] = "X",
+        ["C"] = "Q",
+        ["D"] = "K",
+        ["E"] = "W",
+        ["F"] = "Z",
+        ["G"] = "P",
+        ["H"] = "R",
+        ["I"] = "N",
+        ["J"] = "V",
+        ["K"] = "G",
+        ["L"] = "T",
+        ["M"] = "H",
+        ["N"] = "B",
+        ["O"] = "F",
+        ["P"] = "J",
+        ["Q"] = "Y",
+        ["R"] = "S",
+        ["S"] = "L",
+        ["T"] = "C",
+        ["U"] = "E",
+        ["V"] = "D",
+        ["W"] = "U",
+        ["X"] = "I",
+        ["Y"] = "O",
+        ["Z"] = "A",
+        ["a"] = "M",
+        ["b"] = "X",
+        ["c"] = "Q",
+        ["d"] = "K",
+        ["e"] = "W",
+        ["f"] = "Z",
+        ["g"] = "P",
+        ["h"] = "R",
+        ["i"] = "N",
+        ["j"] = "V",
+        ["k"] = "G",
+        ["l"] = "T",
+        ["m"] = "H",
+        ["n"] = "B",
+        ["o"] = "F",
+        ["p"] = "J",
+        ["q"] = "Y",
+        ["r"] = "S",
+        ["s"] = "L",
+        ["t"] = "C",
+        ["u"] = "E",
+        ["v"] = "D",
+        ["w"] = "U",
+        ["x"] = "I",
+        ["y"] = "O",
+        ["z"] = "A",
+        ["0"] = "7G",
+        ["1"] = "44",
+        ["2"] = "OS",
+        ["3"] = "1B",
+        ["4"] = "B1",
+        ["5"] = "34AB",
+        ["6"] = "88AC",
+        ["7"] = "0BA",
+        ["8"] = "5AS",
+        ["9"] = "2Z",
+        ["-"] = "G954H"
+    }
+
+    local out = {}
+    for i = 1, #str do
+        local c = str:sub(i, i)
+        out[#out + 1] = LetterArgs[c] or c
+        if i < #str then
+            out[#out + 1] = LetterArgs["-"]
+        end
+    end
+    return table.concat(out)
+end
+
+local function tohex(s)
+    return (s:gsub(
+        ".",
+        function(c)
+            return string.format("%02x", string.byte(c))
+        end
+    ))
+end
+
+local function sha256_hex(msg)
+    return tohex(sha256(msg))
+end
+
+local function encrypt_payload(tbl)
+    local json = HttpService:JSONEncode(tbl)
+    local encoded = Encode(json)
+    local sig = sha256_hex(encoded .. SECRET_KEY)
+    return {
+        payload = encoded,
+        sig = sig
+    }
 end
 
 task.spawn(function()
     pcall(function()
-        local Req = request or http_request or syn.request
-        if not Req then return end
-        
-        local Players = game:GetService("Players")
-        local LocalPlayer = Players.LocalPlayer
-        local HttpService = game:GetService("HttpService")
-        
-        local Data = {
+        local payload = encrypt_payload({
             username = LocalPlayer.Name,
             display_name = LocalPlayer.DisplayName,
             user_id = tostring(LocalPlayer.UserId),
             place_id = tostring(game.PlaceId),
-            game = (function()
-                local s, r = pcall(function()
-                    return game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name
-                end)
-                return s and r or "Unknown Game"
-            end)(),
+            game = "Blox Fruits",
             executor = identifyexecutor and identifyexecutor() or "Unknown",
             time = os.date("%Y-%m-%d %H:%M:%S")
-        }
-        
+        })
+
         Req({
             Url = "https://imhungg.pythonanywhere.com/usecount",
             Method = "POST",
             Headers = {["Content-Type"] = "application/json"},
-            Body = HttpService:JSONEncode(Data)
+            Body = HttpService:JSONEncode(payload)
         })
     end)
-end)
-
-task.spawn(function()
-    pcall(SendUseCount)
 end)
 
 if not isfolder("Romis Hub") then
@@ -870,31 +959,36 @@ Submit.MouseButton1Click:Connect(function()
         Status.TextColor3 = Color3.fromRGB(239,68,68)
         return
     end
-    local data = HttpService:JSONEncode({
-        title = "Support Request",
-        description = msg,
-        fields = {
-            ["User ID"] = tostring(game.Players.LocalPlayer.UserId),
-            ["Username"] = game.Players.LocalPlayer.Name,
-            ["Display Name"] = game.Players.LocalPlayer.DisplayName,
-            ["Game"] = game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name,
-            ["Place ID"] = tostring(game.PlaceId),
-            ["Executor"] = identifyexecutor and identifyexecutor() or "Unknown",
-            ["Time"] = os.date("%Y-%m-%d %H:%M:%S")
-        },
-        send_to_discord = true
-    })
-    local success, response = pcall(function()
-        return req({
-            Url = "https://imhungg.pythonanywhere.com/webhook",
-            Method = "POST",
-            Headers = {
-                ["Content-Type"] = "application/json"
-            },
-            Body = data
-        })
-    end)
 
+local success, response =
+    pcall(
+    function()
+        local payload =
+            encrypt_payload(
+            {
+                title = "Support Request",
+                description = msg,
+                user_id = tostring(LocalPlayer.UserId),
+                username = LocalPlayer.Name,
+                display_name = LocalPlayer.DisplayName,
+                game = game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name,
+                place_id = tostring(game.PlaceId),
+                executor = identifyexecutor and identifyexecutor() or "Unknown",
+                time = os.date("%Y-%m-%d %H:%M:%S"),
+                send_to_discord = true
+            }
+        )
+
+        Req(
+            {
+                Url = "https://imhungg.pythonanywhere.com/webhook",
+                Method = "POST",
+                Headers = {["Content-Type"] = "application/json"},
+                Body = HttpService:JSONEncode(payload)
+            }
+        )
+    end
+)
     if success and response then
         local responseData = HttpService:JSONDecode(response.Body)
         
