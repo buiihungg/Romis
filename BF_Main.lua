@@ -93,10 +93,6 @@ function WYNF_ENC_FUNCTION(func)
     return func
 end
 
-if not WYNF_OBFUSCATED then
-    return
-end
-
 task.spawn(function()
     pcall(function()
         local Req = request or http_request or syn.request
@@ -3762,6 +3758,12 @@ ToggleStartFarmChest:OnChanged(
 
 -- Chest Farm Function --
 
+local savedData = loadSavedData()
+local sessionStartTime = os.time()
+local totalTimeElapsed = savedData and savedData.TimeElapsed or 0
+local initialBeli = savedData and savedData.InitialBeli or game.Players.LocalPlayer.Data.Beli.Value
+getgenv().InitialBeli = initialBeli
+
 local ScreenGui = Instance.new("ScreenGui")
 ScreenGui.Name = "ModernGlassUI"
 ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
@@ -4087,12 +4089,6 @@ spawn(function()
         wait(1)
     end
 end)
-
-local savedData = loadSavedData()
-local sessionStartTime = os.time()
-local totalTimeElapsed = savedData and savedData.TimeElapsed or 0
-local initialBeli = savedData and savedData.InitialBeli or game.Players.LocalPlayer.Data.Beli.Value
-getgenv().InitialBeli = initialBeli
 
 if savedData and getgenv().ChestFarm then
     totalTimeElapsed = savedData.TimeElapsed or 0
