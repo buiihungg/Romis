@@ -1,23 +1,25 @@
 getgenv().SKey = getgenv().SKey or getgenv().Skey or getgenv().Key or script_key
 
-local PlayerService = game:GetService("Players")
-local global_container = getgenv().global_container or {}
-repeat task.wait() until PlayerService.LocalPlayer
-local LocalPlayer = PlayerService.LocalPlayer
-repeat task.wait() until LocalPlayer:FindFirstChild("PlayerGui")
+repeat task.wait() until game:IsLoaded()
+
+local Players = game:GetService("Players")
 local Debris = game:GetService("Debris")
 local HttpService = game:GetService("HttpService")
 local RbxAnalyticsService = game:GetService("RbxAnalyticsService")
-local HWID = RbxAnalyticsService:GetClientId()
 local TweenService = game:GetService("TweenService")
 local RunService = game:GetService("RunService")
 local UserInputService = game:GetService("UserInputService")
-local Identifier = "skull_hub"
 
-repeat task.wait(1) until game:IsLoaded()
+local global_container = getgenv().global_container or {}
+local Identifier = "skull_hub"
 local SECRET_KEY = "hhkujghukhkuesdiojcfoi9sudc9"
-local HttpService = game:GetService("HttpService")
+
+repeat task.wait() until Players.LocalPlayer
 local LocalPlayer = Players.LocalPlayer
+repeat task.wait() until LocalPlayer:FindFirstChild("PlayerGui")
+
+local HWID = RbxAnalyticsService:GetClientId()
+
 local Req = request or http_request or syn.request
 if not Req then
     return
@@ -1176,3 +1178,4 @@ KeyInput.FocusLost:Connect(function()
         Thickness = 1
     }):Play()
 end)
+
