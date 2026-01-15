@@ -1,51 +1,3 @@
--- ================================================
--- SIMPLE DEBUG WRAPPER - CHỈ CẦN PASTE CODE VÀO
--- ================================================
-
-local ErrorCount = 0
-local function DebugWrap(code)
-    local lines = {}
-    local lineNum = 1
-    for line in code:gmatch("[^\r\n]+") do
-        lines[lineNum] = line
-        lineNum = lineNum + 1
-    end
-    
-    local success, error = pcall(function()
-        loadstring(code)()
-    end)
-    
-    if not success then
-        ErrorCount = ErrorCount + 1
-        local errorLine = tonumber(string.match(error, ":(%d+):"))
-        
-        print("\n" .. string.rep("=", 60))
-        print("❌ LỖI #" .. ErrorCount)
-        print(string.rep("=", 60))
-        print("📍 Chi tiết lỗi:")
-        print(error)
-        print("\n📋 Dòng code bị lỗi:")
-        if errorLine and lines[errorLine] then
-            print("   Line " .. errorLine .. ": " .. lines[errorLine])
-            if lines[errorLine - 1] then
-                print("   Line " .. (errorLine-1) .. ": " .. lines[errorLine-1])
-            end
-            if lines[errorLine + 1] then
-                print("   Line " .. (errorLine+1) .. ": " .. lines[errorLine+1])
-            end
-        end
-        print("\n⏰ Thời gian: " .. os.date("%H:%M:%S"))
-        print(string.rep("=", 60) .. "\n")
-    else
-        print("✅ Code chạy thành công!")
-    end
-end
-
--- ================================================
--- PASTE TOÀN BỘ CODE CỦA BẠN VÀO ĐÂY (GIỮA DẤU [[]])
--- ================================================
-
-DebugWrap([[
 repeat
     task.wait()
 until game:IsLoaded() and game:GetService("Players").LocalPlayer and game:GetService("Players").LocalPlayer.PlayerGui
@@ -95,50 +47,6 @@ if UserInputService.TouchEnabled and not UserInputService.KeyboardEnabled then
     print("Mobile")
 else
     print("PC")
-end
-
-function WYNF_OBFUSCATED(func)
-    return func
-end
-
-function WYNF_NO_VIRTUALIZE(func)
-    return func
-end
-
-function WYNF_CRASH(func)
-    return func
-end
-
-function WYNF_IS_CALLER_WYNFUSCATE(func)
-    return func
-end
-
-function WYNF_ENC_STRING(func)
-    return func
-end 
-
-function WYNF_ENC_NUM(func)
-    return func
-end 
-
-function WYNF_LINE(func)
-    return func
-end
-
-function WYNF_NO_UPVALUES(func)
-    return func
-end
-
-function WYNF_SECURE_CALL(func)
-    return func
-end
-
-function WYNF_SECURE_CALLBACK(func)
-    return func
-end
-
-function WYNF_ENC_FUNCTION(func)
-    return func
 end
 
 -- HttpService and other services --
@@ -252,24 +160,6 @@ if not O then
     warn("ChooseTeam Error:", S)
 end
 
-local PlaceMap = {
-    [2753915549] = "World1",
-    [4442272183] = "World2",
-    [7449423635] = "World3"
-}
-local Worlds = { "World1", "World2", "World3" }
-for _, World in ipairs(Worlds) do
-    _G[World] = false
-end
-local C = PlaceMap[game.PlaceId]
-if C then
-    _G[C] = true
-	print("Check: " .. C)
-else
-    print("Check: Unknown")
-    game.Players.LocalPlayer:Kick("The game is not yet supported.")
-         game:Shutdown()  
-end
 local SeaTravelCommands = {
     [1] = "TravelMain",
     [2] = "TravelDressrosa",
@@ -852,15 +742,15 @@ if Lvl >= 210 and Lvl <= 249 then
 	NPCPosition = CFrame.new(5308.93115, 1.65517521, 475.120514, -0.0894274712, -5.00292918e-09, -0.995993316, 1.60817859e-09, 1, -5.16744869e-09, 0.995993316, -2.06384709e-09, -0.0894274712)
 	local matchingCFrames = {}
 	local result = string.gsub(MobName, "Lv. ", "")
-	local result2 = string.gsub(result, "[%[%]]", "")
-	local result3 = string.gsub(result2, "%d+", "")
-	local result4 = string.gsub(result3, "%s+", "")	
+	result = string.gsub(result, "[%[%]]", "")
+	result = string.gsub(result, "%d+", "")
+	result = string.gsub(result, "%s+", "")
 	for i,v in pairs(game.workspace.EnemySpawns:GetChildren()) do
-		if v.Name == result4 then
+		if v.Name == result then
 			table.insert(matchingCFrames, v.CFrame)
 		end
-		MobCFrame = matchingCFrames
 	end
+	MobCFrame = matchingCFrames
 	return {
 		[1] = QuestLevel,
 		[2] = NPCPosition,
@@ -871,8 +761,10 @@ if Lvl >= 210 and Lvl <= 249 then
 		[7] = MobCFrame
 	}
 end
+
 local GuideModule = require(game:GetService("ReplicatedStorage").GuideModule)
 local Quests = require(game:GetService("ReplicatedStorage").Quests)
+
 for i,v in pairs(GuideModule["Data"]["NPCList"]) do
 	for i1,v1 in pairs(v["Levels"]) do
 		if Lvl >= v1 then
@@ -892,6 +784,7 @@ for i,v in pairs(GuideModule["Data"]["NPCList"]) do
 		end
 	end
 end
+
 if Lvl >= 375 and Lvl <= 399 then
 	MobCFrame = CFrame.new(61122.5625, 18.4716396, 1568.16504, 0.893533468, 3.95251609e-09, 0.448996574, -2.34327455e-08, 1, 3.78297464e-08, -0.448996574, -4.43233645e-08, 0.893533468)
 	if getgenv().FarmLevel and (MobCFrame.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude > 3000 then
@@ -899,6 +792,7 @@ if Lvl >= 375 and Lvl <= 399 then
 		return
 	end
 end
+
 if Lvl >= 400 and Lvl <= 449 then
 	MobCFrame = CFrame.new(61122.5625, 18.4716396, 1568.16504, 0.893533468, 3.95251609e-09, 0.448996574, -2.34327455e-08, 1, 3.78297464e-08, -0.448996574, -4.43233645e-08, 0.893533468)
 	if getgenv().FarmLevel and (MobCFrame.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude > 3000 then
@@ -906,6 +800,7 @@ if Lvl >= 400 and Lvl <= 449 then
 		return
 	end
 end
+
 for i,v in pairs(Quests) do
 	for i1,v1 in pairs(v) do
 		if v1["LevelReq"] == LevelRequire and i ~= "CitizenQuest" then
@@ -917,6 +812,7 @@ for i,v in pairs(Quests) do
 		end
 	end
 end
+
 if QuestName == "MarineQuest2" then
 	QuestName = "MarineQuest2"
 	QuestLevel = 1
@@ -943,35 +839,40 @@ elseif QuestName == "Area2Quest" and QuestLevel == 2 then
 	Mon = "Swan Pirate"
 	LevelRequire = 775
 end
+
 MobName = MobName:sub(1,#MobName)
 if not MobName:find("Lv") then
 	for i,v in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
-		MonLV = string.match(v.Name, "%d+")
+		local MonLV = string.match(v.Name, "%d+")
 		if v.Name:find(MobName) and #v.Name > #MobName and tonumber(MonLV) <= Lvl + 50 then
 			MobName = v.Name
 		end
 	end
 end
+
 if not MobName:find("Lv") then
 	for i,v in pairs(game:GetService("ReplicatedStorage"):GetChildren()) do
-		MonLV = string.match(v.Name, "%d+")
+		local MonLV = string.match(v.Name, "%d+")
 		if v.Name:find(MobName) and #v.Name > #MobName and tonumber(MonLV) <= Lvl + 50 then
 			MobName = v.Name
 			Mon = MobName
 		end
 	end
 end
+
 local matchingCFrames = {}
-local result = string.gsub(MobName, "Lv. ", "")
-local result2 = string.gsub(result, "[%[%]]", "")
-local result3 = string.gsub(result2, "%d+", "")
-local result4 = string.gsub(result3, "%s+", "")
+local TempResult = string.gsub(MobName, "Lv. ", "")
+TempResult = string.gsub(TempResult, "[%[%]]", "")
+TempResult = string.gsub(TempResult, "%d+", "")
+TempResult = string.gsub(TempResult, "%s+", "")
+
 for i,v in pairs(game.workspace.EnemySpawns:GetChildren()) do
-	if v.Name == result4 then
+	if v.Name == TempResult then
 		table.insert(matchingCFrames, v.CFrame)
 	end
-	MobCFrame = matchingCFrames
 end
+MobCFrame = matchingCFrames
+
 return {
 	[1] = QuestLevel,
 	[2] = NPCPosition,
@@ -4368,513 +4269,410 @@ end)
 
 local trr = Tabs.T:AddSection("Tab ESP")
 
-local function createStyledTextLabel(parent, text, color)
-    local TextLabel = Instance.new("TextLabel")
-    TextLabel.Parent = parent
-    TextLabel.BackgroundTransparency = 1
-    TextLabel.Size = UDim2.new(1, 0, 1, 0)
-    TextLabel.TextColor3 = color or Color3.fromRGB(255, 255, 255)
-    TextLabel.TextScaled = true
-    TextLabel.Font = Enum.Font.SourceSansBold
-    TextLabel.TextStrokeTransparency = 0
-    TextLabel.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
-    TextLabel.Text = text
-    return TextLabel
+local function CreateESP(Parent, Name, Text, Color)
+    local Gui = Instance.new("BillboardGui")
+    Gui.Parent = Parent
+    Gui.AlwaysOnTop = true
+    Gui.Size = UDim2.new(0, 200, 0, 50)
+    Gui.StudsOffset = Vector3.new(0, 3, 0)
+    Gui.Name = Name
+    
+    local Lbl = Instance.new("TextLabel")
+    Lbl.Parent = Gui
+    Lbl.BackgroundTransparency = 1
+    Lbl.Size = UDim2.new(1, 0, 1, 0)
+    Lbl.TextColor3 = Color or Color3.fromRGB(255, 255, 255)
+    Lbl.TextScaled = true
+    Lbl.Font = Enum.Font.SourceSansBold
+    Lbl.TextStrokeTransparency = 0
+    Lbl.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+    Lbl.Text = Text
+    
+    return Gui, Lbl
 end
 
-local function createBillboardGui(parent, name)
-    local BillboardGui = Instance.new("BillboardGui")
-    BillboardGui.Parent = parent
-    BillboardGui.AlwaysOnTop = true
-    BillboardGui.Size = UDim2.new(0, 200, 0, 50)
-    BillboardGui.StudsOffset = Vector3.new(0, 3, 0)
-    BillboardGui.Name = name
-    return BillboardGui
-end
-
-local TogglePlayerEsp = Tabs.T:AddToggle("TogglePlayerEsp", {
-    Title = "ESP Player", 
-    Default = false 
-})
-
-TogglePlayerEsp:OnChanged(function(Value)
-    getgenv().EspPlayer = Value
-    if Value then
-        for i,v in pairs(game:GetService("Players"):GetPlayers()) do
-            if v ~= game.Players.LocalPlayer and v.Character and v.Character:FindFirstChild("HumanoidRootPart") then
-                local BillboardGui = createBillboardGui(v.Character.HumanoidRootPart, "PlayerESP")
-                local TextLabel = createStyledTextLabel(BillboardGui, "", Color3.fromRGB(255, 255, 255))
-                
-                spawn(function()
-                    while BillboardGui.Parent do
-                        wait(0.1)
-                        if v.Character and v.Character:FindFirstChild("HumanoidRootPart") then
-                            local distance = math.floor((game.Players.LocalPlayer.Character.HumanoidRootPart.Position - v.Character.HumanoidRootPart.Position).Magnitude)
-                            TextLabel.Text = v.Name .. "\n[" .. distance .. "m]"
-                        end
-                    end
-                end)
-            end
-        end
-    else
-        for i,v in pairs(game:GetService("Players"):GetPlayers()) do
-            if v.Character and v.Character:FindFirstChild("HumanoidRootPart") and v.Character.HumanoidRootPart:FindFirstChild("PlayerESP") then
-                v.Character.HumanoidRootPart.PlayerESP:Destroy()
-            end
-        end
-    end
-end)
-
-local ToggleIslandEsp = Tabs.T:AddToggle("ToggleIslandEsp", {
-    Title = "ESP Island", 
-    Default = false 
-})
-
-ToggleIslandEsp:OnChanged(function(Value)
-    getgenv().EspIsland = Value
-    if Value then
-        for i,v in pairs(game:GetService("Workspace")["_WorldOrigin"].Locations:GetChildren()) do
-            if v.Name ~= "Sea" then
-                local BillboardGui = createBillboardGui(v, "IslandESP")
-                local TextLabel = createStyledTextLabel(BillboardGui, "", Color3.fromRGB(255, 255, 255))
-                
-                spawn(function()
-                    while BillboardGui.Parent do
-                        wait(0.1)
-                        if v:FindFirstChild("Size") then
-                            local distance = math.floor((game.Players.LocalPlayer.Character.HumanoidRootPart.Position - v.Position).Magnitude)
-                            TextLabel.Text = v.Name .. "\n[" .. distance .. "m]"
-                        end
-                    end
-                end)
-            end
-        end
-    else
-        for i,v in pairs(game:GetService("Workspace")["_WorldOrigin"].Locations:GetChildren()) do
-            if v:FindFirstChild("IslandESP") then
-                v.IslandESP:Destroy()
-            end
-        end
-    end
-end)
-
-local ToggleNpcEsp = Tabs.T:AddToggle("ToggleNpcEsp", {
-    Title = "ESP NPC", 
-    Default = false 
-})
-
-ToggleNpcEsp:OnChanged(function(Value)
-    getgenv().EspNpc = Value
-
-    local function FindNPC(Folder)
-        for _, Npc in pairs(Folder:GetChildren()) do
-            if Npc:FindFirstChild("HumanoidRootPart") then
-                if Value then
-                    local BillboardGui = createBillboardGui(Npc.HumanoidRootPart, "NpcESP")
-                    local TextLabel = createStyledTextLabel(BillboardGui, "", Color3.fromRGB(0, 255, 0))
-
-                    spawn(function()
-                        while BillboardGui.Parent and getgenv().EspNpc do
-                            task.wait(0.1)
-                            if Npc:FindFirstChild("HumanoidRootPart") then
-                                local Distance = math.floor((game.Players.LocalPlayer.Character.HumanoidRootPart.Position - Npc.HumanoidRootPart.Position).Magnitude)
-                                TextLabel.Text = Npc.Name .. "\n[" .. Distance .. "m]"
-                            else
-                                break
+local TogglePlayerEsp = Tabs.T:AddToggle("TogglePlayerEsp", {Title = "ESP Player", Default = false})
+TogglePlayerEsp:OnChanged(function(Val)
+    getgenv().EspPlayer = Val
+    for _, P in pairs(game.Players:GetPlayers()) do
+        if P ~= game.Players.LocalPlayer and P.Character then
+            local Hrp = P.Character:FindFirstChild("HumanoidRootPart")
+            if Hrp then
+                if Val and not Hrp:FindFirstChild("PlayerESP") then
+                    local G, L = CreateESP(Hrp, "PlayerESP", "", Color3.fromRGB(255, 255, 255))
+                    if G and L then
+                        task.spawn(function()
+                            while G and G.Parent and getgenv().EspPlayer do
+                                pcall(function()
+                                    if Hrp and game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+                                        local D = math.floor((game.Players.LocalPlayer.Character.HumanoidRootPart.Position - Hrp.Position).Magnitude)
+                                        L.Text = P.Name .. "\n[" .. D .. "m]"
+                                    end
+                                end)
+                                task.wait(0.5)
                             end
+                        end)
+                    end
+                elseif not Val and Hrp:FindFirstChild("PlayerESP") then
+                    Hrp.PlayerESP:Destroy()
+                end
+            end
+        end
+    end
+end)
+
+local ToggleIslandEsp = Tabs.T:AddToggle("ToggleIslandEsp", {Title = "ESP Island", Default = false})
+ToggleIslandEsp:OnChanged(function(Val)
+    getgenv().EspIsland = Val
+    for _, Loc in pairs(workspace._WorldOrigin.Locations:GetChildren()) do
+        if Loc.Name ~= "Sea" then
+            if Val and not Loc:FindFirstChild("IslandESP") then
+                local G, L = CreateESP(Loc, "IslandESP", "", Color3.fromRGB(255, 255, 255))
+                if G and L then
+                    task.spawn(function()
+                        while G and G.Parent and getgenv().EspIsland do
+                            pcall(function()
+                                if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+                                    local D = math.floor((game.Players.LocalPlayer.Character.HumanoidRootPart.Position - Loc.Position).Magnitude)
+                                    L.Text = Loc.Name .. "\n[" .. D .. "m]"
+                                end
+                            end)
+                            task.wait(0.5)
                         end
                     end)
-                else
-                    if Npc.HumanoidRootPart:FindFirstChild("NpcESP") then
-                        Npc.HumanoidRootPart.NpcESP:Destroy()
-                    end
                 end
-            end
-        end
-    end
-
-    local WorkspaceNpcs = game:GetService("Workspace"):FindFirstChild("NPCs")
-    if WorkspaceNpcs then
-        FindNPC(WorkspaceNpcs)
-    end
-
-    local ClonedFolder = workspace:FindFirstChild("__ClonedNPCs") or Instance.new("Folder", workspace)
-    ClonedFolder.Name = "__ClonedNPCs"
-
-    if Value then
-        ClonedFolder:ClearAllChildren()
-        local ReplicatedNpcs = game:GetService("ReplicatedStorage"):FindFirstChild("NPCs")
-        if ReplicatedNpcs then
-            for _, Npc in pairs(ReplicatedNpcs:GetChildren()) do
-                if Npc:IsA("Model") and Npc:FindFirstChild("HumanoidRootPart") then
-                    local Clone = Npc:Clone()
-                    Clone:SetPrimaryPartCFrame(Npc.HumanoidRootPart.CFrame)
-                    Clone.Parent = ClonedFolder
-                end
-            end
-            FindNPC(ClonedFolder)
-        end
-    else
-        ClonedFolder:ClearAllChildren()
-    end
-end)
-
-
-local ToggleRealFruitEsp = Tabs.T:AddToggle("ToggleRealFruitEsp", {
-    Title = "ESP Real Fruit", 
-    Default = false 
-})
-
-ToggleRealFruitEsp:OnChanged(function(Value)
-    getgenv().EspRealFruit = Value
-    if Value then
-        if World3 then
-        for i,v in pairs(game.Workspace.AppleSpawner:GetChildren()) do
-            if v:IsA("Tool") then
-                local BillboardGui = createBillboardGui(v, "RealFruitESP")
-                local TextLabel = createStyledTextLabel(BillboardGui, "", Color3.fromRGB(255, 0, 0))
-                
-                spawn(function()
-                    while BillboardGui.Parent do
-                        wait(0.1)
-                        if v:FindFirstChild("Handle") then
-                            local distance = math.floor((game.Players.LocalPlayer.Character.HumanoidRootPart.Position - v.Handle.Position).Magnitude)
-                            TextLabel.Text = "Apple\n[" .. distance .. "m]"
-                        end
-                    end
-                end)
-            end
-        end
-        for i,v in pairs(game.Workspace.PineappleSpawner:GetChildren()) do
-            if v:IsA("Tool") then
-                local BillboardGui = createBillboardGui(v, "RealFruitESP")
-                local TextLabel = createStyledTextLabel(BillboardGui, "", Color3.fromRGB(255, 255, 0))
-                
-                spawn(function()
-                    while BillboardGui.Parent do
-                        wait(0.1)
-                        if v:FindFirstChild("Handle") then
-                            local distance = math.floor((game.Players.LocalPlayer.Character.HumanoidRootPart.Position - v.Handle.Position).Magnitude)
-                            TextLabel.Text = "Pineapple\n[" .. distance .. "m]"
-                        end
-                    end
-                end)
-            end
-        end
-        for i,v in pairs(game.Workspace.BananaSpawner:GetChildren()) do
-            if v:IsA("Tool") then
-                local BillboardGui = createBillboardGui(v, "RealFruitESP")
-                local TextLabel = createStyledTextLabel(BillboardGui, "", Color3.fromRGB(255, 255, 0))
-                
-                spawn(function()
-                    while BillboardGui.Parent do
-                        wait(0.1)
-                        if v:FindFirstChild("Handle") then
-                            local distance = math.floor((game.Players.LocalPlayer.Character.HumanoidRootPart.Position - v.Handle.Position).Magnitude)
-                            TextLabel.Text = "Banana\n[" .. distance .. "m]"
-                        end
-                    end
-                end)
-            end
-        end
-    else
-        for i,v in pairs({game.Workspace.AppleSpawner, game.Workspace.PineappleSpawner, game.Workspace.BananaSpawner}) do
-            for j,k in pairs(v:GetChildren()) do
-                if k:FindFirstChild("RealFruitESP") then
-                    k.RealFruitESP:Destroy()
-                end
-            end
-        end
-    end
-   end
-end)
-
-local ToggleFruitEsp = Tabs.T:AddToggle("ToggleFruitEsp", {
-    Title = "ESP Fruit Physical",
-    Default = false 
-})
-
-ToggleFruitEsp:OnChanged(function(Value)
-    getgenv().EspFruit = Value
-    if Value then
-        for i,v in pairs(game.Workspace:GetChildren()) do
-            if string.find(v.Name, "Fruit") then
-                local BillboardGui = createBillboardGui(v, "FruitESP")
-                local TextLabel = createStyledTextLabel(BillboardGui, "", Color3.fromRGB(255, 0, 255))
-                
-                spawn(function()
-                    while BillboardGui.Parent do
-                        wait(0.1)
-                        if v:FindFirstChild("Handle") then
-                            local distance = math.floor((game.Players.LocalPlayer.Character.HumanoidRootPart.Position - v.Handle.Position).Magnitude)
-                            TextLabel.Text = v.Name .. "\n[" .. distance .. "m]"
-                        end
-                    end
-                end)
-            end
-        end
-    else
-        for i,v in pairs(game.Workspace:GetChildren()) do
-            if v:FindFirstChild("FruitESP") then
-                v.FruitESP:Destroy()
+            elseif not Val and Loc:FindFirstChild("IslandESP") then
+                Loc.IslandESP:Destroy()
             end
         end
     end
 end)
 
-local ToggleChestEsp = Tabs.T:AddToggle("ToggleChestEsp", {
-    Title = "ESP Chest", 
-    Default = false 
-})
+local ToggleNpcEsp = Tabs.T:AddToggle("ToggleNpcEsp", {Title = "ESP NPC", Default = false})
+ToggleNpcEsp:OnChanged(function(Val)
+    getgenv().EspNpc = Val
+    
+    local function ProcessNPC(Npc)
+        local Hrp = Npc:FindFirstChild("HumanoidRootPart")
+        if Hrp then
+            if Val and not Hrp:FindFirstChild("NpcESP") then
+                local G, L = CreateESP(Hrp, "NpcESP", "", Color3.fromRGB(0, 255, 0))
+                if G and L then
+                    task.spawn(function()
+                        while G and G.Parent and getgenv().EspNpc do
+                            pcall(function()
+                                if Hrp and game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+                                    local D = math.floor((game.Players.LocalPlayer.Character.HumanoidRootPart.Position - Hrp.Position).Magnitude)
+                                    L.Text = Npc.Name .. "\n[" .. D .. "m]"
+                                end
+                            end)
+                            task.wait(0.5)
+                        end
+                    end)
+                end
+            elseif not Val and Hrp:FindFirstChild("NpcESP") then
+                Hrp.NpcESP:Destroy()
+            end
+        end
+    end
+    
+    local WsNpc = workspace:FindFirstChild("NPCs")
+    if WsNpc then
+        for _, N in pairs(WsNpc:GetChildren()) do
+            ProcessNPC(N)
+        end
+    end
+    
+    local Cloned = workspace:FindFirstChild("__ClonedNPCs") or Instance.new("Folder", workspace)
+    Cloned.Name = "__ClonedNPCs"
+    if Val then
+        Cloned:ClearAllChildren()
+        local RepNpc = game.ReplicatedStorage:FindFirstChild("NPCs")
+        if RepNpc then
+            for _, N in pairs(RepNpc:GetChildren()) do
+                if N:IsA("Model") and N:FindFirstChild("HumanoidRootPart") then
+                    local C = N:Clone()
+                    C:SetPrimaryPartCFrame(N.HumanoidRootPart.CFrame)
+                    C.Parent = Cloned
+                    ProcessNPC(C)
+                end
+            end
+        end
+    else
+        Cloned:ClearAllChildren()
+    end
+end)
 
-local CN = {
-    ["Chest1"] = true,
-    ["Chest2"] = true,
-    ["Chest3"] = true
-}
+local ToggleRealFruitEsp = Tabs.T:AddToggle("ToggleRealFruitEsp", {Title = "ESP Real Fruit", Default = false})
+ToggleRealFruitEsp:OnChanged(function(Val)
+    getgenv().EspRealFruit = Val
+    if _G.World3 then
+        local Spawners = {
+            {workspace.AppleSpawner, "Apple", Color3.fromRGB(255, 0, 0)},
+            {workspace.PineappleSpawner, "Pineapple", Color3.fromRGB(255, 255, 0)},
+            {workspace.BananaSpawner, "Banana", Color3.fromRGB(255, 255, 0)}
+        }
+        
+        for _, Data in pairs(Spawners) do
+            for _, Fruit in pairs(Data[1]:GetChildren()) do
+                if Fruit:IsA("Tool") then
+                    if Val and not Fruit:FindFirstChild("RealFruitESP") then
+                        local G, L = CreateESP(Fruit, "RealFruitESP", "", Data[3])
+                        if G and L then
+                            task.spawn(function()
+                                while G and G.Parent and getgenv().EspRealFruit do
+                                    pcall(function()
+                                        local H = Fruit:FindFirstChild("Handle")
+                                        if H and game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+                                            local D = math.floor((game.Players.LocalPlayer.Character.HumanoidRootPart.Position - H.Position).Magnitude)
+                                            L.Text = Data[2] .. "\n[" .. D .. "m]"
+                                        end
+                                    end)
+                                    task.wait(0.5)
+                                end
+                            end)
+                        end
+                    elseif not Val and Fruit:FindFirstChild("RealFruitESP") then
+                        Fruit.RealFruitESP:Destroy()
+                    end
+                end
+            end
+        end
+    end
+end)
 
-ToggleChestEsp:OnChanged(function(Value)
-    getgenv().EspChest = Value
+local ToggleFruitEsp = Tabs.T:AddToggle("ToggleFruitEsp", {Title = "ESP Fruit Physical", Default = false})
+ToggleFruitEsp:OnChanged(function(Val)
+    getgenv().EspFruit = Val
+    for _, Fruit in pairs(workspace:GetChildren()) do
+        if string.find(Fruit.Name, "Fruit") then
+            if Val and not Fruit:FindFirstChild("FruitESP") then
+                local G, L = CreateESP(Fruit, "FruitESP", "", Color3.fromRGB(255, 0, 255))
+                if G and L then
+                    task.spawn(function()
+                        while G and G.Parent and getgenv().EspFruit do
+                            pcall(function()
+                                local H = Fruit:FindFirstChild("Handle")
+                                if H and game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+                                    local D = math.floor((game.Players.LocalPlayer.Character.HumanoidRootPart.Position - H.Position).Magnitude)
+                                    L.Text = Fruit.Name .. "\n[" .. D .. "m]"
+                                end
+                            end)
+                            task.wait(0.5)
+                        end
+                    end)
+                end
+            elseif not Val and Fruit:FindFirstChild("FruitESP") then
+                Fruit.FruitESP:Destroy()
+            end
+        end
+    end
+end)
 
-    if Value then
-        for _, Part in pairs(game.Workspace:GetDescendants()) do
-            if Part:IsA("BasePart") and CN[Part.Name] then
+local ToggleChestEsp = Tabs.T:AddToggle("ToggleChestEsp", {Title = "ESP Chest", Default = false})
+ToggleChestEsp:OnChanged(function(Val)
+    getgenv().EspChest = Val
+    local Chests = {"Chest1", "Chest2", "Chest3"}
+    
+    for _, Obj in pairs(workspace:GetDescendants()) do
+        if Obj:IsA("BasePart") and table.find(Chests, Obj.Name) then
+            if Val and not Obj:FindFirstChild("ChestESP") then
                 pcall(function()
-                    local BillboardGui = createBillboardGui(Part, "ChestESP")
-                    local TextLabel = createStyledTextLabel(BillboardGui, "", Color3.fromRGB(255, 215, 0))
-
-                    spawn(function()
-                        while BillboardGui.Parent and ToggleChestEsp.Value do
-                            task.wait(0.1)
-                            local Distance = math.floor((game.Players.LocalPlayer.Character.HumanoidRootPart.Position - Part.Position).Magnitude)
-                            TextLabel.Text = Part.Name .. "\n[" .. Distance .. "m]"
-                        end
-                    end)
-                end)
-            end
-        end
-    else
-        for _, Gui in pairs(game.Workspace:GetDescendants()) do
-            if Gui:IsA("BillboardGui") and Gui.Name == "ChestESP" then
-                Gui:Destroy()
-            end
-        end
-    end
-end)
-
-
-local ToggleFlowerEsp = Tabs.T:AddToggle("ToggleFlowerEsp", {
-    Title = "ESP Flower", 
-    Default = false 
-})
-
-ToggleFlowerEsp:OnChanged(function(Value)
-    getgenv().EspFlower = Value
-    if Value then
-        for i,v in pairs(game.Workspace:GetChildren()) do
-            if v.Name == "Flower2" or v.Name == "Flower1" then
-                local BillboardGui = createBillboardGui(v, "FlowerESP")
-                local TextLabel = createStyledTextLabel(BillboardGui, "", Color3.fromRGB(255, 192, 203))
-                
-                spawn(function()
-                    while BillboardGui.Parent do
-                        wait(0.1)
-                        if v:FindFirstChild("Stem") then
-                            local distance = math.floor((game.Players.LocalPlayer.Character.HumanoidRootPart.Position - v.Stem.Position).Magnitude)
-                            TextLabel.Text = v.Name .. "\n[" .. distance .. "m]"
-                        end
+                    local G, L = CreateESP(Obj, "ChestESP", "", Color3.fromRGB(255, 215, 0))
+                    if G and L then
+                        task.spawn(function()
+                            while G and G.Parent and getgenv().EspChest do
+                                pcall(function()
+                                    if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+                                        local D = math.floor((game.Players.LocalPlayer.Character.HumanoidRootPart.Position - Obj.Position).Magnitude)
+                                        L.Text = Obj.Name .. "\n[" .. D .. "m]"
+                                    end
+                                end)
+                                task.wait(0.5)
+                            end
+                        end)
                     end
                 end)
-            end
-        end
-    else
-        for i,v in pairs(game.Workspace:GetChildren()) do
-            if v:FindFirstChild("FlowerESP") then
-                v.FlowerESP:Destroy()
+            elseif not Val and Obj:FindFirstChild("ChestESP") then
+                Obj.ChestESP:Destroy()
             end
         end
     end
 end)
 
-local ToggleLegendarySwordEsp = Tabs.T:AddToggle("ToggleLegendarySwordEsp", {
-    Title = "ESP Legendary Sword Dealer", 
-    Default = false 
-})
-
-ToggleLegendarySwordEsp:OnChanged(function(Value)
-    getgenv().EspLegendarySword = Value
-    if Value then
-        for i,v in pairs(game:GetService("Workspace").NPCs:GetChildren()) do
-            if v.Name == "Legendary Sword Dealer" then
-                local part = v:FindFirstChild('HumanoidRootPart') or v.PrimaryPart
-                if part then
-                    local BillboardGui = createBillboardGui(part, "LegendarySwordESP")
-                    local TextLabel = createStyledTextLabel(BillboardGui, "", Color3.fromRGB(255, 0, 0))
-                    
-                    spawn(function()
-                        while BillboardGui.Parent do
-                            wait(0.1)
-                            local currentPart = v:FindFirstChild('HumanoidRootPart') or v.PrimaryPart
-                            if currentPart then
-                                local distance = math.floor((game.Players.LocalPlayer.Character.HumanoidRootPart.Position - currentPart.Position).Magnitude)
-                                TextLabel.Text = "Legendary Sword Dealer\n[" .. distance .. "m]"
-                            end
+local ToggleFlowerEsp = Tabs.T:AddToggle("ToggleFlowerEsp", {Title = "ESP Flower", Default = false})
+ToggleFlowerEsp:OnChanged(function(Val)
+    getgenv().EspFlower = Val
+    for _, Flower in pairs(workspace:GetChildren()) do
+        if Flower.Name == "Flower1" or Flower.Name == "Flower2" then
+            if Val and not Flower:FindFirstChild("FlowerESP") then
+                local G, L = CreateESP(Flower, "FlowerESP", "", Color3.fromRGB(255, 192, 203))
+                if G and L then
+                    task.spawn(function()
+                        while G and G.Parent and getgenv().EspFlower do
+                            pcall(function()
+                                local S = Flower:FindFirstChild("Stem")
+                                if S and game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+                                    local D = math.floor((game.Players.LocalPlayer.Character.HumanoidRootPart.Position - S.Position).Magnitude)
+                                    L.Text = Flower.Name .. "\n[" .. D .. "m]"
+                                end
+                            end)
+                            task.wait(0.5)
                         end
                     end)
                 end
-            end
-        end
-    else
-        for i,v in pairs(game:GetService("Workspace").NPCs:GetChildren()) do
-            if v.Name == "Legendary Sword Dealer" then
-                local part = v:FindFirstChild('HumanoidRootPart') or v.PrimaryPart
-                if part and part:FindFirstChild("LegendarySwordESP") then
-                    part.LegendarySwordESP:Destroy()
-                end
+            elseif not Val and Flower:FindFirstChild("FlowerESP") then
+                Flower.FlowerESP:Destroy()
             end
         end
     end
 end)
 
-local ToggleMasterEnhancementEsp = Tabs.T:AddToggle("ToggleMasterEnhancementEsp", {
-    Title = "ESP Master of Enhancement", 
-    Default = false 
-})
 
-ToggleMasterEnhancementEsp:OnChanged(function(Value)
-    getgenv().EspMasterEnhancement = Value
-    if Value then
-        for i,v in pairs(game:GetService("Workspace").NPCs:GetChildren()) do
-            if v.Name == "Master of Enhancement" then
-                local part = v:FindFirstChild('HumanoidRootPart') or v.PrimaryPart
-                if part then
-                    local BillboardGui = createBillboardGui(part, "MasterEnhancementESP")
-                    local TextLabel = createStyledTextLabel(BillboardGui, "", Color3.fromRGB(0, 255, 255))
-                    
-                    spawn(function()
-                        while BillboardGui.Parent do
-                            wait(0.1)
-                            local currentPart = v:FindFirstChild('HumanoidRootPart') or v.PrimaryPart
-                            if currentPart then
-                                local distance = math.floor((game.Players.LocalPlayer.Character.HumanoidRootPart.Position - currentPart.Position).Magnitude)
-                                TextLabel.Text = "Master of Enhancement\n[" .. distance .. "m]"
+local ToggleLegendarySwordEsp = Tabs.T:AddToggle("ToggleLegendarySwordEsp", {Title = "ESP Legendary Sword Dealer", Default = false})
+ToggleLegendarySwordEsp:OnChanged(function(Val)
+    getgenv().EspLegendarySword = Val
+    for _, Npc in pairs(workspace.NPCs:GetChildren()) do
+        if Npc.Name == "Legendary Sword Dealer" then
+            local P = Npc:FindFirstChild("HumanoidRootPart") or Npc.PrimaryPart
+            if P then
+                if Val and not P:FindFirstChild("LegendarySwordESP") then
+                    local G, L = CreateESP(P, "LegendarySwordESP", "", Color3.fromRGB(255, 0, 0))
+                    if G and L then
+                        task.spawn(function()
+                            while G and G.Parent and getgenv().EspLegendarySword do
+                                pcall(function()
+                                    local Cp = Npc:FindFirstChild("HumanoidRootPart") or Npc.PrimaryPart
+                                    if Cp and game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+                                        local D = math.floor((game.Players.LocalPlayer.Character.HumanoidRootPart.Position - Cp.Position).Magnitude)
+                                        L.Text = "Legendary Sword Dealer\n[" .. D .. "m]"
+                                    end
+                                end)
+                                task.wait(0.5)
                             end
-                        end
-                    end)
-                end
-            end
-        end
-    else
-        for i,v in pairs(game:GetService("Workspace").NPCs:GetChildren()) do
-            if v.Name == "Master of Enhancement" then
-                local part = v:FindFirstChild('HumanoidRootPart') or v.PrimaryPart
-                if part and part:FindFirstChild("MasterEnhancementESP") then
-                    part.MasterEnhancementESP:Destroy()
-                end
-            end
-        end
-    end
-end)
-
-local ToggleMirageIslandEsp = Tabs.T:AddToggle("ToggleMirageIslandEsp", {
-    Title = "ESP Mirage Island", 
-    Default = false 
-})
-
-ToggleMirageIslandEsp:OnChanged(function(Value)
-    getgenv().EspMirageIsland = Value
-    if Value then
-        for i,v in pairs(game:GetService("Workspace")["_WorldOrigin"].Locations:GetChildren()) do
-            if v.Name == "Mirage Island" then
-                local BillboardGui = createBillboardGui(v, "MirageIslandESP")
-                local TextLabel = createStyledTextLabel(BillboardGui, "", Color3.fromRGB(0, 191, 255))
-                
-                spawn(function()
-                    while BillboardGui.Parent do
-                        wait(0.1)
-                        local distance = math.floor((game.Players.LocalPlayer.Character.HumanoidRootPart.Position - v.Position).Magnitude)
-                        TextLabel.Text = "Mirage Island\n[" .. distance .. "m]"
+                        end)
                     end
-                end)
-            end
-        end
-    else
-        for i,v in pairs(game:GetService("Workspace")["_WorldOrigin"].Locations:GetChildren()) do
-            if v.Name == "Mirage Island" and v:FindFirstChild("MirageIslandESP") then
-                v.MirageIslandESP:Destroy()
+                elseif not Val and P:FindFirstChild("LegendarySwordESP") then
+                    P.LegendarySwordESP:Destroy()
+                end
             end
         end
     end
 end)
 
-local ToggleAdvancedFruitEsp = Tabs.T:AddToggle("ToggleAdvancedFruitEsp", {
-    Title = "ESP Advanced Fruit Dealer", 
-    Default = false 
-})
-
-ToggleAdvancedFruitEsp:OnChanged(function(Value)
-    getgenv().EspAdvancedFruit = Value
-    if Value then
-        for i,v in pairs(game:GetService("Workspace").NPCs:GetChildren()) do
-            if v.Name == "Advanced Fruit Dealer" then
-                local part = v:FindFirstChild('HumanoidRootPart') or v.PrimaryPart
-                if part then
-                    local BillboardGui = createBillboardGui(part, "AdvancedFruitESP")
-                    local TextLabel = createStyledTextLabel(BillboardGui, "", Color3.fromRGB(128, 0, 128))
-                    
-                    spawn(function()
-                        while BillboardGui.Parent do
-                            wait(0.1)
-                            local currentPart = v:FindFirstChild('HumanoidRootPart') or v.PrimaryPart
-                            if currentPart then
-                                local distance = math.floor((game.Players.LocalPlayer.Character.HumanoidRootPart.Position - currentPart.Position).Magnitude)
-                                TextLabel.Text = "Advanced Fruit Dealer\n[" .. distance .. "m]"
+local ToggleMasterEnhancementEsp = Tabs.T:AddToggle("ToggleMasterEnhancementEsp", {Title = "ESP Master of Enhancement", Default = false})
+ToggleMasterEnhancementEsp:OnChanged(function(Val)
+    getgenv().EspMasterEnhancement = Val
+    for _, Npc in pairs(workspace.NPCs:GetChildren()) do
+        if Npc.Name == "Master of Enhancement" then
+            local P = Npc:FindFirstChild("HumanoidRootPart") or Npc.PrimaryPart
+            if P then
+                if Val and not P:FindFirstChild("MasterEnhancementESP") then
+                    local G, L = CreateESP(P, "MasterEnhancementESP", "", Color3.fromRGB(0, 255, 255))
+                    if G and L then
+                        task.spawn(function()
+                            while G and G.Parent and getgenv().EspMasterEnhancement do
+                                pcall(function()
+                                    local Cp = Npc:FindFirstChild("HumanoidRootPart") or Npc.PrimaryPart
+                                    if Cp and game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+                                        local D = math.floor((game.Players.LocalPlayer.Character.HumanoidRootPart.Position - Cp.Position).Magnitude)
+                                        L.Text = "Master of Enhancement\n[" .. D .. "m]"
+                                    end
+                                end)
+                                task.wait(0.5)
                             end
-                        end
-                    end)
-                end
-            end
-        end
-    else
-        for i,v in pairs(game:GetService("Workspace").NPCs:GetChildren()) do
-            if v.Name == "Advanced Fruit Dealer" then
-                local part = v:FindFirstChild('HumanoidRootPart') or v.PrimaryPart
-                if part and part:FindFirstChild("AdvancedFruitESP") then
-                    part.AdvancedFruitESP:Destroy()
+                        end)
+                    end
+                elseif not Val and P:FindFirstChild("MasterEnhancementESP") then
+                    P.MasterEnhancementESP:Destroy()
                 end
             end
         end
     end
 end)
 
-local ToggleGearEsp = Tabs.T:AddToggle("ToggleGearEsp", {
-    Title = "ESP Gear", 
-    Default = false 
-})
-
-ToggleGearEsp:OnChanged(function(Value)
-    getgenv().EspGear = Value
-    if Value then
-        for i,v in pairs(game:GetService("Workspace").Map.MysticIsland:GetChildren()) do 
-               if v.Name == "MeshPart" then
-                    local BillboardGui = createBillboardGui(v, "GearESP")
-                    local TextLabel = createStyledTextLabel(BillboardGui, "", Color3.fromRGB(255, 165, 0))
-                    
-                    spawn(function()
-                        while BillboardGui.Parent do
-                            wait(0.1)
-                            local distance = math.floor((game.Players.LocalPlayer.Character.HumanoidRootPart.Position - v.Position).Magnitude)
-                            TextLabel.Text = "Gear\n[" .. distance .. "m]"
+local ToggleMirageIslandEsp = Tabs.T:AddToggle("ToggleMirageIslandEsp", {Title = "ESP Mirage Island", Default = false})
+ToggleMirageIslandEsp:OnChanged(function(Val)
+    getgenv().EspMirageIsland = Val
+    for _, Loc in pairs(workspace._WorldOrigin.Locations:GetChildren()) do
+        if Loc.Name == "Mirage Island" then
+            if Val and not Loc:FindFirstChild("MirageIslandESP") then
+                local G, L = CreateESP(Loc, "MirageIslandESP", "", Color3.fromRGB(0, 191, 255))
+                if G and L then
+                    task.spawn(function()
+                        while G and G.Parent and getgenv().EspMirageIsland do
+                            pcall(function()
+                                if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+                                    local D = math.floor((game.Players.LocalPlayer.Character.HumanoidRootPart.Position - Loc.Position).Magnitude)
+                                    L.Text = "Mirage Island\n[" .. D .. "m]"
+                                end
+                            end)
+                            task.wait(0.5)
                         end
                     end)
                 end
+            elseif not Val and Loc:FindFirstChild("MirageIslandESP") then
+                Loc.MirageIslandESP:Destroy()
             end
-    else
-        local mysticIsland = game:GetService("Workspace").Map:FindFirstChild("MysticIsland")
-        if mysticIsland then
-            for i,v in pairs(mysticIsland:GetChildren()) do
-                if v:FindFirstChild("GearESP") then
-                    v.GearESP:Destroy()
+        end
+    end
+end)
+
+local ToggleAdvancedFruitEsp = Tabs.T:AddToggle("ToggleAdvancedFruitEsp", {Title = "ESP Advanced Fruit Dealer", Default = false})
+ToggleAdvancedFruitEsp:OnChanged(function(Val)
+    getgenv().EspAdvancedFruit = Val
+    for _, Npc in pairs(workspace.NPCs:GetChildren()) do
+        if Npc.Name == "Advanced Fruit Dealer" then
+            local P = Npc:FindFirstChild("HumanoidRootPart") or Npc.PrimaryPart
+            if P then
+                if Val and not P:FindFirstChild("AdvancedFruitESP") then
+                    local G, L = CreateESP(P, "AdvancedFruitESP", "", Color3.fromRGB(128, 0, 128))
+                    if G and L then
+                        task.spawn(function()
+                            while G and G.Parent and getgenv().EspAdvancedFruit do
+                                pcall(function()
+                                    local Cp = Npc:FindFirstChild("HumanoidRootPart") or Npc.PrimaryPart
+                                    if Cp and game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+                                        local D = math.floor((game.Players.LocalPlayer.Character.HumanoidRootPart.Position - Cp.Position).Magnitude)
+                                        L.Text = "Advanced Fruit Dealer\n[" .. D .. "m]"
+                                    end
+                                end)
+                                task.wait(0.5)
+                            end
+                        end)
+                    end
+                elseif not Val and P:FindFirstChild("AdvancedFruitESP") then
+                    P.AdvancedFruitESP:Destroy()
+                end
+            end
+        end
+    end
+end)
+
+local ToggleGearEsp = Tabs.T:AddToggle("ToggleGearEsp", {Title = "ESP Gear", Default = false})
+ToggleGearEsp:OnChanged(function(Val)
+    getgenv().EspGear = Val
+    local Mystic = workspace.Map:FindFirstChild("MysticIsland")
+    if Mystic then
+        for _, Gear in pairs(Mystic:GetChildren()) do
+            if Gear.Name == "MeshPart" then
+                if Val and not Gear:FindFirstChild("GearESP") then
+                    local G, L = CreateESP(Gear, "GearESP", "", Color3.fromRGB(255, 165, 0))
+                    if G and L then
+                        task.spawn(function()
+                            while G and G.Parent and getgenv().EspGear do
+                                pcall(function()
+                                    if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+                                        local D = math.floor((game.Players.LocalPlayer.Character.HumanoidRootPart.Position - Gear.Position).Magnitude)
+                                        L.Text = "Gear\n[" .. D .. "m]"
+                                    end
+                                end)
+                                task.wait(0.5)
+                            end
+                        end)
+                    end
+                elseif not Val and Gear:FindFirstChild("GearESP") then
+                    Gear.GearESP:Destroy()
                 end
             end
         end
@@ -5241,8 +5039,3 @@ Fluent:Notify({
     Content = "The script has been loaded.",
     Duration = 5
 })
-
-]])
-print("\n📊 TỔNG KẾT:")
-print("Tổng số lỗi phát hiện:", ErrorCount)
-
