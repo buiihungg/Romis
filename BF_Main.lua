@@ -1,3 +1,51 @@
+-- ================================================
+-- SIMPLE DEBUG WRAPPER - CHỈ CẦN PASTE CODE VÀO
+-- ================================================
+
+local ErrorCount = 0
+local function DebugWrap(code)
+    local lines = {}
+    local lineNum = 1
+    for line in code:gmatch("[^\r\n]+") do
+        lines[lineNum] = line
+        lineNum = lineNum + 1
+    end
+    
+    local success, error = pcall(function()
+        loadstring(code)()
+    end)
+    
+    if not success then
+        ErrorCount = ErrorCount + 1
+        local errorLine = tonumber(string.match(error, ":(%d+):"))
+        
+        print("\n" .. string.rep("=", 60))
+        print("❌ LỖI #" .. ErrorCount)
+        print(string.rep("=", 60))
+        print("📍 Chi tiết lỗi:")
+        print(error)
+        print("\n📋 Dòng code bị lỗi:")
+        if errorLine and lines[errorLine] then
+            print("   Line " .. errorLine .. ": " .. lines[errorLine])
+            if lines[errorLine - 1] then
+                print("   Line " .. (errorLine-1) .. ": " .. lines[errorLine-1])
+            end
+            if lines[errorLine + 1] then
+                print("   Line " .. (errorLine+1) .. ": " .. lines[errorLine+1])
+            end
+        end
+        print("\n⏰ Thời gian: " .. os.date("%H:%M:%S"))
+        print(string.rep("=", 60) .. "\n")
+    else
+        print("✅ Code chạy thành công!")
+    end
+end
+
+-- ================================================
+-- PASTE TOÀN BỘ CODE CỦA BẠN VÀO ĐÂY (GIỮA DẤU [[]])
+-- ================================================
+
+DebugWrap([[
 repeat
     task.wait()
 until game:IsLoaded() and game:GetService("Players").LocalPlayer and game:GetService("Players").LocalPlayer.PlayerGui
@@ -5193,3 +5241,7 @@ Fluent:Notify({
     Content = "The script has been loaded.",
     Duration = 5
 })
+
+]])
+print("\n📊 TỔNG KẾT:")
+print("Tổng số lỗi phát hiện:", ErrorCount)
