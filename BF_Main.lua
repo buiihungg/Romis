@@ -3510,8 +3510,7 @@ end)
 
 function NearestFarm()
     if not getgenv().FarmNearest then return false end
-    
-    local enemies = Workspace.Enemies:GetChildren()
+    enemies = Workspace.Enemies:GetChildren()
     table.sort(enemies, function(a, b)
         return a.Name < b.Name
     end)
@@ -3541,10 +3540,10 @@ end
 
 function BoneFarm()
     if not getgenv().FarmBone then return false end
-    local List = {"Posessed Mummy", "Demonic Soul", "Reborn Skeleton", "Living Zombie"}
-    local Found = false
-    local bQuest = game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Container.QuestTitle.Title.Text
-    local bQuestCFrame = CFrame.new(-9513.84277, 172.419067, 6077.3623, 0.109214641, 2.34422384e-08, 0.994018137, -4.35502905e-08, 0.99999994, -2.98091472e-08, -0.994018137, -2.17544258e-08, 0.109214656)
+    List = {"Posessed Mummy", "Demonic Soul", "Reborn Skeleton", "Living Zombie"}
+    Found = false
+    bQuest = game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Container.QuestTitle.Title.Text
+    bQuestCFrame = CFrame.new(-9513.84277, 172.419067, 6077.3623, 0.109214641, 2.34422384e-08, 0.994018137, -4.35502905e-08, 0.99999994, -2.98091472e-08, -0.994018137, -2.17544258e-08, 0.109214656)
 
     if not string.find(bQuest, "Posessed Mummy") then
         game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("AbandonQuest")
@@ -3758,7 +3757,7 @@ ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
 ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 ScreenGui.ResetOnSpawn = false
 
-local MainFrame = Instance.new("Frame")
+MainFrame = Instance.new("Frame")
 MainFrame.Name = "MainFrame"
 MainFrame.Parent = ScreenGui
 MainFrame.Size = UDim2.new(0, 320, 0, 220)
@@ -3767,11 +3766,11 @@ MainFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 25)
 MainFrame.BackgroundTransparency = 0.15
 MainFrame.BorderSizePixel = 0
 
-local MainCorner = Instance.new("UICorner")
+MainCorner = Instance.new("UICorner")
 MainCorner.CornerRadius = UDim.new(0, 16)
 MainCorner.Parent = MainFrame
 
-local GlassOverlay = Instance.new("Frame")
+GlassOverlay = Instance.new("Frame")
 GlassOverlay.Name = "GlassOverlay"
 GlassOverlay.Parent = MainFrame
 GlassOverlay.Size = UDim2.new(1, 0, 1, 0)
@@ -3779,17 +3778,17 @@ GlassOverlay.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 GlassOverlay.BackgroundTransparency = 0.95
 GlassOverlay.BorderSizePixel = 0
 
-local GlassCorner = Instance.new("UICorner")
+GlassCorner = Instance.new("UICorner")
 GlassCorner.CornerRadius = UDim.new(0, 16)
 GlassCorner.Parent = GlassOverlay
 
-local BorderStroke = Instance.new("UIStroke")
+BorderStroke = Instance.new("UIStroke")
 BorderStroke.Parent = MainFrame
 BorderStroke.Color = Color3.fromRGB(120, 140, 255)
 BorderStroke.Thickness = 1.2
 BorderStroke.Transparency = 0.5
 
-local BorderGradient = Instance.new("UIGradient")
+BorderGradient = Instance.new("UIGradient")
 BorderGradient.Parent = BorderStroke
 BorderGradient.Color = ColorSequence.new{
     ColorSequenceKeypoint.new(0, Color3.fromRGB(120, 140, 255)),
@@ -3797,13 +3796,13 @@ BorderGradient.Color = ColorSequence.new{
     ColorSequenceKeypoint.new(1, Color3.fromRGB(120, 140, 255))
 }
 
-local Header = Instance.new("Frame")
+Header = Instance.new("Frame")
 Header.Name = "Header"
 Header.Parent = MainFrame
 Header.Size = UDim2.new(1, 0, 0, 50)
 Header.BackgroundTransparency = 1
 
-local TitleLabel = Instance.new("TextLabel")
+TitleLabel = Instance.new("TextLabel")
 TitleLabel.Name = "Title"
 TitleLabel.Parent = Header
 TitleLabel.Size = UDim2.new(1, -40, 1, 0)
@@ -3816,7 +3815,7 @@ TitleLabel.Font = Enum.Font.GothamBold
 TitleLabel.TextXAlignment = Enum.TextXAlignment.Left
 TitleLabel.TextYAlignment = Enum.TextYAlignment.Center
 
-local MinimizeBtn = Instance.new("TextButton")
+MinimizeBtn = Instance.new("TextButton")
 MinimizeBtn.Name = "MinimizeBtn"
 MinimizeBtn.Parent = Header
 MinimizeBtn.Size = UDim2.new(0, 30, 0, 30)
@@ -3829,24 +3828,24 @@ MinimizeBtn.TextSize = 20
 MinimizeBtn.Font = Enum.Font.GothamBold
 MinimizeBtn.BorderSizePixel = 0
 
-local MinCorner = Instance.new("UICorner")
+MinCorner = Instance.new("UICorner")
 MinCorner.CornerRadius = UDim.new(0, 8)
 MinCorner.Parent = MinimizeBtn
 
-local StatsContainer = Instance.new("Frame")
+StatsContainer = Instance.new("Frame")
 StatsContainer.Name = "Stats"
 StatsContainer.Parent = MainFrame
 StatsContainer.Size = UDim2.new(1, -30, 0, 90)
 StatsContainer.Position = UDim2.new(0, 15, 0, 60)
 StatsContainer.BackgroundTransparency = 1
 
-local StatsLayout = Instance.new("UIListLayout")
+StatsLayout = Instance.new("UIListLayout")
 StatsLayout.Parent = StatsContainer
 StatsLayout.SortOrder = Enum.SortOrder.LayoutOrder
 StatsLayout.Padding = UDim.new(0, 10)
 
-local function createStatCard(name, icon, color, layoutOrder)
-    local Card = Instance.new("Frame")
+function createStatCard(name, icon, color, layoutOrder)
+    Card = Instance.new("Frame")
     Card.Name = name
     Card.Parent = StatsContainer
     Card.Size = UDim2.new(1, 0, 0, 25)
@@ -3855,17 +3854,17 @@ local function createStatCard(name, icon, color, layoutOrder)
     Card.BorderSizePixel = 0
     Card.LayoutOrder = layoutOrder
     
-    local CardCorner = Instance.new("UICorner")
+    CardCorner = Instance.new("UICorner")
     CardCorner.CornerRadius = UDim.new(0, 10)
     CardCorner.Parent = Card
     
-    local CardStroke = Instance.new("UIStroke")
+    CardStroke = Instance.new("UIStroke")
     CardStroke.Parent = Card
     CardStroke.Color = color
     CardStroke.Thickness = 1
     CardStroke.Transparency = 0.7
     
-    local IconLabel = Instance.new("TextLabel")
+    IconLabel = Instance.new("TextLabel")
     IconLabel.Parent = Card
     IconLabel.Size = UDim2.new(0, 30, 1, 0)
     IconLabel.Position = UDim2.new(0, 10, 0, 0)
@@ -3875,7 +3874,7 @@ local function createStatCard(name, icon, color, layoutOrder)
     IconLabel.TextSize = 16
     IconLabel.Font = Enum.Font.GothamBold
     
-    local NameLabel = Instance.new("TextLabel")
+    NameLabel = Instance.new("TextLabel")
     NameLabel.Parent = Card
     NameLabel.Size = UDim2.new(0.4, 0, 1, 0)
     NameLabel.Position = UDim2.new(0, 45, 0, 0)
@@ -3886,7 +3885,7 @@ local function createStatCard(name, icon, color, layoutOrder)
     NameLabel.Font = Enum.Font.Gotham
     NameLabel.TextXAlignment = Enum.TextXAlignment.Left
     
-    local ValueLabel = Instance.new("TextLabel")
+    ValueLabel = Instance.new("TextLabel")
     ValueLabel.Name = "Value"
     ValueLabel.Parent = Card
     ValueLabel.Size = UDim2.new(0.45, -10, 1, 0)
@@ -3901,11 +3900,11 @@ local function createStatCard(name, icon, color, layoutOrder)
     return Card, ValueLabel
 end
 
-local TimeCard, TimeValue = createStatCard("Time", "⏱️", Color3.fromRGB(100, 180, 255), 1)
-local CurrentCard, CurrentValue = createStatCard("Current", "💰", Color3.fromRGB(255, 200, 80), 2)
-local EarnedCard, EarnedValue = createStatCard("Earned", "📈", Color3.fromRGB(100, 255, 150), 3)
+TimeCard, TimeValue = createStatCard("Time", "⏱️", Color3.fromRGB(100, 180, 255), 1)
+CurrentCard, CurrentValue = createStatCard("Current", "💰", Color3.fromRGB(255, 200, 80), 2)
+EarnedCard, EarnedValue = createStatCard("Earned", "📈", Color3.fromRGB(100, 255, 150), 3)
 
-local DiscordBtn = Instance.new("TextButton")
+DiscordBtn = Instance.new("TextButton")
 DiscordBtn.Name = "DiscordBtn"
 DiscordBtn.Parent = MainFrame
 DiscordBtn.Size = UDim2.new(1, -30, 0, 38)
@@ -3918,18 +3917,18 @@ DiscordBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
 DiscordBtn.TextSize = 14
 DiscordBtn.Font = Enum.Font.GothamBold
 
-local DiscordCorner = Instance.new("UICorner")
+DiscordCorner = Instance.new("UICorner")
 DiscordCorner.CornerRadius = UDim.new(0, 10)
 DiscordCorner.Parent = DiscordBtn
 
-local DiscordStroke = Instance.new("UIStroke")
+DiscordStroke = Instance.new("UIStroke")
 DiscordStroke.Parent = DiscordBtn
 DiscordStroke.Color = Color3.fromRGB(88, 101, 242)
 DiscordStroke.Thickness = 1
 DiscordStroke.Transparency = 0.5
 
-local TweenService = game:GetService("TweenService")
-local UserInputService = game:GetService("UserInputService")
+TweenService = game:GetService("TweenService")
+UserInputService = game:GetService("UserInputService")
 
 spawn(function()
     while ScreenGui.Parent do
@@ -3966,7 +3965,7 @@ DiscordBtn.MouseButton1Click:Connect(function()
     TweenService:Create(DiscordBtn, TweenInfo.new(0.15), {BackgroundColor3 = Color3.fromRGB(88, 101, 242)}):Play()
 end)
 
-local isMinimized = false
+isMinimized = false
 MinimizeBtn.MouseButton1Click:Connect(function()
     isMinimized = not isMinimized
     if isMinimized then
@@ -3983,7 +3982,7 @@ MinimizeBtn.MouseButton1Click:Connect(function()
     end
 end)
 
-local dragging, dragInput, dragStart, startPos
+dragging, dragInput, dragStart, startPos
 
 Header.InputBegan:Connect(function(input)
     if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
@@ -4011,7 +4010,7 @@ UserInputService.InputChanged:Connect(function(input)
     end
 end)
 
-local function formatNumber(num)
+function formatNumber(num)
     if num >= 1000000000 then
         return string.format("%.1fB", num / 1000000000)
     elseif num >= 1000000 then
@@ -4023,10 +4022,10 @@ local function formatNumber(num)
     end
 end
 
-local function formatTime(seconds)
-    local hours = math.floor(seconds / 3600)
-    local minutes = math.floor((seconds % 3600) / 60)
-    local secs = seconds % 60
+function formatTime(seconds)
+    hours = math.floor(seconds / 3600)
+    minutes = math.floor((seconds % 3600) / 60)
+    secs = seconds % 60
     return string.format("%02d:%02d:%02d", hours, minutes, secs)
 end
 
@@ -4034,8 +4033,8 @@ function Gui(visible)
     ScreenGui.Enabled = visible
 end
 
-local function loadSavedData()
-    local filePath = "Romis Hub/ChestCollect_INFO.json"
+function loadSavedData()
+    filePath = "Romis Hub/ChestCollect_INFO.json"
     if isfile and isfile(filePath) then
         local success, data = pcall(function()
             return game:GetService("HttpService"):JSONDecode(readfile(filePath))
@@ -4045,9 +4044,9 @@ local function loadSavedData()
     return nil
 end
 
-local function saveStats(timeElapsed, beliEarned, initialBeli, sessionStartTime)
+function saveStats(timeElapsed, beliEarned, initialBeli, sessionStartTime)
     if not writefile then return end
-    local data = {
+    data = {
         TimeElapsed = timeElapsed,
         BeliEarned = beliEarned,
         InitialBeli = initialBeli,
@@ -4064,13 +4063,13 @@ end
 
 spawn(function()
     while ScreenGui.Parent do
-        local totalTime = totalTimeElapsed + (os.time() - sessionStartTime)
+        totalTime = totalTimeElapsed + (os.time() - sessionStartTime)
         TimeValue.Text = formatTime(totalTime)
         
-        local CurrentBeli = game.Players.LocalPlayer.Data.Beli.Value
+        CurrentBeli = game.Players.LocalPlayer.Data.Beli.Value
         CurrentValue.Text = formatNumber(CurrentBeli)
         
-        local beliEarned = CurrentBeli - initialBeli
+        beliEarned = CurrentBeli - initialBeli
         EarnedValue.Text = "+" .. formatNumber(beliEarned)
         
         saveStats(totalTime, beliEarned, initialBeli, sessionStartTime)
@@ -4078,10 +4077,10 @@ spawn(function()
     end
 end)
 
-local savedData = loadSavedData()
-local sessionStartTime = os.time()
-local totalTimeElapsed = savedData and savedData.TimeElapsed or 0
-local initialBeli = savedData and savedData.InitialBeli or game.Players.LocalPlayer.Data.Beli.Value
+savedData = loadSavedData()
+sessionStartTime = os.time()
+totalTimeElapsed = savedData and savedData.TimeElapsed or 0
+initialBeli = savedData and savedData.InitialBeli or game.Players.LocalPlayer.Data.Beli.Value
 getgenv().InitialBeli = initialBeli
 
 if savedData and getgenv().ChestFarm then
@@ -4098,11 +4097,11 @@ end
 
 Gui(getgenv().ShowPanel and getgenv().StartFarmChest)
 
-local a0 = {}
-local a1 = ""
-local a2 = os.date("!*t").hour
-local a3 = false
-local a4 =
+ a0 = {}
+ a1 = ""
+ a2 = os.date("!*t").hour
+ a3 = false
+ a4 =
     pcall(
     function()
         a0 = game:GetService("HttpService"):JSONDecode(readfile("ChestCollect.RomisHub"))
@@ -4115,27 +4114,27 @@ end
 
 function SendWebhook()
     if getgenv().EnableWebhook and getgenv().WebhookChest ~= "" then
-        local CurrentBeli = game:GetService("Players").LocalPlayer.Data.Beli.Value
-        local beliEarned = CurrentBeli - getgenv().LastBeli
+         CurrentBeli = game:GetService("Players").LocalPlayer.Data.Beli.Value
+         beliEarned = CurrentBeli - getgenv().LastBeli
         getgenv().LastBeli = CurrentBeli
-        local LockBeli = getgenv().BeliLimit
-        local StatusMessage = "Server hopped successfully"
-        local PingMessage = ""
+         LockBeli = getgenv().BeliLimit
+         StatusMessage = "Server hopped successfully"
+         PingMessage = ""
 
         if CurrentBeli >= LockBeli then
             StatusMessage = "Congratulations! You've reached your Beli goal! Keep shining!"
-            local pingUserID = getgenv().PingChest
+             pingUserID = getgenv().PingChest
             if pingUserID and pingUserID ~= "" then
                 PingMessage = "<@" .. pingUserID .. "> "
             end
         end
 
-        local universeId = nil
-        local success, response =
+         universeId = nil
+         success, response =
             pcall(
             function()
-                local ApiUrl = "https://apis.roblox.com/universes/v1/places/" .. game.PlaceId .. "/universe"
-                local result = http_request({Url = ApiUrl, Method = "GET"})
+                 ApiUrl = "https://apis.roblox.com/universes/v1/places/" .. game.PlaceId .. "/universe"
+                 result = http_request({Url = ApiUrl, Method = "GET"})
                 if result.Success then
                     return game:GetService("HttpService"):JSONDecode(result.Body).universeId
                 end
@@ -4149,11 +4148,11 @@ function SendWebhook()
             universeId = game.PlaceId
         end
 
-        local username = game.Players.LocalPlayer.Name
-        local jobId = game.JobId or "N/A"
-        local PlayerCount = #game:GetService("Players"):GetPlayers()
+        username = game.Players.LocalPlayer.Name
+        jobId = game.JobId or "N/A"
+        PlayerCount = #game:GetService("Players"):GetPlayers()
 
-        local WebhookData = {
+        WebhookData = {
             ["content"] = PingMessage,
             ["embeds"] = {
                 {
@@ -4224,7 +4223,7 @@ function SendWebhook()
             }
         }
 
-        local success, response =
+        success, response =
             pcall(
             function()
                 return http_request(
@@ -4246,7 +4245,7 @@ function SendWebhook()
     end
 end
 function TPReturner()
-    local a5
+    a5
     if a1 == "" then
         a5 =
             game.HttpService:JSONDecode(
@@ -4260,13 +4259,13 @@ function TPReturner()
             )
         )
     end
-    local a6 = ""
+    a6 = ""
     if a5.nextPageCursor and a5.nextPageCursor ~= "null" and a5.nextPageCursor ~= nil then
         a1 = a5.nextPageCursor
     end
-    local a7 = 0
+    a7 = 0
     for D, E in pairs(a5.data) do
-        local a8 = true
+        a8 = true
         a6 = tostring(E.id)
         if tonumber(E.maxPlayers) > tonumber(E.playing) then
             for a9, aa in pairs(a0) do
@@ -4276,7 +4275,7 @@ function TPReturner()
                     end
                 else
                     if tonumber(a2) ~= tonumber(aa) then
-                        local ab =
+                        ab =
                             pcall(
                             function()
                                 delfile("ChestCollect.RomisHub")
@@ -4357,28 +4356,28 @@ function StartFarmChest()
         return false
     end
     
-    local character = LocalPlayer.Character
+    character = LocalPlayer.Character
     if not character then
         return false
     end
     
-    local crewTag = character:FindFirstChild("CrewBBG", true)
+    crewTag = character:FindFirstChild("CrewBBG", true)
     if crewTag then
         crewTag:Destroy()
     end
 
-    local humanoid = character:FindFirstChild("Humanoid")
+    humanoid = character:FindFirstChild("Humanoid")
     if not humanoid then
         return false
     end
     
-    local position = character:GetPivot().Position
-    local chests = CollectionService:GetTagged("_ChestTagged")
-    local distance, nearest = math.huge, nil
+    position = character:GetPivot().Position
+    chests = CollectionService:GetTagged("_ChestTagged")
+    distance, nearest = math.huge, nil
     
     for _, chest in ipairs(chests) do
         if not chest:GetAttribute("IsDisabled") then
-            local magnitude = (chest:GetPivot().Position - position).Magnitude
+            magnitude = (chest:GetPivot().Position - position).Magnitude
             if magnitude < distance then
                 distance, nearest = magnitude, chest
             end
@@ -4395,13 +4394,13 @@ function StartFarmChest()
     end
     
     if nearest then
-        local chestPosition = nearest:GetPivot().Position
+        chestPosition = nearest:GetPivot().Position
         getgenv().ResetAntiDetect = true
         
-        local success = pcall(function()
+        success = pcall(function()
             character:PivotTo(CFrame.new(chestPosition))
             
-            local rootPart = nearest:FindFirstChild("RootPart")
+            rootPart = nearest:FindFirstChild("RootPart")
             if rootPart then
                 firesignal(rootPart.Touched, character.HumanoidRootPart)
             end
@@ -4413,7 +4412,7 @@ function StartFarmChest()
             getgenv().ResetAntiDetect = false
         end
         
-        local success = pcall(function()
+        success = pcall(function()
             Teleport()
         end)
         
