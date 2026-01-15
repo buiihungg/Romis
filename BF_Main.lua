@@ -1,48 +1,46 @@
 repeat
     task.wait()
 until game:IsLoaded() and game:GetService("Players").LocalPlayer and game:GetService("Players").LocalPlayer.PlayerGui
-local Players = game:GetService("Players")
-local LocalPlayer = Players.LocalPlayer
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local registerAttack = ReplicatedStorage.Modules.Net:FindFirstChild("RE/RegisterAttack")
-local registerHit = ReplicatedStorage.Modules.Net:FindFirstChild("RE/RegisterHit")
-local TeleportService = game:GetService("TeleportService")
-local HttpService = game:GetService("HttpService")
-local TweenService = game:GetService("TweenService")
-local StatRemote = game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("CommF_")
-local Modules = ReplicatedStorage:WaitForChild("Modules")
-local Net = Modules:WaitForChild("Net")
-local RegisterAttack = Net:WaitForChild("RE/RegisterAttack")
-local RegisterHit = Net:WaitForChild("RE/RegisterHit")
-local ShootGunEvent = Net:WaitForChild("RE/ShootGunEvent")
-local GunValidator = ReplicatedStorage:WaitForChild("Remotes"):WaitForChild("Validator2")
-local VirtualInputManager = game:GetService("VirtualInputManager") 
-local Player = Players.LocalPlayer
-local Workspace = game:GetService("Workspace")
-local RunService = game:GetService("RunService")
-local CoreGui = game:GetService("CoreGui")
-local PROTECTED_NAME = "Romis Hub"
-local ProtectedLabels = {}
-local MonitoredLabels = {}
-local AllIDs = {}
-local foundAnything = ""
-local actualHour = os.date("!*t").hour
-local Deleted = false
+Players = game:GetService("Players")
+LocalPlayer = Players.LocalPlayer
+ReplicatedStorage = game:GetService("ReplicatedStorage")
+registerAttack = ReplicatedStorage.Modules.Net:FindFirstChild("RE/RegisterAttack")
+registerHit = ReplicatedStorage.Modules.Net:FindFirstChild("RE/RegisterHit")
+TeleportService = game:GetService("TeleportService")
+HttpService = game:GetService("HttpService")
+TweenService = game:GetService("TweenService")
+StatRemote = game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("CommF_")
+Modules = ReplicatedStorage:WaitForChild("Modules")
+Net = Modules:WaitForChild("Net")
+RegisterAttack = Net:WaitForChild("RE/RegisterAttack")
+RegisterHit = Net:WaitForChild("RE/RegisterHit")
+ShootGunEvent = Net:WaitForChild("RE/ShootGunEvent")
+GunValidator = ReplicatedStorage:WaitForChild("Remotes"):WaitForChild("Validator2")
+VirtualInputManager = game:GetService("VirtualInputManager") 
+Player = Players.LocalPlayer
+Workspace = game:GetService("Workspace")
+RunService = game:GetService("RunService")
+CoreGui = game:GetService("CoreGui")
+PROTECTED_NAME = "Romis Hub"
+ProtectedLabels = {}
+MonitoredLabels = {}
+AllIDs = {}
+foundAnything = ""
+actualHour = os.date("!*t").hour
+Deleted = false
 local File =
     pcall(
     function()
         AllIDs = game:GetService("HttpService"):JSONDecode(readfile("MainL.SkullHub"))
     end
 )
-local PlaceId = game.PlaceId
-local MinPlayers = 1
-local Remote = game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("CommF_")
-local functions = {print,warn,error,rconsoleprint,setclipboard,rconsoleerr,rconsolewarn}
-local hell_nah = {"githubusercontent","Yourgithubusername"}
-local UserInputService = game:GetService("UserInputService")
-local RandomCFrame = CFrame.new(0, 30, 0)
-local _B = false
-local r = game.PlaceId
+PlaceId = game.PlaceId
+MinPlayers = 1
+Remote = game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("CommF_")
+UserInputService = game:GetService("UserInputService")
+RandomCFrame = CFrame.new(0, 30, 0)
+_B = false
+r = game.PlaceId
 if UserInputService.TouchEnabled and not UserInputService.KeyboardEnabled then
     print("Mobile")
 else
@@ -50,11 +48,11 @@ else
 end
 
 -- HttpService and other services --
-local SECRET_KEY = "hhkujghukhkuesdiojcfoi9sudc9"
+SECRET_KEY = "hhkujghukhkuesdiojcfoi9sudc9"
 local Req = request or http_request or syn.request
 if not Req then return end
 
-local function Encode(str)
+function Encode(str)
     str = tostring(str)
     local LetterArgs = {
         ["A"]="M",["B"]="X",["C"]="Q",["D"]="K",["E"]="W",["F"]="Z",["G"]="P",
@@ -83,17 +81,17 @@ local function Encode(str)
     return table.concat(out)
 end
 
-local function tohex(s)
+function tohex(s)
     return (s:gsub(".", function(c)
         return string.format("%02x", string.byte(c))
     end))
 end
 
-local function sha256_hex(msg)
+function sha256_hex(msg)
     return tohex(sha256(msg))
 end
 
-local function encrypt_payload(tbl)
+function encrypt_payload(tbl)
     local json = HttpService:JSONEncode(tbl)
     local encoded = Encode(json)
     local sig = sha256_hex(encoded .. SECRET_KEY)
@@ -160,12 +158,12 @@ if not O then
     warn("ChooseTeam Error:", S)
 end
 
-local SeaTravelCommands = {
+SeaTravelCommands = {
     [1] = "TravelMain",
     [2] = "TravelDressrosa",
     [3] = "TravelZou"
 }
-local SeaPlaceIds = {
+SeaPlaceIds = {
     [2753915549] = 1,
     [4442272183] = 2,
     [7449423635] = 3
@@ -181,7 +179,7 @@ function TPWorld(e)
     end
 end
 print("fully")
-local VirtualUser = game:GetService("VirtualUser")
+VirtualUser = game:GetService("VirtualUser")
 if VirtualUser then
     game:GetService("Players").LocalPlayer.Idled:Connect(function()
         VirtualUser:Button2Down(Vector2.new(0,0), workspace.CurrentCamera.CFrame)
@@ -365,9 +363,9 @@ function Tween(AL)
                     TWEENSPEED = 300
                 end
                 
-                local TARGETCFRAME = AL
+                TARGETCFRAME = AL
                 if getgenv().EnchanceTP then
-                    local NEARESTTELEPORT = CheckNearestTeleporter(AL)
+                     NEARESTTELEPORT = CheckNearestTeleporter(AL)
                     if NEARESTTELEPORT then
                         requestEntrance(NEARESTTELEPORT)
                         TARGETCFRAME = CFrame.new(NEARESTTELEPORT.X, DEFUALTY, NEARESTTELEPORT.Z)
@@ -483,7 +481,7 @@ function Tween(AL)
         end
     )
 end
-local function RemoveEffects()
+function RemoveEffects()
     workspace.ClientAnimatorThrottling = Enum.ClientAnimatorThrottlingMode.Enabled
     workspace.InterpolationThrottling = Enum.InterpolationThrottlingMode.Enabled
     workspace.LevelOfDetail = Enum.ModelLevelOfDetail.Disabled
