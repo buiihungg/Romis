@@ -999,14 +999,22 @@ function FastAttack.new()
     }, FastAttack)
     
     pcall(function()
-        self.CombatFlags = require(Modules.Flags).COMBAT_REMOTE_THREAD
-        self.ShootFunction = getupvalue(require(ReplicatedStorage.Controllers.CombatController).Attack, 9)
-        local LocalScript = Player:WaitForChild("PlayerScripts"):FindFirstChildOfClass("LocalScript")
-        if LocalScript and getsenv then
-            self.HitFunction = getsenv(LocalScript)._G.SendHitsToServer
-        end
-    end)
+    self.CombatFlags = require(Modules.Flags).COMBAT_REMOTE_THREAD
+    self.ShootFunction = getupvalue(require(ReplicatedStorage.Controllers.CombatController).Attack, 9)
     
+    local PlayerScripts = Player:WaitForChild("PlayerScripts", 10)
+    if PlayerScripts then
+        for _, script in pairs(PlayerScripts:GetDescendants()) do
+            if script:IsA("LocalScript") and getsenv then
+                local env = getsenv(script)
+                if env and env._G and env._G.SendHitsToServer then
+                    self.HitFunction = env._G.SendHitsToServer
+                    break
+                end
+            end
+        end
+    end
+end)
     return self
 end
 
