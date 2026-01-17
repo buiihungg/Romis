@@ -5647,7 +5647,7 @@ local Queue = {
             if game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Visible == true then
                 local questText = game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Container.QuestTitle.Title.Text
                 if string.find(questText, "Diablo") or string.find(questText, "Deandre") or string.find(questText, "Urban") then
-                    local hasTarget, target = Queue[2].ConditionCheck() -- Lấy index 2 vì đây là task thứ 2
+                    local hasTarget, target = Queue[2].ConditionCheck()
                     
                     if hasTarget and target then
                         if target.Parent == game:GetService("Workspace").Enemies then
@@ -5916,7 +5916,7 @@ task.spawn(function()
         lastStates[Task.Name] = getgenv()[Task.Name]
     end
     
-    while task.wait(0.1) do
+    while task.wait() do
         for _, Task in ipairs(Queue) do
             local currentState = getgenv()[Task.Name]
             local lastState = lastStates[Task.Name]
