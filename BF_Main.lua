@@ -3525,7 +3525,28 @@ end)
         end
     end)
 
-local ToggleFarmLevel = Tabs.Main:AddToggle("ToggleFarmLevel", {Title = "Start Farm", Default = false})
+local SliderMobAura =
+    Tabs.Main:AddSlider(
+    "SliderMobAura",
+    {
+        Title = "Mob Aura Distance",
+        Description = "for farm nearest mob",
+        Default = 500,
+        Min = 1,
+        Max = 2000,
+        Rounding = 1,
+        Callback = function(Value)
+            getgenv().NearestMob = Value
+        end
+    }
+)
+SliderMobAura:OnChanged(
+    function(Value)
+        getgenv().NearestMob = Value
+    end
+)
+
+local ToggleFarmLevel = Tabs.Main:AddToggle("ToggleFarmLevel", {Title = "Farm Level", Default = false})
 ToggleFarmLevel:OnChanged(
     function(Value)
         getgenv().FarmLevel = Value
@@ -3590,26 +3611,6 @@ task.spawn(function()
             end
         end
     end)
-local SliderMobAura =
-    Tabs.Main:AddSlider(
-    "SliderMobAura",
-    {
-        Title = "Mob Aura Distance",
-        Description = "for farm nearest mob",
-        Default = 500,
-        Min = 1,
-        Max = 2000,
-        Rounding = 1,
-        Callback = function(Value)
-            getgenv().NearestMob = Value
-        end
-    }
-)
-SliderMobAura:OnChanged(
-    function(Value)
-        getgenv().NearestMob = Value
-    end
-)
 
 local ToggleFarmNearest = Tabs.Main:AddToggle("ToggleFarmNearest", {Title = "Farm Mob Aura", Default = false})
 ToggleFarmNearest:OnChanged(
