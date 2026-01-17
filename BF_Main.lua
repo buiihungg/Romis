@@ -2493,6 +2493,7 @@ function CreateItemFruit(ItemType, ItemNames, ItemIcon, ImageRectSize, ItemRectO
         ItemLine1.TextYAlignment = Enum.TextYAlignment.Top
     end
 end
+
 function CreateItem(ItemType, ItemNames, ItemIcon, ImageRectSize, ItemRectOffset, ItemBackgroundColor, ExtraData, Data)
     local _1 = Instance.new("Frame")
     local ItemLine2 = Instance.new("TextLabel")
@@ -3225,6 +3226,7 @@ Tabs.Setting:AddButton({
         })
     end
 })
+
 local ToggleWhite = Tabs.Setting:AddToggle("ToggleWhite", {Title = "WhiteScreen", Default = false })
     ToggleWhite:OnChanged(function(Value)
        getgenv().WhiteScreen = Value
@@ -3294,8 +3296,6 @@ local ToggleBD = Tabs.Setting:AddToggle("ToggleBD", {
     Default = false
 })
 
-local BodyVelocityInstance
-
 ToggleBD:OnChanged(function(Value)
     getgenv().BodyVelocity = Value
 
@@ -3318,8 +3318,6 @@ local ToggleNoClip = Tabs.Setting:AddToggle("ToggleNoClip", {
     Title = "NoClip",
     Default = false
 })
-
-local NoClipConnection
 
 ToggleNoClip:OnChanged(function(Value)
     getgenv().NoClip = Value
@@ -3452,23 +3450,23 @@ task.spawn(function()
             if Level < 1200 then
                 AddPoint("Melee", UseAmount)
             elseif Level < 2200 then
-                local Half = math.floor(UseAmount / 2)
+                 Half = math.floor(UseAmount / 2)
                 AddPoint("Melee", Half)
                 AddPoint("Defense", UseAmount - Half)
             else
-                local Half = math.floor(UseAmount / 2)
+                 Half = math.floor(UseAmount / 2)
                 AddPoint("Sword", Half)
                 AddPoint("Demon Fruit", UseAmount - Half)
             end
         else
-            local EnabledStats = {}
+             EnabledStats = {}
             for StatName, Enabled in pairs(Selected) do
                 if Enabled then
                     table.insert(EnabledStats, StatName)
                 end
             end
             if #EnabledStats > 0 then
-                local PointsPerStat = math.floor(UseAmount / #EnabledStats)
+                 PointsPerStat = math.floor(UseAmount / #EnabledStats)
                 for _, StatName in ipairs(EnabledStats) do
                     AddPoint(StatName, PointsPerStat)
                 end
@@ -3652,7 +3650,8 @@ task.spawn(function()
                 end)
             end
         end
-    end)             
+    end)
+    
 task.spawn(function()
     while task.wait() do
             if getgenv().FFF then
@@ -3676,7 +3675,6 @@ task.spawn(function()
                                             repeat task.wait()
                                               SH(v)
                                             until not getgenv().FFF or v.Humanoid.Health <= 0 or not v.Parent or game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Visible == false
-                                            _B = false
                                         end
                                     end
                                 end
@@ -3713,7 +3711,6 @@ function NearestFarm()
     for _, V in ipairs(enemies) do
         if not getgenv().FarmNearest then
             StopTween()
-            _B = false
             return false
         end
         if V:FindFirstChild("Humanoid") and V.Humanoid.Health > 0 and V:FindFirstChild("HumanoidRootPart") then
@@ -3730,7 +3727,6 @@ function NearestFarm()
             end
         end
     end
-    _B = false
     return false
 end
 
@@ -3841,7 +3837,7 @@ Tabs.Main:AddButton(
         Title = "Refresh Boss",
         Description = "Refresh the list of bosses spawn in the server",
         Callback = function()
-            local NewBossList = {}
+             NewBossList = {}
 
             for _, v in pairs(TableBoss) do
                 table.insert(NewBossList, v)
@@ -4513,7 +4509,7 @@ function StartFarmChest()
     
     for _, chest in ipairs(chests) do
         if chest and not chest:GetAttribute("IsDisabled") then
-            local chestPos = chest:GetPivot().Position
+             chestPos = chest:GetPivot().Position
             local magnitude = (chestPos - position).Magnitude
             if magnitude < distance then
                 distance, nearest = magnitude, chest
@@ -4536,7 +4532,7 @@ function StartFarmChest()
     end
     
     if nearest then
-        local chestPosition = nearest:GetPivot().Position
+        chestPosition = nearest:GetPivot().Position
         getgenv().ResetAntiDetect = true
         
         local success = pcall(function()
@@ -4832,7 +4828,7 @@ for i, v in pairs(RaidsModule.advancedRaids) do
     table.insert(Raidslist, v)
 end
 
-local function ChichChip()
+function ChichChip()
     local args = {
         [1] = "RaidsNpc",
         [2] = "Select",
@@ -4841,22 +4837,22 @@ local function ChichChip()
     game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
 end
 
-local function GoRaid()
-        if _G.World2 then
-            fireclickdetector(Workspace.Map.CircleIsland.RaidSummon2.Button.Main.ClickDetector)
-        elseif _G.World3 then
-            local Cd = game.Workspace.Map["Boat Castle"].RaidSummon2.Button.Main.ClickDetector
-            Cd.MaxActivationDistance = math.huge
-            fireclickdetector(Cd)
-        end
+function GoRaid()
+    if _G.World2 then
+        fireclickdetector(Workspace.Map.CircleIsland.RaidSummon2.Button.Main.ClickDetector)
+    elseif _G.World3 then
+        local Cd = game.Workspace.Map["Boat Castle"].RaidSummon2.Button.Main.ClickDetector
+        Cd.MaxActivationDistance = math.huge
+        fireclickdetector(Cd)
     end
+end
 
 local function Us()
-    local FruitPrice = {}
-    local FruitStore = {}
-    local PriceU = tonumber(getgenv().PriceLimit) or 1000000
+     FruitPrice = {}
+     FruitStore = {}
+     PriceU = tonumber(getgenv().PriceLimit) or 1000000
 
-    local getFruitsResult = game.ReplicatedStorage:WaitForChild("Remotes").CommF_:InvokeServer("GetFruits")
+     getFruitsResult = game.ReplicatedStorage:WaitForChild("Remotes").CommF_:InvokeServer("GetFruits")
     if type(getFruitsResult) == "table" then
         for i, v in pairs(getFruitsResult) do
             if v.Price <= PriceU then  
@@ -4864,7 +4860,7 @@ local function Us()
             end
         end
     end
-    local getInventoryFruitsResult = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("getInventoryFruits")
+     getInventoryFruitsResult = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("getInventoryFruits")
     if type(getInventoryFruitsResult) == "table" then
         for i, v in pairs(getInventoryFruitsResult) do
             if type(v) == "table" then
@@ -4996,12 +4992,12 @@ ToggleAwake:OnChanged(
     end
 )
 
-local Vi = {}
-local Ic = 5
-local Ti = false
+ Vi = {}
+ Ic = 5
+ Ti = false
 function AutoRaid()
     if not getgenv().AutoRaid then return false end
-            local Rv = false
+             Rv = false
             pcall(function()
                 local Pg = game:GetService("Players").LocalPlayer.PlayerGui
                 if Pg and Pg:FindFirstChild("Main") then
@@ -5044,7 +5040,7 @@ function AutoRaid()
                             return a.Name < b.Name
                         end)
                         
-                        local Fighting = false
+                         Fighting = false
                         for _, V in ipairs(E) do
                             if V:FindFirstChild("Humanoid") and V.Humanoid.Health > 0 and V:FindFirstChild("HumanoidRootPart") then
                                 if (P.Character.HumanoidRootPart.Position - V.HumanoidRootPart.Position).Magnitude <= 700 then
@@ -5088,7 +5084,7 @@ function AutoRaid()
                 if getgenv().Raid_AutoUnStore then
                     Us()
                 end
-                local HasChip = false
+                 HasChip = false
                 pcall(function()
                     local P = game:GetService("Players").LocalPlayer
                     if P.Backpack:FindFirstChild("Special Microchip") then
@@ -5131,7 +5127,7 @@ Tabs.R:AddButton(
 
 local FS = Tabs.R:AddSection("Tab Fruit")
 
-local function GetFruitList()
+function GetFruitList()
     local fruits = {}
     local success, result = pcall(function()
         local data = game.ReplicatedStorage.Remotes.CommF_:InvokeServer("GetFruits")
@@ -5215,7 +5211,6 @@ function IslandTP()
         Tween(IslandPart.CFrame)
     end
 end
-local ClonedFolder
 
 function CreateClonedFolder()
     ClonedFolder = workspace:FindFirstChild("__ClonedNPCs")
@@ -5254,7 +5249,7 @@ function CloneAllNPCs()
 end
 function GetNpcNames()
     CreateClonedFolder()
-    local Names = {}
+     Names = {}
     for _, Npc in pairs(ClonedFolder:GetChildren()) do
         if Npc:IsA("Model") and Npc:FindFirstChild("HumanoidRootPart") then
             table.insert(Names, Npc.Name)
@@ -5417,14 +5412,14 @@ ToggleNpcEsp:OnChanged(function(Val)
         end
     end
     
-    local WsNpc = workspace:FindFirstChild("NPCs")
+     WsNpc = workspace:FindFirstChild("NPCs")
     if WsNpc then
         for _, N in pairs(WsNpc:GetChildren()) do
             ProcessNPC(N)
         end
     end
     
-    local Cloned = workspace:FindFirstChild("__ClonedNPCs") or Instance.new("Folder", workspace)
+     Cloned = workspace:FindFirstChild("__ClonedNPCs") or Instance.new("Folder", workspace)
     Cloned.Name = "__ClonedNPCs"
     if Val then
         Cloned:ClearAllChildren()
@@ -5448,7 +5443,7 @@ local ToggleRealFruitEsp = Tabs.T:AddToggle("ToggleRealFruitEsp", {Title = "ESP 
 ToggleRealFruitEsp:OnChanged(function(Val)
     getgenv().EspRealFruit = Val
     if _G.World3 then
-        local Spawners = {
+         Spawners = {
             {workspace.AppleSpawner, "Apple", Color3.fromRGB(255, 0, 0)},
             {workspace.PineappleSpawner, "Pineapple", Color3.fromRGB(255, 255, 0)},
             {workspace.BananaSpawner, "Banana", Color3.fromRGB(255, 255, 0)}
