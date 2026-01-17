@@ -3848,11 +3848,21 @@ Tabs.Main:AddButton(
         Title = "Refresh Boss",
         Description = "Refresh the list of bosses spawn in the server",
         Callback = function()
+            local NewBossList = {}
+
+            for _, v in pairs(TableBoss) do
+                table.insert(NewBossList, v)
+            end
+
             for _, v in pairs(game:GetService("ReplicatedStorage"):GetChildren()) do
                 if string.find(v.Name, "Boss") and v.Name ~= "Ice Admiral" then
-                    table.insert(TableBoss, v.Name)
+                    if not table.find(NewBossList, v.Name) then
+                        table.insert(NewBossList, v.Name)
+                    end
                 end
             end
+
+            TableBoss = NewBossList
             DropdownBoss:SetValues(TableBoss)
         end
     }
@@ -3865,6 +3875,23 @@ ToggleBossFarm:OnChanged(
     end
 )
 
+function BossFarm()
+    if not getgenv().BossFarm then return false end
+    if game:GetService("Workspace").Enemies:FindFirstChild(getgenv().SelectBoss) then
+        for _, v in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
+            if v.Name == getgenv().SelectBoss and v:FindFirstChild("Humanoid") and v:FindFirstChild("HumanoidRootPart") and v.Humanoid.Health > 0 then
+                repeat wait()
+                    SH(v)
+                until not getgenv().BossFarm or not v.Parent or v.Humanoid.Health <= 0
+                return true
+            end
+        end
+    elseif game.ReplicatedStorage:FindFirstChild(getgenv().SelectBoss) then
+        Tween(game.ReplicatedStorage:FindFirstChild(getgenv().SelectBoss).HumanoidRootPart.CFrame * RandomCFrame)
+        return true
+    end
+    return false
+end
 
 -- Chest Farm Function --
 local ScreenGui = Instance.new("ScreenGui")
