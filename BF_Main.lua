@@ -3729,7 +3729,7 @@ local DropdownBoss =
         Title = "Select Boss",
         Values = bossCheck,
         Multi = false,
-        Default = table.find(1)
+        Default = 1
     }
 )
 DropdownBoss:OnChanged(
