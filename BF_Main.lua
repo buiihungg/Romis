@@ -303,30 +303,105 @@ function AntiLowHealth(AK)
     wait()
 end
 
+function WaitForCharacter()
+    local character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+    local humanoid = character:WaitForChild("Humanoid", 10)
+    local hrp = character:WaitForChild("HumanoidRootPart", 10)
+
+    if humanoid and hrp then
+        return character
+    end
+    return nil
+end
+
+function UpdateCharacterReferences()
+    repeat task.wait() until LocalPlayer.Character
+    local character = LocalPlayer.Character
+
+    local humanoid = character:WaitForChild("Humanoid", 10)
+    local hrp = character:WaitForChild("HumanoidRootPart", 10)
+
+    if humanoid and hrp then
+        if TWEEN then
+            TWEEN:Cancel()
+            TWEEN = nil
+        end
+
+        task.wait(0.5)
+        return true
+    end
+    return false
+end
+
 function StopTween()
-    pcall(
-        function()
-            local PLR = game.Players.LocalPlayer
-            if TWEEN then
-                TWEEN:Cancel()
-                TWEEN = nil
+    pcall(function()
+        local PLR = game.Players.LocalPlayer
+        
+        if TWEEN then
+            TWEEN:Cancel()
+            TWEEN = nil
+        end
+        
+        if PLR.Character then
+            local partTele = PLR.Character:FindFirstChild("PartTele")
+            if partTele then
+                partTele:Destroy()
             end
-            if PLR.Character and PLR.Character:FindFirstChild("PartTele") then
-                PLR.Character.PartTele:Destroy()
+            
+            local hrp = PLR.Character:FindFirstChild("HumanoidRootPart")
+            if hrp then
+                local bodyVelocity = hrp:FindFirstChild("BodyVelocity")
+                if bodyVelocity then
+                    bodyVelocity:Destroy()
+                end
             end
-            if PLR.Character and PLR.Character:FindFirstChild("HumanoidRootPart") and PLR.Character.HumanoidRootPart:FindFirstChild("BodyVelocity") then
-                PLR.Character.HumanoidRootPart.BodyVelocity:Destroy()
-            end
-            if PLR.Character then
-                for _, PART in pairs(PLR.Character:GetDescendants()) do
-                    if PART:IsA("BasePart") then
-                        PART.CanCollide = true
-                    end
+            
+            for _, PART in pairs(PLR.Character:GetDescendants()) do
+                if PART:IsA("BasePart") then
+                    PART.CanCollide = true
                 end
             end
         end
-    )
+    end)
 end
+
+LocalPlayer.CharacterAdded:Connect(function(character)
+    task.wait(1)
+
+    _B = false
+
+    if TWEEN then
+        TWEEN:Cancel()
+        TWEEN = nil
+    end
+
+    local humanoid = character:WaitForChild("Humanoid", 10)
+    local hrp = character:WaitForChild("HumanoidRootPart", 10)
+
+    if humanoid and hrp then
+        print("[Romis Hub] Character respawned and ready")
+
+        task.spawn(function()
+            while character and character.Parent do
+                local Stun = character:FindFirstChild("Stun")
+                if Stun then
+                    Stun.Changed:Connect(function()
+                        if Stun.Value ~= 0 then
+                            Stun.Value = 0
+                        end
+                    end)
+                    break
+                end
+                wait(1)
+            end
+        end)
+    end
+end)
+
+LocalPlayer.CharacterRemoving:Connect(function()
+    StopTween()
+    _B = false
+end)
 
 task.spawn(
     function()
@@ -424,151 +499,141 @@ end
 function Tween(AL)
     pcall(
         function()
-            if
-                game:GetService("Players").LocalPlayer and game:GetService("Players").LocalPlayer.Character and
-                    game:GetService("Players").LocalPlayer.Character:FindFirstChild("Humanoid") and
-                    game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart") and
-                    game:GetService("Players").LocalPlayer.Character.Humanoid.Health > 0 and
-                    game:GetService("Players").LocalPlayer.Character.HumanoidRootPart
-            then
-                local PLR = game.Players.LocalPlayer
-                DEFUALTY = AL.Y
-                TARGETY = AL.Y
-                TARGETCFRAMEWITHDEFUALTY = CFrame.new(AL.X, DEFUALTY, AL.Z)
-                TARGETPOS = AL.Position
-                OLDCFRAME = PLR.Character.HumanoidRootPart.CFrame
-                DISTANCE =
-                    (TARGETPOS -
-                    game:GetService("Players").LocalPlayer.Character:WaitForChild("HumanoidRootPart").Position).Magnitude
-                
-                if DISTANCE < 250 then
-                    TWEENSPEED = 500
-                elseif DISTANCE < 500 then
-                    TWEENSPEED = 400
-                elseif DISTANCE < 1000 then
-                    TWEENSPEED = 350
-                else
-                    TWEENSPEED = 300
+            local PLR = game.Players.LocalPlayer
+
+            if not PLR.Character then
+                UpdateCharacterReferences()
+                task.wait(0.5)
+            end
+
+            local character = PLR.Character
+            if not character then
+                return
+            end
+
+            local humanoid = character:FindFirstChild("Humanoid")
+            local hrp = character:FindFirstChild("HumanoidRootPart")
+
+            if not humanoid or not hrp or humanoid.Health <= 0 then
+                return
+            end
+
+            DEFUALTY = AL.Y
+            TARGETY = AL.Y
+            TARGETCFRAMEWITHDEFUALTY = CFrame.new(AL.X, DEFUALTY, AL.Z)
+            TARGETPOS = AL.Position
+            OLDCFRAME = hrp.CFrame
+            DISTANCE = (TARGETPOS - hrp.Position).Magnitude
+
+            if DISTANCE < 250 then
+                TWEENSPEED = 500
+            elseif DISTANCE < 500 then
+                TWEENSPEED = 400
+            elseif DISTANCE < 1000 then
+                TWEENSPEED = 350
+            else
+                TWEENSPEED = 300
+            end
+
+            TARGETCFRAME = AL
+
+            if getgenv().EnchanceTP then
+                NEARESTTELEPORT = CheckNearestTeleporter(AL)
+                if NEARESTTELEPORT then
+                    requestEntrance(NEARESTTELEPORT)
+                    TARGETCFRAME = CFrame.new(NEARESTTELEPORT.X, DEFUALTY, NEARESTTELEPORT.Z)
+                    TARGETPOS = NEARESTTELEPORT
+                    DISTANCE = (TARGETPOS - hrp.Position).Magnitude
                 end
-                
-                TARGETCFRAME = AL
-                if getgenv().EnchanceTP then
-                     NEARESTTELEPORT = CheckNearestTeleporter(AL)
-                    if NEARESTTELEPORT then
-                        requestEntrance(NEARESTTELEPORT)
-                        TARGETCFRAME = CFrame.new(NEARESTTELEPORT.X, DEFUALTY, NEARESTTELEPORT.Z)
-                        TARGETPOS = NEARESTTELEPORT
-                        DISTANCE =
-                            (TARGETPOS -
-                            game:GetService("Players").LocalPlayer.Character:WaitForChild("HumanoidRootPart").Position).Magnitude
+            end
+
+            if DISTANCE <= 300 then
+                hrp.CFrame = TARGETCFRAME
+                StopTween()
+                return
+            end
+
+            LOWHEALTH = humanoid.MaxHealth * (getgenv().LowHealthPer / 100)
+            NOTLOWHEALTH = humanoid.MaxHealth * (getgenv().NotLowHealthPer / 100)
+
+            if getgenv().AntiLowHealth and humanoid.Health <= LOWHEALTH then
+                StopTween()
+                OLDY = hrp.CFrame.Y
+                repeat
+                    wait()
+                    AntiLowHealth(getgenv().DistanceY or math.random(1000, 10000))
+                until not getgenv().AntiLowHealth or not humanoid or humanoid.Health > NOTLOWHEALTH
+                AntiLowHealth(OLDY)
+            end
+
+            if not character:FindFirstChild("PartTele") then
+                local PARTTELE = Instance.new("Part", character)
+                PARTTELE.Size = Vector3.new(10, 1, 10)
+                PARTTELE.Name = "PartTele"
+                PARTTELE.Anchored = true
+                PARTTELE.Transparency = 1
+                PARTTELE.CanCollide = true
+                PARTTELE.CFrame = hrp.CFrame
+
+                local BODYVELOCITY = Instance.new("BodyVelocity", hrp)
+                BODYVELOCITY.MaxForce = Vector3.new(math.huge, math.huge, math.huge)
+                BODYVELOCITY.Velocity = Vector3.new(0, 0, 0)
+
+                for _, PART in pairs(character:GetDescendants()) do
+                    if PART:IsA("BasePart") then
+                        PART.CanCollide = false
                     end
                 end
-                
-                if DISTANCE <= 300 then
-                    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = TARGETCFRAME
-                    StopTween()
-                    return
-                end
-                
-                LOWHEALTH = game.Players.LocalPlayer.Character.Humanoid.MaxHealth * (getgenv().LowHealthPer / 100)
-                NOTLOWHEALTH = game.Players.LocalPlayer.Character.Humanoid.MaxHealth * (getgenv().NotLowHealthPer / 100)
-                if getgenv().AntiLowHealth and game.Players.LocalPlayer.Character.Humanoid.Health <= LOWHEALTH then
-                    pcall(
-                        function()
-                            StopTween()
+
+                PARTTELE:GetPropertyChangedSignal("CFrame"):Connect(
+                    function()
+                        if not character:FindFirstChild("PartTele") then
+                            return
                         end
-                    )
-                    OLDY = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame.Y
-                    repeat
-                        wait()
-                        AntiLowHealth(getgenv().DistanceY or math.random(1000, 10000))
-                    until not getgenv().AntiLowHealth or
-                        not game.Players.LocalPlayer.Character:FindFirstChild("Humanoid") or
-                        game.Players.LocalPlayer.Character.Humanoid.Health > NOTLOWHEALTH
-                    AntiLowHealth(OLDY)
-                end
-                
-                if not PLR.Character:FindFirstChild("PartTele") then
-                    local PARTTELE = Instance.new("Part", PLR.Character)
-                    PARTTELE.Size = Vector3.new(10, 1, 10)
-                    PARTTELE.Name = "PartTele"
-                    PARTTELE.Anchored = true
-                    PARTTELE.Transparency = 1
-                    PARTTELE.CanCollide = true
-                    PARTTELE.CFrame = WaitHRP(PLR).CFrame
-                    
-                    local BODYVELOCITY = Instance.new("BodyVelocity", PLR.Character.HumanoidRootPart)
-                    BODYVELOCITY.MaxForce = Vector3.new(math.huge, math.huge, math.huge)
-                    BODYVELOCITY.Velocity = Vector3.new(0, 0, 0)
-                    
-                    for _, PART in pairs(PLR.Character:GetDescendants()) do
-                        if PART:IsA("BasePart") then
-                            PART.CanCollide = false
-                        end
-                    end
-                    
-                    PARTTELE:GetPropertyChangedSignal("CFrame"):Connect(function()
-                        if not PLR.Character:FindFirstChild("PartTele") then return end
                         task.wait()
-                        if PLR.Character and PLR.Character:FindFirstChild("HumanoidRootPart") then
-                            WaitHRP(PLR).CFrame = PARTTELE.CFrame
+                        if character and hrp then
+                            hrp.CFrame = PARTTELE.CFrame
                         end
-                    end)
-                end
-                
-                B1 =
-                    CFrame.new(
-                    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame.X,
-                    DEFUALTY,
-                    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame.Z
+                    end
                 )
-                local TWEENFUNC = {}
-                local AN = game:service "TweenService"
-                local AO =
-                    TweenInfo.new(
-                    DISTANCE / TWEENSPEED,
-                    Enum.EasingStyle.Linear
-                )
-                
-                if IGNOREY and (B1.Position - TARGETCFRAMEWITHDEFUALTY.Position).Magnitude > 5 then
-                    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame =
-                        CFrame.new(
-                        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame.X,
-                        DEFUALTY,
-                        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame.Z
-                    )
-                    TWEEN =
-                        AN:Create(
-                        game:GetService("Players").LocalPlayer.Character["PartTele"],
-                        AO,
-                        {CFrame = TARGETCFRAMEWITHDEFUALTY}
-                    )
-                else
-                    TWEEN =
-                        AN:Create(
-                        game:GetService("Players").LocalPlayer.Character["PartTele"],
-                        AO,
-                        {CFrame = TARGETCFRAME}
-                    )
-                end
-                
-                TWEEN:Play()
-                function TWEENFUNC:Stop()
-                    StopTween()
-                end
-                
-                TWEEN.Completed:Connect(function(STATUS)
+            end
+
+            B1 = CFrame.new(hrp.CFrame.X, DEFUALTY, hrp.CFrame.Z)
+            local TWEENFUNC = {}
+            local AN = game:service("TweenService")
+            local AO = TweenInfo.new(DISTANCE / TWEENSPEED, Enum.EasingStyle.Linear)
+
+            local partTele = character:FindFirstChild("PartTele")
+            if not partTele then
+                return
+            end
+
+            if IGNOREY and (B1.Position - TARGETCFRAMEWITHDEFUALTY.Position).Magnitude > 5 then
+                hrp.CFrame = CFrame.new(hrp.CFrame.X, DEFUALTY, hrp.CFrame.Z)
+                TWEEN = AN:Create(partTele, AO, {CFrame = TARGETCFRAMEWITHDEFUALTY})
+            else
+                TWEEN = AN:Create(partTele, AO, {CFrame = TARGETCFRAME})
+            end
+
+            TWEEN:Play()
+
+            function TWEENFUNC:Stop()
+                StopTween()
+            end
+
+            TWEEN.Completed:Connect(
+                function(STATUS)
                     if STATUS == Enum.PlaybackState.Completed then
                         StopTween()
                     end
-                end)
-                
-                TWEEN.Completed:Wait()
-                return TWEENFUNC
-            end
+                end
+            )
+
+            return TWEENFUNC
         end
     )
 end
+
 function RemoveEffects()
     workspace.ClientAnimatorThrottling = Enum.ClientAnimatorThrottlingMode.Enabled
     workspace.InterpolationThrottling = Enum.InterpolationThrottlingMode.Enabled
@@ -1380,6 +1445,11 @@ end
 function SH(target)
     if not isModel(target) then return end
     local character = game:GetService("Players").LocalPlayer.Character
+    if not character then
+        UpdateCharacterReferences()
+        task.wait(0.5)
+        character = game:GetService("Players").LocalPlayer.Character
+    end
     if not character then return end
     local targetCFrame = GetModelCFrame(target)
     Tween(targetCFrame * RandomCFrame)
@@ -2026,7 +2096,8 @@ local function GetSmallestServer()
     end
     return nil
 end
-local function TeleportToSmallestServer()
+
+function TeleportToSmallestServer()
     local ServerId = GetSmallestServer()
     if ServerId then
         TeleportService:TeleportToPlaceInstance(PlaceId, ServerId, Players.LocalPlayer)
@@ -2034,6 +2105,7 @@ local function TeleportToSmallestServer()
         warn("No available server found with less than " .. getgenv().PlayerAmount .. " players.")
     end
 end
+
 local SliderTP = Tabs.S:AddSlider("SliderTP", {
     Title = "Player Amount",
     Description = "Select player limit for teleport",
@@ -2045,6 +2117,7 @@ local SliderTP = Tabs.S:AddSlider("SliderTP", {
         getgenv().PlayerAmount = math.floor(Value)
     end
 })
+
 SliderTP:OnChanged(function(Value)
     getgenv().PlayerAmount = math.floor(Value)
 end)
@@ -2056,6 +2129,7 @@ local ButtonTP = Tabs.S:AddButton({
         TeleportToSmallestServer()
     end
 })
+
 local CopyJobIdButton = Tabs.S:AddButton({
     Title = "Copy Server Job ID",
     Description = "Copy current server Job ID to clipboard",
@@ -2079,6 +2153,7 @@ local CopyJobIdButton = Tabs.S:AddButton({
         end
     end
 })
+
 local CopySkullHubIdButton = Tabs.S:AddButton({
     Title = "Copy Romis Hub ID",
     Description = "Copy server Romis Hub Job ID",
@@ -2103,6 +2178,7 @@ local CopySkullHubIdButton = Tabs.S:AddButton({
         end
     end
 })
+
 local ServerCodeInput = Tabs.S:AddInput("ServerCodeInput", {
     Title = "Input Server Code",
     Default = "",
