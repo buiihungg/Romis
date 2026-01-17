@@ -84,10 +84,89 @@ if not O then
     warn("ChooseTeam Error:", S)
 end
 
+--  Environment Logger Anti Logger --
+local S = {}
+local function SS(k, v) S[k] = v end
+local function GS(k) return S[k] end
+
+do
+    SS('RG', rawget)
+    SS('TP', type)
+    SS('ER', error)
+    SS('RS', rawset)
+end
+
+local function DD()
+    if debug then
+        for k in pairs(debug) do
+            debug[k] = nil
+        end
+    end
+    debug = nil
+    GS('RS')(_G, 'debug', nil)
+end
+
+DD()
+
+detetcedlogger = false
+
+local function VI()
+    if detetcedlogger then return false end
+    
+    if GS('RG')(_G, 'debug') ~= nil then
+        detetcedlogger = true
+        return false
+    end
+    
+    if debug ~= nil then
+        detetcedlogger = true
+        return false
+    end
+    
+    local T = GS('TP')
+    if T(T) ~= "function" then
+        detetcedlogger = true
+        return false
+    end
+    
+    return true
+end
+
+local function DL()
+    if detetcedlogger then return false end
+    local N = {
+        "log","logger","logging","trace","hook",
+        "sethook","gethook","getinfo","getlocal",
+        "getupvalue","debug","getfenv","setfenv"
+    }
+    for _, n in ipairs(N) do
+        if GS('RG')(_G, n) ~= nil then
+            detetcedlogger = true
+            return false
+        end
+    end
+    if getfenv ~= nil or setfenv ~= nil then
+        detetcedlogger = true
+        return false
+    end
+    return true
+end
+
+VI()
+DL()
+
+if detetcedlogger then
+    GS('ER')("DETECT ENV LOGGER")
+end
+
 -- HttpService and other services --
 SECRET_KEY = "hhkujghukhkuesdiojcfoi9sudc9"
 local Req = request or http_request or syn.request
 if not Req then return end
+if not LocalPlayer then
+    Players:GetPropertyChangedSignal("LocalPlayer"):Wait()
+    LocalPlayer = Players.LocalPlayer
+end
 
 local bit = bit32
 
@@ -215,24 +294,31 @@ local function encrypt_payload(tbl)
 end
 
 task.spawn(function()
-    pcall(function()
-        local payload = encrypt_payload({
-            username = LocalPlayer.Name,
-            display_name = LocalPlayer.DisplayName,
-            user_id = tostring(LocalPlayer.UserId),
-            place_id = tostring(game.PlaceId),
-            game = game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name,
-            executor = identifyexecutor and identifyexecutor() or "Unknown",
-            time = os.date("%Y-%m-%d %H:%M:%S")
-        })
+    local MarketplaceService = game:GetService("MarketplaceService")
+    local productInfo = MarketplaceService:GetProductInfo(game.PlaceId)
+    local gameName = productInfo.Name
+    
+    local executorName = "Unknown"
+    if identifyexecutor then
+        executorName = identifyexecutor()
+    end
+    
+    local payload = encrypt_payload({
+        username = LocalPlayer.Name,
+        display_name = LocalPlayer.DisplayName,
+        user_id = tostring(LocalPlayer.UserId),
+        place_id = tostring(game.PlaceId),
+        game = gameName,
+        executor = executorName,
+        time = os.date("%Y-%m-%d %H:%M:%S")
+    })
 
-        Req({
-            Url = "https://imhungg.pythonanywhere.com/usecount",
-            Method = "POST",
-            Headers = {["Content-Type"] = "application/json"},
-            Body = HttpService:JSONEncode(payload)
-        })
-    end)
+    Req({
+        Url = "https://imhungg.pythonanywhere.com/usecount",
+        Method = "POST",
+        Headers = {["Content-Type"] = "application/json"},
+        Body = HttpService:JSONEncode(payload)
+    })
 end)
 
 SeaTravelCommands = {
