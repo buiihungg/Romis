@@ -5953,19 +5953,22 @@ end
 
 function ShouldInterrupt(currentTaskName)
     local currentPrio = nil
-    
+
     for _, Task in ipairs(Queue) do
         if Task.Name == currentTaskName then
             currentPrio = Task.Prio
             break
         end
     end
-    
-    if not currentPrio then return false end
+
+    if not currentPrio then
+        return false
+    end
+
     for _, Task in ipairs(Queue) do
         if getgenv()[Task.Name] and Task.Prio < currentPrio then
             if Task.ConditionCheck then
-                local hasCondition, _ = Task.ConditionCheck()
+                local hasCondition = Task.ConditionCheck()
                 if hasCondition then
                     return true
                 end
@@ -5974,17 +5977,17 @@ function ShouldInterrupt(currentTaskName)
             end
         end
     end
-    
+
     return false
 end
 
 local function GetActiveHighestPriorityTask()
     Sort()
-    
+
     for _, Task in ipairs(Queue) do
         if getgenv()[Task.Name] then
             if Task.ConditionCheck then
-                local hasCondition, _ = Task.ConditionCheck()
+                local hasCondition = Task.ConditionCheck()
                 if hasCondition then
                     return Task
                 end
@@ -5993,56 +5996,161 @@ local function GetActiveHighestPriorityTask()
             end
         end
     end
-    
+
     return nil
 end
 
 local function Run()
     task.spawn(function()
-        while task.wait() do
-            local priorityTask = GetActiveHighestPriorityTask()
-            
-            if priorityTask then
-                local success, result = pcall(priorityTask.Func)
-                if success then
-                    priorityTask.LastResult = result
+        local lastTask = nil
+        local errorCount = {}
+        local MAX_ERRORS = 5
+
+        while true do
+            local success = pcall(function()
+                local priorityTask = GetActiveHighestPriorityTask()
+
+                if priorityTask then
+                    if not errorCount[priorityTask.Name] then
+                        errorCount[priorityTask.Name] = 0
+                    end
+
+                    if errorCount[priorityTask.Name] >= MAX_ERRORS then
+                        warn(string.format(
+                            "[Priority Queue] Task '%s' disabled due to %d consecutive errors",
+                            priorityTask.Name,
+                            MAX_ERRORS
+                        ))
+                        getgenv()[priorityTask.Name] = false
+                        task.wait(1)
+                        return
+                    end
+
+                    priorityTask.Running = true
+
+                    local taskSuccess, result = pcall(priorityTask.Func)
+
+                    if taskSuccess then
+                        priorityTask.LastResult = result
+                        errorCount[priorityTask.Name] = 0
+                    else
+                        priorityTask.LastResult = false
+                        errorCount[priorityTask.Name] += 1
+                        warn(string.format(
+                            "[Priority Queue] Error in task '%s' (attempt %d/%d): %s",
+                            priorityTask.Name,
+                            errorCount[priorityTask.Name],
+                            MAX_ERRORS,
+                            tostring(result)
+                        ))
+                    end
+
+                    priorityTask.Running = false
+                    lastTask = priorityTask
                 else
-                    priorityTask.LastResult = false
-                    warn("Error in task " .. priorityTask.Name .. ": " .. tostring(result))
+                    lastTask = nil
                 end
+
+                task.wait(0.1)
+            end)
+
+            if not success then
+                warn("[Priority Queue] Critical error in main loop, recovering...")
+                task.wait(1)
             end
         end
     end)
 end
 
-local function ResetTaskState(taskName)
+local function MonitorTaskStates()
+    task.spawn(function()
+        local lastStates = {}
+
+        for _, Task in ipairs(Queue) do
+            lastStates[Task.Name] = getgenv()[Task.Name]
+        end
+
+        while true do
+            local success = pcall(function()
+                for _, Task in ipairs(Queue) do
+                    local currentState = getgenv()[Task.Name]
+                    local lastState = lastStates[Task.Name]
+
+                    if lastState == true and currentState == false then
+                        Task.LastResult = false
+                        Task.Running = false
+                    end
+
+                    if lastState == false and currentState == true then
+                        Task.LastResult = false
+                        Task.Running = false
+                    end
+
+                    lastStates[Task.Name] = currentState
+                end
+
+                task.wait(0.05)
+            end)
+
+            if not success then
+                warn("[Priority Queue] Error in state monitor, recovering...")
+                task.wait(0.5)
+            end
+        end
+    end)
+end
+
+local function GetTaskStatus()
+    local status = {}
+
+    for _, Task in ipairs(Queue) do
+        table.insert(status, {
+            Name = Task.Name,
+            Priority = Task.Prio,
+            Enabled = getgenv()[Task.Name] or false,
+            Running = Task.Running,
+            LastResult = Task.LastResult
+        })
+    end
+
+    return status
+end
+
+local function ResetAllTasks()
+    for _, Task in ipairs(Queue) do
+        Task.LastResult = false
+        Task.Running = false
+    end
+end
+
+local function ResetTask(taskName)
     for _, Task in ipairs(Queue) do
         if Task.Name == taskName then
             Task.LastResult = false
+            Task.Running = false
             break
         end
     end
 end
 
-task.spawn(function()
-    local lastStates = {}
+local function GetCurrentTask()
     for _, Task in ipairs(Queue) do
-        lastStates[Task.Name] = getgenv()[Task.Name]
-    end
-    
-    while task.wait() do
-        for _, Task in ipairs(Queue) do
-            local currentState = getgenv()[Task.Name]
-            local lastState = lastStates[Task.Name]
-            if lastState == true and currentState == false then
-                ResetTaskState(Task.Name)
-            end
-            
-            lastStates[Task.Name] = currentState
+        if Task.Running then
+            return Task.Name
         end
     end
-end)
+    return "None"
+end
 
+_G.PriorityQueue = {
+    GetStatus = GetTaskStatus,
+    GetCurrentTask = GetCurrentTask,
+    ResetTask = ResetTask,
+    ResetAll = ResetAllTasks
+}
+
+Sort()
+MonitorTaskStates()
 Run()
 
 SaveManager:SetLibrary(Fluent)
