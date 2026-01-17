@@ -3830,6 +3830,13 @@ Tabs.Main:AddButton(
         Title = "Refresh Boss",
         Description = "Refresh the list of bosses spawn in the server",
         Callback = function()
+            local bosses = {}
+            for _, v in pairs(game:GetService("ReplicatedStorage"):GetChildren()) do
+                if string.find(v.Name, "Boss") and v.Name ~= "Ice Admiral" then
+                    table.insert(bosses, v.Name)
+                end
+            end
+            DropdownBoss:SetValues(bosses)
         end
     }
 )
