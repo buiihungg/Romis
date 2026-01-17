@@ -4703,7 +4703,7 @@ Toggles.ToggleWE =
     Tabs.Main:AddToggle(
     "ToggleWE",
     {
-        Title = "Enable Webhook Chest",
+        Title = "Webhook Chest",
         Default = false
     }
 )
@@ -4773,7 +4773,7 @@ Toggles.ToggleStartFarmChest =
     Tabs.Main:AddToggle(
     "ToggleStartFarmChest",
     {
-        Title = "Start Farm Chest",
+        Title = "Farm Chest",
         Default = false
     }
 )
@@ -4845,13 +4845,6 @@ Toggles.ToggleFruitCollect:OnChanged(function(Value)
 end)
 
 local GameEventSecction = Tabs.E:AddSection("Tab PvP")
-
-Toggles.ToggleTu = Tabs.E:AddToggle("ToggleTu", {Title = "Auto Enable PvP", Default = false })
-Toggles.ToggleTu:OnChanged(
-    function(Value)
-        getgenv().AutoEnblePvP = Value
-    end
-)
 
 Playerslist = {}
 for i, v in pairs(game:GetService("Players"):GetPlayers()) do
@@ -4980,6 +4973,13 @@ Toggles.SpectateToggle:OnChanged(
                 game:GetService("Players"):FindFirstChild(getgenv().SelectPlayer).Character.Humanoid
         until SpectatePlys == false
         game:GetService("Workspace").Camera.CameraSubject = game:GetService("Players").LocalPlayer.Character.Humanoid
+    end
+)
+
+Toggles.ToggleTu = Tabs.E:AddToggle("ToggleTu", {Title = "Auto Enable PvP", Default = false })
+Toggles.ToggleTu:OnChanged(
+    function(Value)
+        getgenv().AutoEnblePvP = Value
     end
 )
 
@@ -5350,7 +5350,7 @@ Toggles.ToggleSniperFruit =
     Tabs.R:AddToggle(
     "ToggleSniperFruit",
     {
-        Title = "Enable Sniper Fruit",
+        Title = "Sniper Fruit",
         Default = false
     }
 )
