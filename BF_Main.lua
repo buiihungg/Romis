@@ -1748,12 +1748,13 @@ local function UpdateGameTime()
     local Seconds = TotalSeconds % 60
     GameTimeStatus:SetDesc(string.format("%02d (H) - %02d (M) - %02d (S)", Hours, Minutes, Seconds))
 end
+
 task.spawn(function()
     while task.wait() do
 	UpdateGameTime()
     end
 end)
-if _G.World2 then
+
 local Sttt = Tabs.S:AddSection("Status")
 
 local Status14 = Tabs.S:AddParagraph({
@@ -1802,15 +1803,6 @@ function CheckLegendarySwordStatus()
     Status15:SetDesc(SwordStatus)
 end
 
-task.spawn(function()
-    while task.wait(0.5) do
-        CheckLegendarySwordStatus()
-        FlowerItems()
-    end
-end)
-end
-
-if _G.World3 then
 local Sttt = Tabs.S:AddSection("Status")
 
 local CakePrinceStatus = Tabs.S:AddParagraph({
@@ -2028,10 +2020,11 @@ task.spawn(function()
             PrehistoricIslandCheck()
             CheckDragonQuest()
             CheckLeviathanChip()
+            CheckLegendarySwordStatus()
+            FlowerItems()
         end
     end
 end)
-end
 
 local hoicham = Tabs.S:AddSection("Game Function")
 
