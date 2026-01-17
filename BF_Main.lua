@@ -379,8 +379,6 @@ LocalPlayer.CharacterAdded:Connect(function(character)
     local hrp = character:WaitForChild("HumanoidRootPart", 10)
 
     if humanoid and hrp then
-        print("[Romis Hub] Character respawned and ready")
-
         task.spawn(function()
             while character and character.Parent do
                 local Stun = character:FindFirstChild("Stun")
@@ -3810,12 +3808,31 @@ end
 -- Boss Farm Function --
 local BF = Tabs.Main:AddSection("Tab Boss Farm")
 
+TableBoss = {
+    "The Gorilla King", "Bobby", "Yeti", "Mob Leader", "Vice Admiral", "Warden", "Chief Warden", "Swan", "Magma Admiral", "Fishman Lord", "Wysper", "Thunder God", "Cyborg", "Saber Expert",
+    "Diamond", "Jeremy", "Fajita", "Don Swan", "Smoke Admiral", "Cursed Captain", "Darkbeard", "Order", "Awakened Ice Admiral", "Tide Keeper",
+    "Stone", "Island Empress", "Kilo Admiral", "Captain Elephant", "Beautiful Pirate", "rip_indra True Form", "Longma", "Soul Reaper", "Cake Queen"
+}
+
+Boss = {}
+for _, v in pairs(game:GetService("ReplicatedStorage"):GetChildren()) do
+    if string.find(v.Name, "Boss") and v.Name ~= "Ice Admiral" then
+        table.insert(Boss, v.Name)
+    end
+end
+
+for _, name in pairs(Boss) do
+    if not table.find(TableBoss, name) then
+        table.insert(TableBoss, name)
+    end
+end
+
 local DropdownBoss =
     Tabs.Main:AddDropdown(
     "DropdownBoss",
     {
         Title = "Select Boss",
-        Values = {},
+        Values = TableBoss,
         Multi = false,
         Default = 1
     }
@@ -3831,13 +3848,12 @@ Tabs.Main:AddButton(
         Title = "Refresh Boss",
         Description = "Refresh the list of bosses spawn in the server",
         Callback = function()
-            local bosses = {}
             for _, v in pairs(game:GetService("ReplicatedStorage"):GetChildren()) do
                 if string.find(v.Name, "Boss") and v.Name ~= "Ice Admiral" then
-                    table.insert(bosses, v.Name)
+                    table.insert(TableBoss, v.Name)
                 end
             end
-            DropdownBoss:SetValues(bosses)
+            DropdownBoss:SetValues(TableBoss)
         end
     }
 )
