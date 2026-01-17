@@ -84,81 +84,6 @@ if not O then
     warn("ChooseTeam Error:", S)
 end
 
---  Environment Logger Anti Logger --
-local S = {}
-local function SS(k, v) S[k] = v end
-local function GS(k) return S[k] end
-
-do
-    SS('RG', rawget)
-    SS('TP', type)
-    SS('ER', error)
-    SS('RS', rawset)
-end
-
-local function DD()
-    if debug then
-        for k in pairs(debug) do
-            debug[k] = nil
-        end
-    end
-    debug = nil
-    GS('RS')(_G, 'debug', nil)
-end
-
-DD()
-
-detetcedlogger = false
-
-local function VI()
-    if detetcedlogger then return false end
-    
-    if GS('RG')(_G, 'debug') ~= nil then
-        detetcedlogger = true
-        return false
-    end
-    
-    if debug ~= nil then
-        detetcedlogger = true
-        return false
-    end
-    
-    local T = GS('TP')
-    if T(T) ~= "function" then
-        detetcedlogger = true
-        return false
-    end
-    
-    return true
-end
-
-local function DL()
-    if detetcedlogger then return false end
-    local N = {
-        "log","logger","logging","trace","hook",
-        "sethook","gethook","getinfo","getlocal",
-        "getupvalue","debug","getfenv","setfenv"
-    }
-    for _, n in ipairs(N) do
-        if GS('RG')(_G, n) ~= nil then
-            detetcedlogger = true
-            return false
-        end
-    end
-    if getfenv ~= nil or setfenv ~= nil then
-        detetcedlogger = true
-        return false
-    end
-    return true
-end
-
-VI()
-DL()
-
-if detetcedlogger then
-    GS('ER')("DETECT ENV LOGGER")
-end
-
 -- HttpService and other services --
 SECRET_KEY = "hhkujghukhkuesdiojcfoi9sudc9"
 local Req = request or http_request or syn.request
@@ -6005,16 +5930,13 @@ local function Run()
         local lastTask = nil
         local errorCount = {}
         local MAX_ERRORS = 5
-
         while true do
             local success = pcall(function()
                 local priorityTask = GetActiveHighestPriorityTask()
-
                 if priorityTask then
                     if not errorCount[priorityTask.Name] then
                         errorCount[priorityTask.Name] = 0
                     end
-
                     if errorCount[priorityTask.Name] >= MAX_ERRORS then
                         warn(string.format(
                             "[Priority Queue] Task '%s' disabled due to %d consecutive errors",
@@ -6025,9 +5947,7 @@ local function Run()
                         task.wait(1)
                         return
                     end
-
                     priorityTask.Running = true
-
                     local taskSuccess, result = pcall(priorityTask.Func)
 
                     if taskSuccess then
@@ -6035,7 +5955,7 @@ local function Run()
                         errorCount[priorityTask.Name] = 0
                     else
                         priorityTask.LastResult = false
-                        errorCount[priorityTask.Name] += 1
+                        errorCount[priorityTask.Name] = errorCount[priorityTask.Name] + 1
                         warn(string.format(
                             "[Priority Queue] Error in task '%s' (attempt %d/%d): %s",
                             priorityTask.Name,
