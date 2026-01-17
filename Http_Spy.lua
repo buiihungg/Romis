@@ -1,4 +1,3 @@
--- Advanced HTTP Spy v3
 local HttpSpy = Instance.new("ScreenGui")
 local MainFrame = Instance.new("Frame")
 local UICorner = Instance.new("UICorner")
@@ -18,7 +17,13 @@ local MainContainer = Instance.new("ScrollingFrame")
 local UIListLayout = Instance.new("UIListLayout")
 local UIPadding = Instance.new("UIPadding")
 
--- Properties
+local DetailFrame = Instance.new("Frame")
+local DetailTitleBar = Instance.new("Frame")
+local DetailTitle = Instance.new("TextLabel")
+local DetailCloseBtn = Instance.new("TextButton")
+local DetailScroll = Instance.new("ScrollingFrame")
+local DetailText = Instance.new("TextLabel")
+
 HttpSpy.Name = "HttpSpyV3"
 HttpSpy.Parent = game.CoreGui
 HttpSpy.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
@@ -30,11 +35,11 @@ MainFrame.BackgroundColor3 = Color3.fromRGB(25, 25, 30)
 MainFrame.BorderSizePixel = 0
 MainFrame.Position = UDim2.new(0.05, 0, 0.2, 0)
 MainFrame.Size = UDim2.new(0, 500, 0, 400)
+MainFrame.Active = true
 
 UICorner.CornerRadius = UDim.new(0, 12)
 UICorner.Parent = MainFrame
 
--- Shadow effect
 local Shadow = Instance.new("ImageLabel")
 Shadow.Name = "Shadow"
 Shadow.Parent = MainFrame
@@ -53,6 +58,7 @@ TitleBar.Parent = MainFrame
 TitleBar.BackgroundColor3 = Color3.fromRGB(35, 35, 42)
 TitleBar.BorderSizePixel = 0
 TitleBar.Size = UDim2.new(1, 0, 0, 35)
+TitleBar.Active = true
 
 UICorner_2.CornerRadius = UDim.new(0, 12)
 UICorner_2.Parent = TitleBar
@@ -113,7 +119,6 @@ local ClearCorner = Instance.new("UICorner")
 ClearCorner.CornerRadius = UDim.new(1, 0)
 ClearCorner.Parent = ClearButton
 
--- Filter Frame
 FilterFrame.Name = "FilterFrame"
 FilterFrame.Parent = MainFrame
 FilterFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 38)
@@ -217,7 +222,101 @@ UIPadding.PaddingRight = UDim.new(0, 10)
 UIPadding.PaddingTop = UDim.new(0, 10)
 UIPadding.PaddingBottom = UDim.new(0, 10)
 
--- Notification
+DetailFrame.Name = "DetailFrame"
+DetailFrame.Parent = HttpSpy
+DetailFrame.BackgroundColor3 = Color3.fromRGB(25, 25, 30)
+DetailFrame.BorderSizePixel = 0
+DetailFrame.Position = UDim2.new(0.3, 0, 0.15, 0)
+DetailFrame.Size = UDim2.new(0, 600, 0, 500)
+DetailFrame.Visible = false
+DetailFrame.Active = true
+DetailFrame.ZIndex = 10
+
+local DetailCorner = Instance.new("UICorner")
+DetailCorner.CornerRadius = UDim.new(0, 12)
+DetailCorner.Parent = DetailFrame
+
+local DetailShadow = Instance.new("ImageLabel")
+DetailShadow.Name = "Shadow"
+DetailShadow.Parent = DetailFrame
+DetailShadow.BackgroundTransparency = 1
+DetailShadow.Position = UDim2.new(0, -15, 0, -15)
+DetailShadow.Size = UDim2.new(1, 30, 1, 30)
+DetailShadow.ZIndex = 9
+DetailShadow.Image = "rbxasset://textures/ui/GuiImagePlaceholder.png"
+DetailShadow.ImageColor3 = Color3.fromRGB(0, 0, 0)
+DetailShadow.ImageTransparency = 0.3
+DetailShadow.ScaleType = Enum.ScaleType.Slice
+DetailShadow.SliceCenter = Rect.new(10, 10, 118, 118)
+
+DetailTitleBar.Name = "DetailTitleBar"
+DetailTitleBar.Parent = DetailFrame
+DetailTitleBar.BackgroundColor3 = Color3.fromRGB(35, 35, 42)
+DetailTitleBar.BorderSizePixel = 0
+DetailTitleBar.Size = UDim2.new(1, 0, 0, 40)
+DetailTitleBar.ZIndex = 11
+DetailTitleBar.Active = true
+
+local DetailTitleCorner = Instance.new("UICorner")
+DetailTitleCorner.CornerRadius = UDim.new(0, 12)
+DetailTitleCorner.Parent = DetailTitleBar
+
+DetailTitle.Name = "DetailTitle"
+DetailTitle.Parent = DetailTitleBar
+DetailTitle.BackgroundTransparency = 1
+DetailTitle.Position = UDim2.new(0, 15, 0, 0)
+DetailTitle.Size = UDim2.new(1, -50, 1, 0)
+DetailTitle.Font = Enum.Font.GothamBold
+DetailTitle.Text = "📄 Log Details"
+DetailTitle.TextColor3 = Color3.fromRGB(100, 200, 255)
+DetailTitle.TextSize = 16
+DetailTitle.TextXAlignment = Enum.TextXAlignment.Left
+DetailTitle.ZIndex = 11
+
+DetailCloseBtn.Name = "DetailCloseBtn"
+DetailCloseBtn.Parent = DetailTitleBar
+DetailCloseBtn.BackgroundColor3 = Color3.fromRGB(255, 60, 60)
+DetailCloseBtn.BorderSizePixel = 0
+DetailCloseBtn.Position = UDim2.new(1, -30, 0, 10)
+DetailCloseBtn.Size = UDim2.new(0, 20, 0, 20)
+DetailCloseBtn.Font = Enum.Font.GothamBold
+DetailCloseBtn.Text = "×"
+DetailCloseBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+DetailCloseBtn.TextSize = 16
+DetailCloseBtn.ZIndex = 11
+
+local DetailCloseCorner = Instance.new("UICorner")
+DetailCloseCorner.CornerRadius = UDim.new(1, 0)
+DetailCloseCorner.Parent = DetailCloseBtn
+
+DetailScroll.Name = "DetailScroll"
+DetailScroll.Parent = DetailFrame
+DetailScroll.BackgroundColor3 = Color3.fromRGB(30, 30, 38)
+DetailScroll.BorderSizePixel = 0
+DetailScroll.Position = UDim2.new(0, 10, 0, 50)
+DetailScroll.Size = UDim2.new(1, -20, 1, -60)
+DetailScroll.ScrollBarThickness = 8
+DetailScroll.ScrollBarImageColor3 = Color3.fromRGB(100, 100, 120)
+DetailScroll.ZIndex = 11
+
+local DetailScrollCorner = Instance.new("UICorner")
+DetailScrollCorner.CornerRadius = UDim.new(0, 8)
+DetailScrollCorner.Parent = DetailScroll
+
+DetailText.Name = "DetailText"
+DetailText.Parent = DetailScroll
+DetailText.BackgroundTransparency = 1
+DetailText.Size = UDim2.new(1, -10, 1, 0)
+DetailText.Position = UDim2.new(0, 5, 0, 5)
+DetailText.Font = Enum.Font.Code
+DetailText.Text = ""
+DetailText.TextColor3 = Color3.fromRGB(220, 220, 220)
+DetailText.TextSize = 13
+DetailText.TextXAlignment = Enum.TextXAlignment.Left
+DetailText.TextYAlignment = Enum.TextYAlignment.Top
+DetailText.TextWrapped = true
+DetailText.ZIndex = 11
+
 local NotificationFrame = Instance.new("Frame")
 NotificationFrame.Name = "NotificationFrame"
 NotificationFrame.Parent = HttpSpy
@@ -241,67 +340,82 @@ NotificationText.TextColor3 = Color3.fromRGB(255, 255, 255)
 NotificationText.TextSize = 14
 NotificationText.Text = "✓ Copied to clipboard!"
 
--- Variables
-local isMinimized = false
-local currentFilter = "ALL"
-local totalRequests = 0
-local getCount = 0
-local postCount = 0
-local allLogs = {}
+local IsMinimized = false
+local CurrentFilter = "ALL"
+local TotalRequests = 0
+local GetCount = 0
+local PostCount = 0
+local AllLogs = {}
 
--- Functions
-local function updateStats()
-    StatsLabel.Text = string.format("📊 Total: %d | GET: %d | POST: %d", totalRequests, getCount, postCount)
+local function UpdateStats()
+    StatsLabel.Text = string.format("📊 Total: %d | GET: %d | POST: %d", TotalRequests, GetCount, PostCount)
 end
 
-local function createDraggable(gui)
-    local dragging, dragInput, dragStart, startPos
+local function CreateDraggable(Frame, TargetFrame)
+    local Dragging = false
+    local DragInput, DragStart, StartPos
 
-    local function update(input)
-        local delta = input.Position - dragStart
-        gui.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+    local function Update(Input)
+        local Delta = Input.Position - DragStart
+        TargetFrame.Position = UDim2.new(StartPos.X.Scale, StartPos.X.Offset + Delta.X, StartPos.Y.Scale, StartPos.Y.Offset + Delta.Y)
     end
 
-    gui.InputBegan:Connect(function(input)
-        if input.UserInputType ~= Enum.UserInputType.MouseButton1 and input.UserInputType ~= Enum.UserInputType.Touch then return end
-        dragging = true
-        dragStart = input.Position
-        startPos = gui.Position
-        input.Changed:Connect(function()
-            if input.UserInputState == Enum.UserInputState.End then
-                dragging = false
-            end
-        end)
-    end)
-
-    gui.InputChanged:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
-            dragInput = input
+    Frame.InputBegan:Connect(function(Input)
+        if Input.UserInputType == Enum.UserInputType.MouseButton1 or Input.UserInputType == Enum.UserInputType.Touch then
+            Dragging = true
+            DragStart = Input.Position
+            StartPos = TargetFrame.Position
+            
+            Input.Changed:Connect(function()
+                if Input.UserInputState == Enum.UserInputState.End then
+                    Dragging = false
+                end
+            end)
         end
     end)
 
-    game:GetService("UserInputService").InputChanged:Connect(function(input)
-        if input == dragInput and dragging then
-            update(input)
+    Frame.InputChanged:Connect(function(Input)
+        if Input.UserInputType == Enum.UserInputType.MouseMovement or Input.UserInputType == Enum.UserInputType.Touch then
+            DragInput = Input
+        end
+    end)
+
+    game:GetService("UserInputService").InputChanged:Connect(function(Input)
+        if Input == DragInput and Dragging then
+            Update(Input)
         end
     end)
 end
 
-createDraggable(TitleBar)
+CreateDraggable(TitleBar, MainFrame)
+CreateDraggable(DetailTitleBar, DetailFrame)
 
-local function registerDynamicScrollingFrame(frame)
-    local layout = frame:FindFirstChildWhichIsA("UIListLayout")
-    local function updateCanvasSize()
-        frame.CanvasSize = UDim2.new(0, 0, 0, layout.AbsoluteContentSize.Y + 20)
+local function RegisterDynamicScrollingFrame(Frame)
+    local Layout = Frame:FindFirstChildWhichIsA("UIListLayout")
+    if Layout then
+        local function UpdateCanvasSize()
+            Frame.CanvasSize = UDim2.new(0, 0, 0, Layout.AbsoluteContentSize.Y + 20)
+        end
+        Layout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(UpdateCanvasSize)
+        UpdateCanvasSize()
     end
-    layout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(updateCanvasSize)
-    updateCanvasSize()
 end
 
-registerDynamicScrollingFrame(MainContainer)
+RegisterDynamicScrollingFrame(MainContainer)
 
-local function showNotification(message)
-    NotificationText.Text = message or "✓ Copied to clipboard!"
+local function UpdateDetailTextSize()
+    local TextBounds = game:GetService("TextService"):GetTextSize(
+        DetailText.Text,
+        DetailText.TextSize,
+        DetailText.Font,
+        Vector2.new(DetailScroll.AbsoluteSize.X - 20, math.huge)
+    )
+    DetailText.Size = UDim2.new(1, -10, 0, math.max(TextBounds.Y + 10, DetailScroll.AbsoluteSize.Y))
+    DetailScroll.CanvasSize = UDim2.new(0, 0, 0, TextBounds.Y + 20)
+end
+
+local function ShowNotification(Message)
+    NotificationText.Text = Message or "✓ Copied to clipboard!"
     NotificationFrame.BackgroundColor3 = Color3.fromRGB(50, 200, 100)
     NotificationFrame.Visible = true
     NotificationFrame:TweenPosition(UDim2.new(1, -230, 1, -70), "Out", "Quad", 0.3, true)
@@ -311,32 +425,46 @@ local function showNotification(message)
     end)
 end
 
-local function formatLogEntry(method, url, headers, body)
-    local text = "Method: " .. (method or "UNKNOWN") .. "\nURL: " .. (url or "N/A")
+local function ShowDetailView(LogText)
+    DetailText.Text = LogText
+    UpdateDetailTextSize()
+    DetailFrame.Visible = true
+end
+
+local function FormatLogEntry(Method, Url, Headers, Body)
+    local Text = "Method: " .. (Method or "UNKNOWN") .. "\nURL: " .. (Url or "N/A")
     
-    if headers and type(headers) == "table" then
-        text = text .. "\n\nHeaders:"
-        for key, value in pairs(headers) do
-            text = text .. string.format("\n  %s: %s", tostring(key), tostring(value))
+    if Headers and type(Headers) == "table" then
+        Text = Text .. "\n\nHeaders:"
+        for Key, Value in pairs(Headers) do
+            Text = Text .. string.format("\n  %s: %s", tostring(Key), tostring(Value))
         end
     end
     
-    if body and body ~= "" then
-        text = text .. "\n\nBody:\n" .. tostring(body)
+    if Body and Body ~= "" then
+        Text = Text .. "\n\nBody:\n" .. tostring(Body)
     end
     
-    return text
+    return Text
 end
 
-local function createLogEntry(method, url, headers, body)
+local function CreateLogEntry(Method, Url, Headers, Body)
     local LogEntry = Instance.new("Frame")
     LogEntry.BackgroundColor3 = Color3.fromRGB(38, 38, 46)
     LogEntry.BorderSizePixel = 0
-    LogEntry.Size = UDim2.new(1, 0, 0, 0)
+    LogEntry.Size = UDim2.new(1, 0, 0, 60)
     
     local EntryCorner = Instance.new("UICorner")
     EntryCorner.CornerRadius = UDim.new(0, 8)
     EntryCorner.Parent = LogEntry
+    
+    local ClickDetector = Instance.new("TextButton")
+    ClickDetector.Name = "ClickDetector"
+    ClickDetector.Parent = LogEntry
+    ClickDetector.BackgroundTransparency = 1
+    ClickDetector.Size = UDim2.new(1, 0, 1, 0)
+    ClickDetector.Text = ""
+    ClickDetector.ZIndex = 1
     
     local MethodLabel = Instance.new("TextLabel")
     MethodLabel.Name = "MethodLabel"
@@ -345,13 +473,14 @@ local function createLogEntry(method, url, headers, body)
     MethodLabel.Position = UDim2.new(0, 10, 0, 5)
     MethodLabel.Size = UDim2.new(0, 80, 0, 20)
     MethodLabel.Font = Enum.Font.GothamBold
-    MethodLabel.Text = method or "REQUEST"
+    MethodLabel.Text = Method or "REQUEST"
     MethodLabel.TextSize = 13
     MethodLabel.TextXAlignment = Enum.TextXAlignment.Left
+    MethodLabel.ZIndex = 2
     
-    if method == "GET" or method == "HTTP GET" then
+    if Method == "GET" or Method == "HTTP GET" then
         MethodLabel.TextColor3 = Color3.fromRGB(100, 220, 150)
-    elseif method == "POST" or method == "HTTP POST" then
+    elseif Method == "POST" or Method == "HTTP POST" then
         MethodLabel.TextColor3 = Color3.fromRGB(255, 180, 100)
     else
         MethodLabel.TextColor3 = Color3.fromRGB(150, 150, 255)
@@ -364,11 +493,12 @@ local function createLogEntry(method, url, headers, body)
     URLLabel.Position = UDim2.new(0, 95, 0, 5)
     URLLabel.Size = UDim2.new(1, -180, 0, 20)
     URLLabel.Font = Enum.Font.Gotham
-    URLLabel.Text = url or "N/A"
+    URLLabel.Text = Url or "N/A"
     URLLabel.TextColor3 = Color3.fromRGB(200, 200, 210)
     URLLabel.TextSize = 12
     URLLabel.TextXAlignment = Enum.TextXAlignment.Left
     URLLabel.TextTruncate = Enum.TextTruncate.AtEnd
+    URLLabel.ZIndex = 2
     
     local TimeLabel = Instance.new("TextLabel")
     TimeLabel.Name = "TimeLabel"
@@ -381,6 +511,7 @@ local function createLogEntry(method, url, headers, body)
     TimeLabel.TextColor3 = Color3.fromRGB(120, 120, 130)
     TimeLabel.TextSize = 11
     TimeLabel.TextXAlignment = Enum.TextXAlignment.Right
+    TimeLabel.ZIndex = 2
     
     local CopyButton = Instance.new("TextButton")
     CopyButton.Name = "CopyButton"
@@ -394,20 +525,31 @@ local function createLogEntry(method, url, headers, body)
     CopyButton.TextColor3 = Color3.fromRGB(255, 255, 255)
     CopyButton.TextSize = 11
     CopyButton.AutoButtonColor = false
+    CopyButton.ZIndex = 3
     
     local CopyCorner = Instance.new("UICorner")
     CopyCorner.CornerRadius = UDim.new(0, 5)
     CopyCorner.Parent = CopyButton
     
-    LogEntry.Size = UDim2.new(1, 0, 0, 60)
+    local LogText = FormatLogEntry(Method, Url, Headers, Body)
     
-    local logText = formatLogEntry(method, url, headers, body)
+    ClickDetector.MouseButton1Click:Connect(function()
+        ShowDetailView(LogText)
+    end)
+    
+    ClickDetector.MouseEnter:Connect(function()
+        LogEntry.BackgroundColor3 = Color3.fromRGB(45, 45, 55)
+    end)
+    
+    ClickDetector.MouseLeave:Connect(function()
+        LogEntry.BackgroundColor3 = Color3.fromRGB(38, 38, 46)
+    end)
     
     CopyButton.MouseButton1Click:Connect(function()
-        setclipboard(logText)
+        setclipboard(LogText)
         CopyButton.BackgroundColor3 = Color3.fromRGB(50, 200, 100)
         CopyButton.Text = "✓ Copied"
-        showNotification("✓ Log copied to clipboard!")
+        ShowNotification("✓ Log copied to clipboard!")
         task.wait(1.5)
         CopyButton.BackgroundColor3 = Color3.fromRGB(60, 140, 255)
         CopyButton.Text = "📋 Copy"
@@ -423,134 +565,142 @@ local function createLogEntry(method, url, headers, body)
         end
     end)
     
-    local logData = {
-        entry = LogEntry,
-        method = method,
-        url = url,
-        text = logText
+    local LogData = {
+        Entry = LogEntry,
+        Method = Method,
+        Url = Url,
+        Text = LogText
     }
-    table.insert(allLogs, logData)
+    table.insert(AllLogs, LogData)
     
     LogEntry.Parent = MainContainer
     return LogEntry
 end
 
-local function filterLogs()
-    local searchText = SearchBox.Text:lower()
+local function FilterLogs()
+    local SearchText = SearchBox.Text:lower()
     
-    for _, logData in ipairs(allLogs) do
-        local entry = logData.entry
-        local method = logData.method or ""
-        local url = logData.url or ""
+    for _, LogData in ipairs(AllLogs) do
+        local Entry = LogData.Entry
+        local Method = LogData.Method or ""
+        local Url = LogData.Url or ""
         
-        local matchesFilter = currentFilter == "ALL" or 
-                             (currentFilter == "GET" and (method:find("GET") or method == "GET")) or
-                             (currentFilter == "POST" and (method:find("POST") or method == "POST"))
+        local MatchesFilter = CurrentFilter == "ALL" or 
+                             (CurrentFilter == "GET" and (Method:find("GET") or Method == "GET")) or
+                             (CurrentFilter == "POST" and (Method:find("POST") or Method == "POST"))
         
-        local matchesSearch = searchText == "" or 
-                             method:lower():find(searchText) or 
-                             url:lower():find(searchText)
+        local MatchesSearch = SearchText == "" or 
+                             Method:lower():find(SearchText) or 
+                             Url:lower():find(SearchText)
         
-        entry.Visible = matchesFilter and matchesSearch
+        Entry.Visible = MatchesFilter and MatchesSearch
     end
 end
 
--- Button Events
 CloseButton.MouseButton1Click:Connect(function()
     HttpSpy:Destroy()
 end)
 
 MinimizeButton.MouseButton1Click:Connect(function()
-    isMinimized = not isMinimized
-    if isMinimized then
+    IsMinimized = not IsMinimized
+    if IsMinimized then
         MainFrame:TweenSize(UDim2.new(0, 500, 0, 35), "Out", "Quad", 0.3, true)
         MinimizeButton.Text = "+"
+        FilterFrame.Visible = false
+        MainContainer.Visible = false
+        StatsLabel.Visible = false
     else
         MainFrame:TweenSize(UDim2.new(0, 500, 0, 400), "Out", "Quad", 0.3, true)
         MinimizeButton.Text = "-"
+        FilterFrame.Visible = true
+        MainContainer.Visible = true
+        StatsLabel.Visible = true
     end
 end)
 
 ClearButton.MouseButton1Click:Connect(function()
-    for _, child in ipairs(MainContainer:GetChildren()) do
-        if child:IsA("Frame") then
-            child:Destroy()
+    for _, Child in ipairs(MainContainer:GetChildren()) do
+        if Child:IsA("Frame") then
+            Child:Destroy()
         end
     end
-    allLogs = {}
-    totalRequests = 0
-    getCount = 0
-    postCount = 0
-    updateStats()
-    showNotification("🗑 All logs cleared!")
+    AllLogs = {}
+    TotalRequests = 0
+    GetCount = 0
+    PostCount = 0
+    UpdateStats()
+    ShowNotification("🗑 All logs cleared!")
 end)
 
 FilterGET.MouseButton1Click:Connect(function()
-    currentFilter = "GET"
+    CurrentFilter = "GET"
     FilterGET.BackgroundColor3 = Color3.fromRGB(80, 200, 120)
     FilterPOST.BackgroundColor3 = Color3.fromRGB(255, 140, 60)
     FilterALL.BackgroundColor3 = Color3.fromRGB(100, 100, 255)
-    filterLogs()
+    FilterLogs()
 end)
 
 FilterPOST.MouseButton1Click:Connect(function()
-    currentFilter = "POST"
+    CurrentFilter = "POST"
     FilterPOST.BackgroundColor3 = Color3.fromRGB(255, 160, 80)
     FilterGET.BackgroundColor3 = Color3.fromRGB(60, 180, 100)
     FilterALL.BackgroundColor3 = Color3.fromRGB(100, 100, 255)
-    filterLogs()
+    FilterLogs()
 end)
 
 FilterALL.MouseButton1Click:Connect(function()
-    currentFilter = "ALL"
+    CurrentFilter = "ALL"
     FilterALL.BackgroundColor3 = Color3.fromRGB(120, 120, 255)
     FilterGET.BackgroundColor3 = Color3.fromRGB(60, 180, 100)
     FilterPOST.BackgroundColor3 = Color3.fromRGB(255, 140, 60)
-    filterLogs()
+    FilterLogs()
 end)
 
 SearchBox:GetPropertyChangedSignal("Text"):Connect(function()
-    filterLogs()
+    FilterLogs()
 end)
 
--- HTTP Spy Logic
-local function logRequest(method, url, headers, body)
-    totalRequests = totalRequests + 1
-    if method:find("GET") then
-        getCount = getCount + 1
-    elseif method:find("POST") then
-        postCount = postCount + 1
+DetailCloseBtn.MouseButton1Click:Connect(function()
+    DetailFrame.Visible = false
+end)
+
+local function LogRequest(Method, Url, Headers, Body)
+    TotalRequests = TotalRequests + 1
+    if Method:find("GET") then
+        GetCount = GetCount + 1
+    elseif Method:find("POST") then
+        PostCount = PostCount + 1
     end
-    createLogEntry(method, url, headers, body)
-    updateStats()
+    CreateLogEntry(Method, Url, Headers, Body)
+    UpdateStats()
 end
 
 local HttpGet = hookfunction(game.HttpGet, function(self, url, ...)
-    logRequest("HTTP GET", url)
+    LogRequest("HTTP GET", url)
     return HttpGet(self, url, ...)
 end)
 
 local HttpPost = hookfunction(game.HttpPost, function(self, url, data, ...)
-    logRequest("HTTP POST", url, nil, data)
+    LogRequest("HTTP POST", url, nil, data)
     return HttpPost(self, url, data, ...)
 end)
 
 if syn and syn.request then
     local SynRequest = hookfunction(syn.request, function(options)
-        logRequest(options.Method or "REQUEST", options.Url, options.Headers, options.Body)
+        LogRequest(options.Method or "REQUEST", options.Url, options.Headers, options.Body)
         return SynRequest(options)
     end)
 elseif request then
     local Request = hookfunction(request, function(options)
-        logRequest(options.Method or "REQUEST", options.Url, options.Headers, options.Body)
+        LogRequest(options.Method or "REQUEST", options.Url, options.Headers, options.Body)
         return Request(options)
     end)
 elseif http_request then
     local HttpRequest = hookfunction(http_request, function(options)
-        logRequest(options.Method or "REQUEST", options.Url, options.Headers, options.Body)
+        LogRequest(options.Method or "REQUEST", options.Url, options.Headers, options.Body)
         return HttpRequest(options)
     end)
 end
 
-updateStats()
+UpdateStats()
 print("🌐 HTTP Spy v3 loaded successfully!")
