@@ -5753,16 +5753,7 @@ local Queue = {
                                 if not game.Players.LocalPlayer.Character:FindFirstChild("HasBuso") then
                                     game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("Buso")
                                 end
-
-                                EQ(getgenv().WeaponChoose)
-                                _B = true
-                                target.HumanoidRootPart.Transparency = 1
-                                PosMon = target.HumanoidRootPart.CFrame
-                                target.HumanoidRootPart.Size = Vector3.new(60, 60, 60)
-                                target.HumanoidRootPart.CanCollide = false
-                                target.Humanoid.WalkSpeed = 0
-                                target.Head.CanCollide = false
-                                Tween(target.HumanoidRootPart.CFrame * RandomCFrame)
+                                SH(target)
                             until not getgenv().AutoFarmEliteMob or target.Humanoid.Health <= 0 or not target.Parent
                             return true
                         else
@@ -5786,8 +5777,38 @@ local Queue = {
     },
 
     {
-        Name = "FarmLevel",
+        Name = "BossFarm",
         Prio = 2,
+        LastResult = false,
+        ConditionCheck = function()
+            if not getgenv().BossFarm then
+            return false, nil
+        end
+        if game:GetService("Workspace").Enemies:FindFirstChild(getgenv().SelectBoss) then
+            for _, v in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
+                if v.Name == getgenv().SelectBoss and v:FindFirstChild("Humanoid") and 
+                   v:FindFirstChild("HumanoidRootPart") and v.Humanoid.Health > 0 then
+                    return true, v
+                end
+            end
+        end
+        if game.ReplicatedStorage:FindFirstChild(getgenv().SelectBoss) then
+            return true, game.ReplicatedStorage:FindFirstChild(getgenv().SelectBoss)
+        end
+        return false, nil
+    end,
+        Func = function()
+        local result = BossFarm()
+        if ShouldInterrupt("BossFarm") then
+            return false
+        end
+        return result
+    end
+    },
+
+    {
+        Name = "FarmLevel",
+        Prio = 3,
         LastResult = false,
         ConditionCheck = nil,
         Func = function()
@@ -5841,7 +5862,7 @@ local Queue = {
 
     {
         Name = "FarmBone",
-        Prio = 3,
+        Prio = 4,
         LastResult = false,
         ConditionCheck = nil,
         Func = function()
@@ -5855,7 +5876,7 @@ local Queue = {
 
     {
         Name = "FarmNearest",
-        Prio = 4,
+        Prio = 5,
         LastResult = false,
         ConditionCheck = nil,
         Func = function()
@@ -5869,7 +5890,7 @@ local Queue = {
 
     {
         Name = "StartFarmChest",
-        Prio = 5,
+        Prio = 6,
         LastResult = false,
         ConditionCheck = nil,
         Func = function()
@@ -5883,7 +5904,7 @@ local Queue = {
 
     {
         Name = "AutoRaid",
-        Prio = 6,
+        Prio = 7,
         LastResult = false,
         ConditionCheck = nil,
         Func = function()
@@ -5897,7 +5918,7 @@ local Queue = {
 
     {
         Name = "TweenIsland",
-        Prio = 7,
+        Prio = 8,
         LastResult = false,
         ConditionCheck = nil,
         Func = function()
@@ -5911,7 +5932,7 @@ local Queue = {
 
     {
         Name = "TweenToNpc",
-        Prio = 8,
+        Prio = 9,
         LastResult = false,
         ConditionCheck = nil,
         Func = function()
