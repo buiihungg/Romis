@@ -1384,6 +1384,7 @@ function SH(target)
         sethiddenproperty(game:GetService("Players").LocalPlayer, "SimulationRadius", math.huge)
     end
 end
+
 local function deathHook() end
 local function respawnHook() end
 local function changeDisplayedNPCHook() return end
@@ -1433,13 +1434,16 @@ function DeVer()
         MainGui.Version.Visible = not getgenv().DeleteVersion
     end
 end
+
 function DeDam()
     local Damage = game:GetService("ReplicatedStorage").Assets.GUI.DamageCounter
         Damage.Enabled = not getgenv().DeleteDamageText
 end
+
 function DeNo()
     game.Players.LocalPlayer.PlayerGui.Notifications.Enabled = not getgenv().DisableNotification
 end
+
 function RanPos()
     if getgenv().RandomPos then
             local Angle = 0
@@ -1457,6 +1461,7 @@ function RanPos()
         end
         task.wait()
 end
+
 function CaptureMode()
     if getgenv().KaitunCapMode == 'Mobile' then
         getgenv().MobileMode = true
@@ -1464,6 +1469,7 @@ function CaptureMode()
         getgenv().MobileMode = false
     end
 end
+
 function FPSLOCK()
     if getgenv().FPSLock then
 		setfpscap(getgenv().FPSAmount)
@@ -1471,6 +1477,7 @@ function FPSLOCK()
 		setfpscap(120)
 	end
 end
+
 function ReJoin()
     if getgenv().AutoRejoin then
         getgenv().RejoinConnection =
@@ -1486,10 +1493,36 @@ function ReJoin()
         )
     end
 end
+
+function BuyFruitSniper()
+    local ad = game.ReplicatedStorage:FindFirstChild("Remotes").CommF_:InvokeServer("GetFruits")
+    Table_DevilFruitSniper = {}
+    ShopDevilSell = {}
+    
+    for i, v in next, ad do
+        table.insert(Table_DevilFruitSniper, v.Name)
+        if v.OnSale then
+            table.insert(ShopDevilSell, v.Name)
+        end
+    end
+    
+    if getgenv().EnableFruitSniper then
+        if type(getgenv().FruitToSniper) == "table" then
+            for _, SelectedFruit in pairs(getgenv().FruitToSniper) do
+                for _, fruitOnSale in pairs(ShopDevilSell) do
+                    if SelectedFruit == fruitOnSale then
+                        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("PurchaseRawFruit", SelectedFruit, false)
+                    end
+                end
+            end
+        end
+    end
+end
+
 task.spawn(function()
     print('[ DEBUG ] Other Func')
     while task.wait() do
-        DeVer() DeDam() DeNo() RanPos() ReJoin() CaptureMode() FPSLOCK()
+        DeVer() DeDam() DeNo() RanPos() ReJoin() CaptureMode() FPSLOCK() BuyFruitSniper()
     end
 end)
 print("Build Gui")
@@ -1500,7 +1533,7 @@ if not status then
     warn("gui-error | try again!")
 end
 
-local SaveManager = loadstring(game:HttpGet("https://pandadevelopment.net/virtual/file/0d204a8412bbbff4"))()
+local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/buiihungg/Romis/refs/heads/main/Fluent_AutoSave.lua"))()
 local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
 
 local Window = Fluent:CreateWindow({
@@ -3492,10 +3525,12 @@ end)
         end
     end)
 
-local ToggleFarmLevel = Tabs.Main:AddToggle("ToggleFarmLevel", {Title = "Start Farm", Default = false })
-ToggleFarmLevel:OnChanged(function(Value)
-     getgenv().FarmLevel = Value
-end)
+local ToggleFarmLevel = Tabs.Main:AddToggle("ToggleFarmLevel", {Title = "Start Farm", Default = false})
+ToggleFarmLevel:OnChanged(
+    function(Value)
+        getgenv().FarmLevel = Value
+    end
+)
 
 task.spawn(function()
     while task.wait() do
@@ -3575,15 +3610,20 @@ SliderMobAura:OnChanged(
         getgenv().NearestMob = Value
     end
 )
-local ToggleFarmNearest = Tabs.Main:AddToggle("ToggleFarmNearest", {Title = "Farm Mob Aura", Default = false })
-ToggleFarmNearest:OnChanged(function(Value)
-     getgenv().FarmNearest = Value
-end)
 
-local ToggleFarmBone = Tabs.Main:AddToggle("ToggleFarmBone", {Title = "Farm Bone", Default = false })
-ToggleFarmBone:OnChanged(function(Value)
-     getgenv().FarmBone = Value
-end)
+local ToggleFarmNearest = Tabs.Main:AddToggle("ToggleFarmNearest", {Title = "Farm Mob Aura", Default = false})
+ToggleFarmNearest:OnChanged(
+    function(Value)
+        getgenv().FarmNearest = Value
+    end
+)
+
+local ToggleFarmBone = Tabs.Main:AddToggle("ToggleFarmBone", {Title = "Farm Bone", Default = false})
+ToggleFarmBone:OnChanged(
+    function(Value)
+        getgenv().FarmBone = Value
+    end
+)
 
 function NearestFarm()
     if not getgenv().FarmNearest then return false end
@@ -3678,6 +3718,42 @@ end
     end
     return false
 end
+
+-- Boss Farm Function --
+local BF = Tabs.Main:AddSection("Tab Boss Farm")
+
+local DropdownBoss =
+    Tabs.Main:AddDropdown(
+    "DropdownBoss",
+    {
+        Title = "Select Boss",
+        Values = bossCheck,
+        Multi = false,
+        Default = table.find(1)
+    }
+)
+DropdownBoss:OnChanged(
+    function(Value)
+        getgenv().SelectBoss = Value
+    end
+)
+
+Tabs.Main:AddButton(
+    {
+        Title = "Refresh Boss",
+        Description = "Refresh the list of bosses spawn in the server",
+        Callback = function()
+        end
+    }
+)
+
+local ToggleBossFarm = Tabs.Main:AddToggle("ToggleBossFarm", {Title = "Start Farm Boss", Default = false})
+ToggleBossFarm:OnChanged(
+    function(Value)
+        getgenv().BossFarm = Value
+    end
+)
+
 
 -- Chest Farm Function --
 local ScreenGui = Instance.new("ScreenGui")
@@ -4595,8 +4671,7 @@ ToggleFruitCollect:OnChanged(function(Value)
     getgenv().FruitCollect = Value
 end)
 
-local Raid = Tabs.R:AddSection("Tab Dungeons")
-if _G.World2 or _G.World3 then
+local Raid = Tabs.R:AddSection("Tab Raid")
     Tabs.R:AddButton({
         Title = "Teleport To Raid Lab",
         Description = "",
@@ -4614,7 +4689,6 @@ if _G.World2 or _G.World3 then
             end
         end
     })
-end
 
 getgenv().BuyChipSelect = selectraids or ""
 Raidslist = {}
@@ -4924,10 +4998,60 @@ Tabs.R:AddButton(
     }
 )
 
+local FS = Tabs.R:AddSection("Tab Fruit")
+
+local function GetFruitList()
+    local fruits = {}
+    local success, result = pcall(function()
+        local data = game.ReplicatedStorage.Remotes.CommF_:InvokeServer("GetFruits")
+        for _, v in pairs(data) do
+            table.insert(fruits, v.Name)
+        end
+    end)
+    
+    if success and #fruits > 0 then
+        return fruits
+    else
+        return {"Loading..."}
+    end
+end
+
+local MultiDropdownFS =
+    Tabs.R:AddDropdown(
+    "MultiDropdownFSMultiDropdownFS",
+    {
+        Title = "Select Fruits To Sniper",
+        Description = "Select a fruits to sniper.",
+        Values = GetFruitList(),
+        Multi = true,
+        Default = {}
+    }
+)
+
+MultiDropdownFS:OnChanged(
+    function(Value)
+        getgenv().FruitToSniper = Value
+    end
+)
+
+local ToggleSniperFruit =
+    Tabs.R:AddToggle(
+    "ToggleSniperFruit",
+    {
+        Title = "Enable Sniper Fruit",
+        Default = false
+    }
+)
+ToggleSniperFruit:OnChanged(
+    function(Value)
+        getgenv().EnableFruitSniper = Value
+    end
+)
+
 local trr = Tabs.T:AddSection("Tab Travel")
 
 local LocationFolder = workspace:WaitForChild("_WorldOrigin"):WaitForChild("Locations")
-local IslandNames = {}
+IslandNames = {}
 
 for _, Location in pairs(LocationFolder:GetChildren()) do
     table.insert(IslandNames, Location.Name)
@@ -5808,16 +5932,17 @@ Run()
 
 SaveManager:SetLibrary(Fluent)
 InterfaceManager:SetLibrary(Fluent)
+
 InterfaceManager:SetFolder("Romis Hub")
 SaveManager:SetFolder("Romis Hub/Blox Fruits")
+
 InterfaceManager:BuildInterfaceSection(Tabs.Setting)
 SaveManager:BuildConfigSection(Tabs.Setting)
 
-SaveManager:LoadAutoSaveConfig()
+SaveManager:LoadAutoloadConfig()
 
 SaveManager:StartAutoSave()
 
-SaveManager:LoadAutoloadConfig()
 Window:SelectTab(1)
 print("load old settings")
 Fluent:Notify({
