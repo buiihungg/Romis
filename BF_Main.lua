@@ -3834,7 +3834,7 @@ Tabs.Main:AddButton(
     }
 )
 
-local ToggleBossFarm = Tabs.Main:AddToggle("ToggleBossFarm", {Title = "Start Farm Boss", Default = false})
+local ToggleBossFarm = Tabs.Main:AddToggle("ToggleBossFarm", {Title = "Farm Boss", Default = false})
 ToggleBossFarm:OnChanged(
     function(Value)
         getgenv().BossFarm = Value
