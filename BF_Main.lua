@@ -3727,7 +3727,7 @@ local DropdownBoss =
     "DropdownBoss",
     {
         Title = "Select Boss",
-        Values = "",
+        Values = {},
         Multi = false,
         Default = 1
     }
@@ -5950,4 +5950,3 @@ Fluent:Notify({
     Content = "The script has been loaded.",
     Duration = 5
 })
-print('new')
