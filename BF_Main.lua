@@ -26,6 +26,10 @@ PROTECTED_NAME = "Romis Hub"
 ProtectedLabels = {}
 MonitoredLabels = {}
 AllIDs = {}
+Toggles = {}
+Sliders = {}
+Dropdowns = {}
+Inputs = {}
 foundAnything = ""
 actualHour = os.date("!*t").hour
 Deleted = false
@@ -2122,6 +2126,7 @@ local function decodeJobId(encodedJobId)
     end
     return decoded
 end
+
 local function GetSmallestServer()
     local Url = "https://games.roblox.com/v1/games/" .. PlaceId .. "/servers/Public?sortOrder=Asc&limit=100"
     local Response
@@ -2154,7 +2159,13 @@ function TeleportToSmallestServer()
     end
 end
 
-local SliderTP = Tabs.S:AddSlider("SliderTP", {
+GFunction = {
+    TPSlider = {},
+    SVCInput = {},
+    SJToggle = {}
+}
+
+GFunction.TPSlider = Tabs.S:AddSlider("SliderTP", {
     Title = "Player Amount",
     Description = "Select player limit for teleport",
     Default = 6,
@@ -2166,9 +2177,10 @@ local SliderTP = Tabs.S:AddSlider("SliderTP", {
     end
 })
 
-SliderTP:OnChanged(function(Value)
+GFunction.TPSlider:OnChanged(function(Value)
     getgenv().PlayerAmount = math.floor(Value)
 end)
+
 local ButtonTP = Tabs.S:AddButton({
     Title = "Teleport",
     Description = "Instant Tp",
@@ -2227,7 +2239,7 @@ local CopySkullHubIdButton = Tabs.S:AddButton({
     end
 })
 
-local ServerCodeInput = Tabs.S:AddInput("ServerCodeInput", {
+GFunction.SVCInput = Tabs.S:AddInput("ServerCodeInput", {
     Title = "Input Server Code",
     Default = "",
     Placeholder = "Input server code...",
@@ -2278,11 +2290,11 @@ local ButtonRejoin =
     }
 )
 
-local SpamJoinToggle = Tabs.S:AddToggle("SpamJoinToggle", {
+GFunction.SJToggle = Tabs.S:AddToggle("SpamJoinToggle", {
     Title = "Spam Join Server",
     Default = false
 })
-SpamJoinToggle:OnChanged(function(Value)
+GFunction.SJToggle:OnChanged(function(Value)
     getgenv().SpamJoin = Value
     Fluent:Notify({
         Title = "Romis Hub Notification",
@@ -3014,7 +3026,7 @@ for i, v in pairs(AwakeningToggler:GetChildren()) do
 end
 end
 
-local KaitunCapDropdown =
+Dropdowns.KaitunCapDropdown =
     Tabs.LC:AddDropdown(
     "KaitunCapDropdown",
     {
@@ -3024,7 +3036,7 @@ local KaitunCapDropdown =
         Default = 1
     }
 )
-KaitunCapDropdown:OnChanged(
+Dropdowns.KaitunCapDropdown:OnChanged(
     function(Value)
         getgenv().KaitunCapMode = Value
     end
@@ -3043,49 +3055,49 @@ local KtCap =
 
 local Lc = Tabs.LC:AddSection("Tab Kaitun Cap Settings")
 
-local TogMCS = Tabs.LC:AddToggle("TogMCS", {Title = "Mythical Show", Default = true})
-TogMCS:OnChanged(
+Toggles.TogMCS = Tabs.LC:AddToggle("TogMCS", {Title = "Mythical Show", Default = true})
+Toggles.TogMCS:OnChanged(
     function(Value)
         _G.MythicalCut = Value
     end
 )
 
-local TogLCS = Tabs.LC:AddToggle("TogLCS", {Title = "Legendary Show", Default = true})
-TogLCS:OnChanged(
+Toggles.TogLCS = Tabs.LC:AddToggle("TogLCS", {Title = "Legendary Show", Default = true})
+Toggles.TogLCS:OnChanged(
     function(Value)
         _G.LegendaryCut = Value
     end
 )
 
-local TogRCS = Tabs.LC:AddToggle("TogRCS", {Title = "Rare Show", Default = true})
-TogRCS:OnChanged(
+Toggles.TogRCS = Tabs.LC:AddToggle("TogRCS", {Title = "Rare Show", Default = true})
+Toggles.TogRCS:OnChanged(
     function(Value)
         _G.RareCut = Value
     end
 )
 
-local TogUCS = Tabs.LC:AddToggle("TogUCS", {Title = "Uncommon Show", Default = false})
-TogUCS:OnChanged(
+Toggles.TogUCS = Tabs.LC:AddToggle("TogUCS", {Title = "Uncommon Show", Default = false})
+Toggles.TogUCS:OnChanged(
     function(Value)
         _G.UncommonCut = Value
     end
 )
 
-local TogCCS = Tabs.LC:AddToggle("TogCCS", {Title = "Common Show", Default = false})
-TogCCS:OnChanged(
+Toggles.TogCCS = Tabs.LC:AddToggle("TogCCS", {Title = "Common Show", Default = false})
+Toggles.TogCCS:OnChanged(
     function(Value)
         _G.CommonCut = Value
     end
 )
 
-local TogMACS = Tabs.LC:AddToggle("TogMACS", {Title = "Mastery Show", Default = true})
-TogMACS:OnChanged(
+Toggles.TogMACS = Tabs.LC:AddToggle("TogMACS", {Title = "Mastery Show", Default = true})
+Toggles.TogMACS:OnChanged(
     function(Value)
         _G.ShowMasteryCut = Value
     end
 )
 
-local CISG =
+Sliders.CISG =
     Tabs.LC:AddSlider(
     "CISG",
     {
@@ -3100,13 +3112,13 @@ local CISG =
         end
     }
 )
-CISG:OnChanged(
+Sliders.CISG:OnChanged(
     function(Value)
         _G.LevelMasteryCut = math.floor(Value)
     end
 )
 
-local CIS =
+Sliders.CIS =
     Tabs.LC:AddSlider(
     "CIS",
     {
@@ -3121,7 +3133,7 @@ local CIS =
         end
     }
 )
-CIS:OnChanged(
+Sliders.CIS:OnChanged(
     function(Value)
         _G.MaxCountItem = math.floor(Value)
     end
@@ -3129,8 +3141,8 @@ CIS:OnChanged(
 
 local PT = Tabs.LC:AddSection("Player Protect")
 
-local TogNPT = Tabs.LC:AddToggle("TogNPT", {Title = "Protect Name", Default = false})
-TogNPT:OnChanged(
+Toggles.TogNPT = Tabs.LC:AddToggle("TogNPT", {Title = "Protect Name", Default = false})
+Toggles.TogNPT:OnChanged(
     function(Value)
         getgenv().NameProtect = Value
     end
@@ -3284,8 +3296,8 @@ Tabs.Setting:AddButton({
     end
 })
 
-local ToggleWhite = Tabs.Setting:AddToggle("ToggleWhite", {Title = "WhiteScreen", Default = false })
-    ToggleWhite:OnChanged(function(Value)
+Toggles.ToggleWhite = Tabs.Setting:AddToggle("ToggleWhite", {Title = "WhiteScreen", Default = false })
+    Toggles.ToggleWhite:OnChanged(function(Value)
        getgenv().WhiteScreen = Value
        if getgenv().WhiteScreen then
         game:GetService("RunService"):Set3dRenderingEnabled(false)
@@ -3294,7 +3306,7 @@ local ToggleWhite = Tabs.Setting:AddToggle("ToggleWhite", {Title = "WhiteScreen"
        end
 end)
 
-local FPSAmount = Tabs.Setting:AddSlider("FPSAmount", {
+Sliders.FPSAmount = Tabs.Setting:AddSlider("FPSAmount", {
     Title = "FPS Slider",
     Description = "FPS Lock Slider",
     Default = 120,
@@ -3305,41 +3317,41 @@ local FPSAmount = Tabs.Setting:AddSlider("FPSAmount", {
         getgenv().FPSAmount = math.floor(Value)
     end
 }) 
-FPSAmount:OnChanged(function(Value)
+Sliders.FPSAmount:OnChanged(function(Value)
     getgenv().FPSAmount = math.floor(Value)
 end)
         
-local ToggleFPS = Tabs.Setting:AddToggle("ToggleFPS", {Title = "Lock FPS Cap", Default = true })
-ToggleFPS:OnChanged(function(Value)
+Toggles.ToggleFPS = Tabs.Setting:AddToggle("ToggleFPS", {Title = "Lock FPS Cap", Default = true })
+Toggles.ToggleFPS:OnChanged(function(Value)
     getgenv().FPSLock = Value
 end)
 
-local VersionT = Tabs.Setting:AddToggle("VersionT", {
+Toggles.VersionT = Tabs.Setting:AddToggle("VersionT", {
     Title = "Disable Game Version",
     Default = true
 })
-VersionT:OnChanged(function(Value)
+Toggles.VersionT:OnChanged(function(Value)
     getgenv().DeleteVersion = Value
 end)
 
-local ToggleNotify = Tabs.Setting:AddToggle("ToggleNotify", {
+Toggles.ToggleNotify = Tabs.Setting:AddToggle("ToggleNotify", {
     Title = "Disable Notification",
     Default = false
 })
-ToggleNotify:OnChanged(function(Value)
+Toggles.ToggleNotify:OnChanged(function(Value)
     getgenv().DisableNotification = Value
 end)
 
-local ToggleEffect = Tabs.Setting:AddToggle("ToggleEffect", {Title = "Remove Effect", Default = true })
-ToggleEffect:OnChanged(function(Value)
+Toggles.ToggleEffect = Tabs.Setting:AddToggle("ToggleEffect", {Title = "Remove Effect", Default = true })
+Toggles.ToggleEffect:OnChanged(function(Value)
     getgenv().RemoveEffect = Value
 end)
 
-local ToggleRejoin = Tabs.Setting:AddToggle("ToggleRejoin", {
+Toggles.ToggleRejoin = Tabs.Setting:AddToggle("ToggleRejoin", {
     Title = "Auto Rejoin",
     Default = true
 })
-ToggleRejoin:OnChanged(function(Value)
+Toggles.ToggleRejoin:OnChanged(function(Value)
     getgenv().AutoRejoin = Value
 end)
 
@@ -3348,12 +3360,12 @@ local SettingFarm = Tabs.Setting:AddSection("Tab Settings Farm")
 local PLR = Players.LocalPlayer
 local Character = PLR.Character or PLR.CharacterAdded:Wait()
 
-local ToggleBD = Tabs.Setting:AddToggle("ToggleBD", {
+Toggles.ToggleBD = Tabs.Setting:AddToggle("ToggleBD", {
     Title = "Body Velocity",
     Default = false
 })
 
-ToggleBD:OnChanged(function(Value)
+Toggles.ToggleBD:OnChanged(function(Value)
     getgenv().BodyVelocity = Value
 
     if Value then
@@ -3371,12 +3383,12 @@ ToggleBD:OnChanged(function(Value)
     end
 end)
 
-local ToggleNoClip = Tabs.Setting:AddToggle("ToggleNoClip", {
+Toggles.ToggleNoClip = Tabs.Setting:AddToggle("ToggleNoClip", {
     Title = "NoClip",
     Default = false
 })
 
-ToggleNoClip:OnChanged(function(Value)
+Toggles.ToggleNoClip:OnChanged(function(Value)
     getgenv().NoClip = Value
 
     if Value then
@@ -3398,7 +3410,7 @@ ToggleNoClip:OnChanged(function(Value)
 end)
 
 
-local TogglePos =
+Toggles.TogglePos =
     Tabs.Setting:AddToggle(
     "TogglePos",
     {
@@ -3406,13 +3418,13 @@ local TogglePos =
         Default = false
     }
 )
-TogglePos:OnChanged(
+Toggles.TogglePos:OnChanged(
     function(Value)
         getgenv().RandomPos = Value
     end
 )
 
-local ToggleBring =
+Toggles.ToggleBring =
     Tabs.Setting:AddToggle(
     "ToggleBring",
     {
@@ -3420,28 +3432,28 @@ local ToggleBring =
         Default = false
     }
 )
-ToggleBring:OnChanged(
+Toggles.ToggleBring:OnChanged(
     function(Value)
         getgenv().BringMob = Value
     end
 )
 
-local ToggleFastAttack = Tabs.Setting:AddToggle("ToggleFastAttack", {Title = "Fast Attack", Default = true})
-ToggleFastAttack:OnChanged(
+Toggles.ToggleFastAttack = Tabs.Setting:AddToggle("ToggleFastAttack", {Title = "Fast Attack", Default = true})
+Toggles.ToggleFastAttack:OnChanged(
     function(Value)
         getgenv().FastAttack = Value
     end
 )
 
-local ToggleAttackPlayer = Tabs.Setting:AddToggle("ToggleAttackPlayer", {Title = "Attack On Player", Default = true})
-ToggleAttackPlayer:OnChanged(
+Toggles.ToggleAttackPlayer = Tabs.Setting:AddToggle("ToggleAttackPlayer", {Title = "Attack On Player", Default = true})
+Toggles.ToggleAttackPlayer:OnChanged(
     function(Value)
         getgenv().AttackPlayer = Value
     end
 )
 
-local ToggleAttackMob = Tabs.Setting:AddToggle("ToggleAttackMob", {Title = "Attack On Mob", Default = true})
-ToggleAttackMob:OnChanged(
+Toggles.ToggleAttackMob = Tabs.Setting:AddToggle("ToggleAttackMob", {Title = "Attack On Mob", Default = true})
+Toggles.ToggleAttackMob:OnChanged(
     function(Value)
         getgenv().AttackMob = Value
     end
@@ -3450,7 +3462,7 @@ ToggleAttackMob:OnChanged(
 local sts = Tabs.Setting:AddSection("Tab Settings Stats")
 getgenv().SelectedStats = {}
 
-local StatDropdown = Tabs.Setting:AddDropdown("MultiDropdown", {
+Dropdowns.StatDropdown = Tabs.Setting:AddDropdown("MultiDropdown", {
     Title = "Stats To Add",
     Description = "Select multiple stats to auto assign",
     Values = {"Melee", "Defense", "Gun", "Sword", "Demon Fruit", "Smart Stats"},
@@ -3458,11 +3470,11 @@ local StatDropdown = Tabs.Setting:AddDropdown("MultiDropdown", {
     Default = {},
 })
 
-StatDropdown:OnChanged(function(Value)
+Dropdowns.StatDropdown:OnChanged(function(Value)
     getgenv().SelectedStats = Value
 end)
 
-local PointSlider = Tabs.Setting:AddSlider("PointSlider", {
+Sliders.PointSlider = Tabs.Setting:AddSlider("PointSlider", {
     Title = "Points per assign",
     Description = "Amount of points to assign each tick",
     Default = 1,
@@ -3471,19 +3483,19 @@ local PointSlider = Tabs.Setting:AddSlider("PointSlider", {
     Rounding = 0,
 })
 
-PointSlider:OnChanged(function(Value)
+Sliders.PointSlider:OnChanged(function(Value)
     getgenv().AmountStats = Value
 end)
 
-local AutoStatToggle = Tabs.Setting:AddToggle("AutoStatToggle", {
+Toggles.AutoStatToggle = Tabs.Setting:AddToggle("AutoStatToggle", {
     Title = "Auto Stats",
     Default = false,
 })
-AutoStatToggle:OnChanged(function()
-    getgenv().AutoStats = Options.AutoStatToggle.Value
+Toggles.AutoStatToggle:OnChanged(function()
+    getgenv().AutoStats = Toggles.AutoStatToggle.Value
 end)
 
-local function AddPoint(StatName, Amount)
+function AddPoint(StatName, Amount)
     if Amount > 0 then
         StatRemote:InvokeServer("AddPoint", StatName, Amount)
     end
@@ -3534,7 +3546,7 @@ end)
 
 local ST = Tabs.Setting:AddSection("Tab Settings Tween")
 
-local TweenSlider = Tabs.Setting:AddSlider("Tween Speed", {
+Sliders.TweenSlider = Tabs.Setting:AddSlider("Tween Speed", {
     Title = "Speed Tween",
     Description = "Adjust Tween Speed",
     Default = 300,
@@ -3548,19 +3560,14 @@ local TweenSlider = Tabs.Setting:AddSlider("Tween Speed", {
     end
 })
 
-local EntranceTP = Tabs.Setting:AddToggle("EntranceTP", {Title = "Entrance Tp", Default = true})
-EntranceTP:OnChanged(
-    function(Value)
-        getgenv().EnchanceTP = Value
-    end
-)
-EntranceTP:OnChanged(
+Toggles.EntranceTP = Tabs.Setting:AddToggle("EntranceTP", {Title = "Entrance Tp", Default = true})
+Toggles.EntranceTP:OnChanged(
     function(Value)
         getgenv().EnchanceTP = Value
     end
 )
 
-local ToggleBypass =
+Toggles.ToggleBypass =
     Tabs.Setting:AddToggle(
     "ToggleBypass",
     {
@@ -3568,18 +3575,18 @@ local ToggleBypass =
         Default = true
     }
 )
-ToggleBypass:OnChanged(
+Toggles.ToggleBypass:OnChanged(
     function(Value)
         getgenv().BypassTp = Value
     end
 )
 
-local ToggleHealth = Tabs.Setting:AddToggle("ToggleHealth", {Title = "Anti Low Health", Default = false })
-ToggleHealth:OnChanged(function(Value)
+Toggles.ToggleHealth = Tabs.Setting:AddToggle("ToggleHealth", {Title = "Anti Low Health", Default = false })
+Toggles.ToggleHealth:OnChanged(function(Value)
     getgenv().AntiLowHealth = Value
 end)
 
-local HealthSlider = Tabs.Setting:AddSlider("HealthSlider", {
+Sliders.HealthSlider = Tabs.Setting:AddSlider("HealthSlider", {
     Title = "Low Health Threshold (%)",
     Description = "Adjust low health threshold percentage",
     Default = 35,
@@ -3593,7 +3600,7 @@ local HealthSlider = Tabs.Setting:AddSlider("HealthSlider", {
     end
 })
 
-local NotLowHealthSlider = Tabs.Setting:AddSlider("NotLowHealthSlider", {
+Sliders.NotLowHealthSlider = Tabs.Setting:AddSlider("NotLowHealthSlider", {
     Title = "Not Low Health Threshold (%)",
     Description = "Adjust not low health threshold percentage",
     Default = 70,
@@ -3608,13 +3615,13 @@ local NotLowHealthSlider = Tabs.Setting:AddSlider("NotLowHealthSlider", {
 })
 
 
-local SelectWeapon = Tabs.Main:AddDropdown("SelectWeapon", {
+Dropdowns.SelectWeapon = Tabs.Main:AddDropdown("SelectWeapon", {
     Title = "Select Weapon",
     Values = {'Melee', 'Sword', 'Blox Fruit', 'Gun'},
     Multi = false,
     Default = 1,
 })
-SelectWeapon:OnChanged(function(Value)
+Dropdowns.SelectWeapon:OnChanged(function(Value)
     getgenv().WeaponSelect = Value
 end)
     
@@ -3658,7 +3665,7 @@ end)
         end
     end)
 
-local SliderMobAura =
+Sliders.SliderMobAura =
     Tabs.Main:AddSlider(
     "SliderMobAura",
     {
@@ -3673,14 +3680,14 @@ local SliderMobAura =
         end
     }
 )
-SliderMobAura:OnChanged(
+Sliders.SliderMobAura:OnChanged(
     function(Value)
         getgenv().NearestMob = Value
     end
 )
 
-local ToggleFarmLevel = Tabs.Main:AddToggle("ToggleFarmLevel", {Title = "Farm Level", Default = false})
-ToggleFarmLevel:OnChanged(
+Toggles.ToggleFarmLevel = Tabs.Main:AddToggle("ToggleFarmLevel", {Title = "Farm Level", Default = false})
+Toggles.ToggleFarmLevel:OnChanged(
     function(Value)
         getgenv().FarmLevel = Value
     end
@@ -3745,15 +3752,15 @@ task.spawn(function()
         end
     end)
 
-local ToggleFarmNearest = Tabs.Main:AddToggle("ToggleFarmNearest", {Title = "Farm Mob Aura", Default = false})
-ToggleFarmNearest:OnChanged(
+Toggles.ToggleFarmNearest = Tabs.Main:AddToggle("ToggleFarmNearest", {Title = "Farm Mob Aura", Default = false})
+Toggles.ToggleFarmNearest:OnChanged(
     function(Value)
         getgenv().FarmNearest = Value
     end
 )
 
-local ToggleFarmBone = Tabs.Main:AddToggle("ToggleFarmBone", {Title = "Farm Bone", Default = false})
-ToggleFarmBone:OnChanged(
+Toggles.ToggleFarmBone = Tabs.Main:AddToggle("ToggleFarmBone", {Title = "Farm Bone", Default = false})
+Toggles.ToggleFarmBone:OnChanged(
     function(Value)
         getgenv().FarmBone = Value
     end
@@ -3873,7 +3880,7 @@ for _, name in pairs(Boss) do
     end
 end
 
-local DropdownBoss =
+Dropdowns.DropdownBoss =
     Tabs.Main:AddDropdown(
     "DropdownBoss",
     {
@@ -3883,7 +3890,7 @@ local DropdownBoss =
         Default = 1
     }
 )
-DropdownBoss:OnChanged(
+Dropdowns.DropdownBoss:OnChanged(
     function(Value)
         getgenv().SelectBoss = Value
     end
@@ -3914,8 +3921,8 @@ Tabs.Main:AddButton(
     }
 )
 
-local ToggleBossFarm = Tabs.Main:AddToggle("ToggleBossFarm", {Title = "Farm Boss", Default = false})
-ToggleBossFarm:OnChanged(
+Toggles.ToggleBossFarm = Tabs.Main:AddToggle("ToggleBossFarm", {Title = "Farm Boss", Default = false})
+Toggles.ToggleBossFarm:OnChanged(
     function(Value)
         getgenv().BossFarm = Value
     end
@@ -4632,7 +4639,7 @@ end
 
 local ChestSecction = Tabs.Main:AddSection("Tab Farm Chest")
 
-local InputWebhook =
+Inputs.InputWebhook =
     Tabs.Main:AddInput(
     "InputWebhook",
     {
@@ -4646,13 +4653,13 @@ local InputWebhook =
         end
     }
 )
-InputWebhook:OnChanged(
+Inputs.InputWebhook:OnChanged(
     function(Value)
         getgenv().WebhookChest = Value
     end
 )
 
-local InputPing =
+Inputs.InputPing =
     Tabs.Main:AddInput(
     "InputPing",
     {
@@ -4666,13 +4673,13 @@ local InputPing =
         end
     }
 )
-InputPing:OnChanged(
+Inputs.InputPing:OnChanged(
     function(Value)
         getgenv().PingChest = Value
     end
 )
 
-local InputBelimit =
+Inputs.InputBelimit =
     Tabs.Main:AddInput(
     "InputBelimit",
     {
@@ -4686,13 +4693,13 @@ local InputBelimit =
         end
     }
 )
-InputBelimit:OnChanged(
+Inputs.InputBelimit:OnChanged(
     function(Value)
         getgenv().BeliLimit = Value
     end
 )
 
-local ToggleWE =
+Toggles.ToggleWE =
     Tabs.Main:AddToggle(
     "ToggleWE",
     {
@@ -4700,13 +4707,13 @@ local ToggleWE =
         Default = false
     }
 )
-ToggleWE:OnChanged(
+Toggles.ToggleWE:OnChanged(
     function(Value)
         getgenv().EnableWebhook = Value
     end
 )
 
-local ToggleResetAntiDetect =
+Toggles.ToggleResetAntiDetect =
     Tabs.Main:AddToggle(
     "ToggleResetAntiDetect",
     {
@@ -4714,13 +4721,13 @@ local ToggleResetAntiDetect =
         Default = false
     }
 )
-ToggleResetAntiDetect:OnChanged(
+Toggles.ToggleResetAntiDetect:OnChanged(
     function(Value)
         getgenv().ResetAntiDetect = Value
     end
 )
 
-local ResetTimeSlider =
+Sliders.ResetTimeSlider =
     Tabs.Main:AddSlider(
     "ResetTimeSlider",
     {
@@ -4736,11 +4743,11 @@ local ResetTimeSlider =
     }
 )
 
-local TogglePanel = Tabs.Main:AddToggle("TogglePanel", {
+Toggles.TogglePanel = Tabs.Main:AddToggle("TogglePanel", {
     Title = "Show Status Panel",
     Default = false
 })
-TogglePanel:OnChanged(function(Value)
+Toggles.TogglePanel:OnChanged(function(Value)
     getgenv().ShowPanel = Value
     if ScreenGui then
         Gui(Value and getgenv().StartFarmChest)
@@ -4748,7 +4755,7 @@ TogglePanel:OnChanged(function(Value)
 end)
 
 
-local ToggleSniperLegendaryItem =
+Toggles.ToggleSniperLegendaryItem =
     Tabs.Main:AddToggle(
     "ToggleSniperLegendaryItem",
     {
@@ -4756,13 +4763,13 @@ local ToggleSniperLegendaryItem =
         Default = false
     }
 )
-ToggleSniperLegendaryItem:OnChanged(
+Toggles.ToggleSniperLegendaryItem:OnChanged(
     function(Value)
         getgenv().SniperLegendaryItem = Value
     end
 )
 
-local ToggleStartFarmChest =
+Toggles.ToggleStartFarmChest =
     Tabs.Main:AddToggle(
     "ToggleStartFarmChest",
     {
@@ -4770,7 +4777,8 @@ local ToggleStartFarmChest =
         Default = false
     }
 )
-ToggleStartFarmChest:OnChanged(
+
+Toggles.ToggleStartFarmChest:OnChanged(
     function(Value)
         getgenv().StartFarmChest = Value
 
@@ -4781,29 +4789,10 @@ ToggleStartFarmChest:OnChanged(
         if ScreenGui then
             Gui(getgenv().ShowPanel and Value)
         end
-
-        -- Notify user
-        if Value then
-            Fluent:Notify(
-                {
-                    Title = "Romis Hub",
-                    Content = "Chest farming started!",
-                    Duration = 2
-                }
-            )
-        else
-            Fluent:Notify(
-                {
-                    Title = "Romis Hub",
-                    Content = "Chest farming stopped!",
-                    Duration = 2
-                }
-            )
-        end
     end
 )
 
-local SelectTypeFarm =
+Dropdowns.SelectTypeFarm =
     Tabs.SF:AddDropdown(
     "SelectTypeFarm",
     {
@@ -4813,13 +4802,13 @@ local SelectTypeFarm =
         Default = 1
     }
 )
-SelectTypeFarm:OnChanged(
+Dropdowns.SelectTypeFarm:OnChanged(
     function(Value)
         getgenv().SelectTypeFarm = Value
     end
 )
 
-local SliderHop =
+Sliders.SliderHop =
     Tabs.SF:AddSlider(
     "SliderHop",
     {
@@ -4834,14 +4823,14 @@ local SliderHop =
         end
     }
 )
-SliderHop:OnChanged(
+Sliders.SliderHop:OnChanged(
     function(Value)
         getgenv().TimeHop = math.floor(Value)
     end
 )
 
-local ToggleEliteMob = Tabs.SF:AddToggle("ToggleEliteMob", {Title = "Auto Farm Elite Mob", Default = false})
-ToggleEliteMob:OnChanged(
+Toggles.ToggleEliteMob = Tabs.SF:AddToggle("ToggleEliteMob", {Title = "Auto Farm Elite Mob", Default = false})
+Toggles.ToggleEliteMob:OnChanged(
     function(Value)
         getgenv().AutoFarmEliteMob = Value
         if Value then
@@ -4850,15 +4839,15 @@ ToggleEliteMob:OnChanged(
     end
 )
 
-local ToggleFruitCollect = Tabs.SF:AddToggle("ToggleFruitCollect", {Title = "Auto Collect Fruit", Default = false })
-ToggleFruitCollect:OnChanged(function(Value)
+Toggles.ToggleFruitCollect = Tabs.SF:AddToggle("ToggleFruitCollect", {Title = "Auto Collect Fruit", Default = false })
+Toggles.ToggleFruitCollect:OnChanged(function(Value)
     getgenv().FruitCollect = Value
 end)
 
 local GameEventSecction = Tabs.E:AddSection("Tab PvP")
 
-local ToggleTu = Tabs.E:AddToggle("ToggleTu", {Title = "Auto Enable PvP", Default = false })
-ToggleTu:OnChanged(
+Toggles.ToggleTu = Tabs.E:AddToggle("ToggleTu", {Title = "Auto Enable PvP", Default = false })
+Toggles.ToggleTu:OnChanged(
     function(Value)
         getgenv().AutoEnblePvP = Value
     end
@@ -4869,7 +4858,7 @@ for i, v in pairs(game:GetService("Players"):GetPlayers()) do
     table.insert(Playerslist, v.Name)
 end
 
-local SPToggle =
+Toggles.SPToggle =
     Tabs.E:AddDropdown(
     "SPToggle",
     {
@@ -4880,7 +4869,7 @@ local SPToggle =
     }
 )
 
-SPToggle:OnChanged(
+Toggles.SPToggle:OnChanged(
     function(Value)
         getgenv().SelectPlayer = Value
     end
@@ -4900,8 +4889,8 @@ Tabs.E:AddButton(
     }
 )
 
-local ToggleTeleport = Tabs.E:AddToggle("ToggleTeleport", {Title = "Teleport To Player", Default = false})
-ToggleTeleport:OnChanged(
+Toggles.ToggleTeleport = Tabs.E:AddToggle("ToggleTeleport", {Title = "Teleport To Player", Default = false})
+Toggles.ToggleTeleport:OnChanged(
     function(Value)
         getgenv().TeleportSelectPlayer = Value
         pcall(
@@ -4923,8 +4912,8 @@ ToggleTeleport:OnChanged(
     end
 )
 
-local ToggleKillNear = Tabs.E:AddToggle("ToggleKillNear", {Title = "Teleport Kill Player Nearest", Default = false})
-ToggleKillNear:OnChanged(
+Toggles.ToggleKillNear = Tabs.E:AddToggle("ToggleKillNear", {Title = "Teleport Kill Player Nearest", Default = false})
+Toggles.ToggleKillNear:OnChanged(
     function(Value)
         getgenv().KillPlayerNear = Value
     end
@@ -4979,8 +4968,8 @@ function KillPlayerNear()
     return true
 end
 
-local SpectateToggle = Tabs.Player:AddToggle("SpectateToggle", {Title = "Spectate Player", Default = false})
-SpectateToggle:OnChanged(
+Toggles.SpectateToggle = Tabs.E:AddToggle("SpectateToggle", {Title = "Spectate Player", Default = false})
+Toggles.SpectateToggle:OnChanged(
     function(Value)
         SpectatePlys = Value
         local plr1 = game:GetService("Players").LocalPlayer.Character.Humanoid
@@ -4993,8 +4982,6 @@ SpectateToggle:OnChanged(
         game:GetService("Workspace").Camera.CameraSubject = game:GetService("Players").LocalPlayer.Character.Humanoid
     end
 )
-
-
 
 local Raid = Tabs.R:AddSection("Tab Raid")
     Tabs.R:AddButton({
@@ -5083,18 +5070,18 @@ local function Us()
     end
 end
 
-local DropdownRaid = Tabs.R:AddDropdown("DropdownRaid", {
+Dropdowns.DropdownRaid = Tabs.R:AddDropdown("DropdownRaid", {
     Title = "Select Raid Map Chip",
     Values = Raidslist,
     Multi = false,
     Default = 1,
 })
-DropdownRaid:OnChanged(function(Value)
+Dropdowns.DropdownRaid:OnChanged(function(Value)
     getgenv().BuyChipSelect = Value
 end)
 
-local ToggleChipPlayer = Tabs.R:AddToggle("ToggleChipPlayer", {Title = "Auto Buy Chip Player Fruit", Default = false})
-ToggleChipPlayer:OnChanged(
+Toggles.ToggleChipPlayer = Tabs.R:AddToggle("ToggleChipPlayer", {Title = "Auto Buy Chip Player Fruit", Default = false})
+Toggles.ToggleChipPlayer:OnChanged(
     function(Value)
         getgenv().AutoBuyChipPlayer = Value
     end
@@ -5149,21 +5136,21 @@ task.spawn(
     end
 end)
 
-local ToggleChipPlayerSp = Tabs.R:AddToggle("ToggleChipPlayerSp", {Title = "Ingore Special Chip", Default = true})
-ToggleChipPlayerSp:OnChanged(
+Toggles.ToggleChipPlayerSp = Tabs.R:AddToggle("ToggleChipPlayerSp", {Title = "Ingore Special Chip", Default = true})
+Toggles.ToggleChipPlayerSp:OnChanged(
     function(Value)
         getgenv().IngoreSpecialChip = Value
     end
 )
 
-local ToggleRaiid = Tabs.R:AddToggle("ToggleRaiid", {Title = "Auto Farm Raid", Default = false})
-ToggleRaiid:OnChanged(
+Toggles.ToggleRaiid = Tabs.R:AddToggle("ToggleRaiid", {Title = "Auto Farm Raid", Default = false})
+Toggles.ToggleRaiid:OnChanged(
     function(Value)
         getgenv().AutoRaid = Value
     end
 )
 
-local FruitPriceSlider = Tabs.R:AddSlider("FruitPriceSlider", {
+Sliders.FruitPriceSlider = Tabs.R:AddSlider("FruitPriceSlider", {
     Title = "Fruit Price Limit",
     Description = "slider",
     Default = 1000000,
@@ -5175,16 +5162,16 @@ local FruitPriceSlider = Tabs.R:AddSlider("FruitPriceSlider", {
     end
 })
 
-local ToggleGetFruit =
+Toggles.ToggleGetFruit =
     Tabs.R:AddToggle("ToggleGetFruit", {Title = "Auto Unstore Fruit", Default = false})
-ToggleGetFruit:OnChanged(
+Toggles.ToggleGetFruit:OnChanged(
     function(Value)
         getgenv().Raid_AutoUnStore = Value
     end
 )
 
-local ToggleAwake = Tabs.R:AddToggle("ToggleAwake", {Title = "Auto Awakening", Default = false})
-ToggleAwake:OnChanged(
+Toggles.ToggleAwake = Tabs.R:AddToggle("ToggleAwake", {Title = "Auto Awakening", Default = false})
+Toggles.ToggleAwake:OnChanged(
     function(Value)
         getgenv().Awkening = Value
     end
@@ -5359,7 +5346,7 @@ MultiDropdownFS:OnChanged(
     end
 )
 
-local ToggleSniperFruit =
+Toggles.ToggleSniperFruit =
     Tabs.R:AddToggle(
     "ToggleSniperFruit",
     {
@@ -5367,7 +5354,7 @@ local ToggleSniperFruit =
         Default = false
     }
 )
-ToggleSniperFruit:OnChanged(
+Toggles.ToggleSniperFruit:OnChanged(
     function(Value)
         getgenv().EnableFruitSniper = Value
     end
@@ -5381,7 +5368,7 @@ IslandNames = {}
 for _, Location in pairs(LocationFolder:GetChildren()) do
     table.insert(IslandNames, Location.Name)
 end
-local TravelDropdown = Tabs.T:AddDropdown("TravelDropdown", {
+Dropdowns.TravelDropdown = Tabs.T:AddDropdown("TravelDropdown", {
     Title = "Select Island",
     Values = IslandNames,
     Multi = false,
@@ -5390,15 +5377,15 @@ local TravelDropdown = Tabs.T:AddDropdown("TravelDropdown", {
 
 getgenv().SelectedIsland = IslandNames[1]
 
-TravelDropdown:OnChanged(function(Value)
+Dropdowns.TravelDropdown:OnChanged(function(Value)
     getgenv().SelectedIsland = Value
 end)
 
-local TravelToggle = Tabs.T:AddToggle("TravelToggle", {
+Toggles.TravelToggle = Tabs.T:AddToggle("TravelToggle", {
     Title = "Tween To Island",
     Default = false,
 })
-TravelToggle:OnChanged(function(Value)
+Toggles.TravelToggle:OnChanged(function(Value)
     getgenv().TweenIsland = Value
 end)
 
@@ -5465,14 +5452,14 @@ function TweenToNPc()
     end
 end
 
-local SelectNpcDropdown = Tabs.T:AddDropdown("SelectNpcDropdown", {
+Dropdowns.SelectNpcDropdown = Tabs.T:AddDropdown("SelectNpcDropdown", {
     Title = "Select NPC",
     Values = {},
     Multi = false,
     Default = "",
 })
 
-SelectNpcDropdown:OnChanged(function(Value)
+Dropdowns.SelectNpcDropdown:OnChanged(function(Value)
     getgenv().SelectedNpc = Value
 end)
 
@@ -5492,12 +5479,12 @@ local RefreshNPCsButton = Tabs.T:AddButton({
     end
 })
 
-local TravelToNpcToggle = Tabs.T:AddToggle("TravelToNpcToggle", {
+Toggles.TravelToNpcToggle = Tabs.T:AddToggle("TravelToNpcToggle", {
     Title = "Tween To NPC",
     Default = false,
 })
 
-TravelToNpcToggle:OnChanged(function(Value)
+Toggles.TravelToNpcToggle:OnChanged(function(Value)
     getgenv().TweenToNpc = Value
 end)
 
@@ -5555,8 +5542,8 @@ TogglePlayerEsp:OnChanged(function(Val)
     end
 end)
 
-local ToggleIslandEsp = Tabs.T:AddToggle("ToggleIslandEsp", {Title = "ESP Island", Default = false})
-ToggleIslandEsp:OnChanged(function(Val)
+Toggles.ToggleIslandEsp = Tabs.T:AddToggle("ToggleIslandEsp", {Title = "ESP Island", Default = false})
+Toggles.ToggleIslandEsp:OnChanged(function(Val)
     getgenv().EspIsland = Val
     for _, Loc in pairs(workspace._WorldOrigin.Locations:GetChildren()) do
         if Loc.Name ~= "Sea" then
@@ -5582,8 +5569,8 @@ ToggleIslandEsp:OnChanged(function(Val)
     end
 end)
 
-local ToggleNpcEsp = Tabs.T:AddToggle("ToggleNpcEsp", {Title = "ESP NPC", Default = false})
-ToggleNpcEsp:OnChanged(function(Val)
+Toggles.ToggleNpcEsp = Tabs.T:AddToggle("ToggleNpcEsp", {Title = "ESP NPC", Default = false})
+Toggles.ToggleNpcEsp:OnChanged(function(Val)
     getgenv().EspNpc = Val
     
     local function ProcessNPC(Npc)
@@ -5637,8 +5624,8 @@ ToggleNpcEsp:OnChanged(function(Val)
     end
 end)
 
-local ToggleRealFruitEsp = Tabs.T:AddToggle("ToggleRealFruitEsp", {Title = "ESP Real Fruit", Default = false})
-ToggleRealFruitEsp:OnChanged(function(Val)
+Toggles.ToggleRealFruitEsp = Tabs.T:AddToggle("ToggleRealFruitEsp", {Title = "ESP Real Fruit", Default = false})
+Toggles.ToggleRealFruitEsp:OnChanged(function(Val)
     getgenv().EspRealFruit = Val
     if _G.World3 then
          Spawners = {
@@ -5675,8 +5662,8 @@ ToggleRealFruitEsp:OnChanged(function(Val)
     end
 end)
 
-local ToggleFruitEsp = Tabs.T:AddToggle("ToggleFruitEsp", {Title = "ESP Fruit Physical", Default = false})
-ToggleFruitEsp:OnChanged(function(Val)
+Toggles.ToggleFruitEsp = Tabs.T:AddToggle("ToggleFruitEsp", {Title = "ESP Fruit Physical", Default = false})
+Toggles.ToggleFruitEsp:OnChanged(function(Val)
     getgenv().EspFruit = Val
     for _, Fruit in pairs(workspace:GetChildren()) do
         if string.find(Fruit.Name, "Fruit") then
@@ -5703,8 +5690,8 @@ ToggleFruitEsp:OnChanged(function(Val)
     end
 end)
 
-local ToggleChestEsp = Tabs.T:AddToggle("ToggleChestEsp", {Title = "ESP Chest", Default = false})
-ToggleChestEsp:OnChanged(function(Val)
+Toggles.ToggleChestEsp = Tabs.T:AddToggle("ToggleChestEsp", {Title = "ESP Chest", Default = false})
+Toggles.ToggleChestEsp:OnChanged(function(Val)
     getgenv().EspChest = Val
     local Chests = {"Chest1", "Chest2", "Chest3"}
     
@@ -5734,8 +5721,8 @@ ToggleChestEsp:OnChanged(function(Val)
     end
 end)
 
-local ToggleFlowerEsp = Tabs.T:AddToggle("ToggleFlowerEsp", {Title = "ESP Flower", Default = false})
-ToggleFlowerEsp:OnChanged(function(Val)
+Toggles.ToggleFlowerEsp = Tabs.T:AddToggle("ToggleFlowerEsp", {Title = "ESP Flower", Default = false})
+Toggles.ToggleFlowerEsp:OnChanged(function(Val)
     getgenv().EspFlower = Val
     for _, Flower in pairs(workspace:GetChildren()) do
         if Flower.Name == "Flower1" or Flower.Name == "Flower2" then
@@ -5763,8 +5750,8 @@ ToggleFlowerEsp:OnChanged(function(Val)
 end)
 
 
-local ToggleLegendarySwordEsp = Tabs.T:AddToggle("ToggleLegendarySwordEsp", {Title = "ESP Legendary Sword Dealer", Default = false})
-ToggleLegendarySwordEsp:OnChanged(function(Val)
+Toggles.ToggleLegendarySwordEsp = Tabs.T:AddToggle("ToggleLegendarySwordEsp", {Title = "ESP Legendary Sword Dealer", Default = false})
+Toggles.ToggleLegendarySwordEsp:OnChanged(function(Val)
     getgenv().EspLegendarySword = Val
     for _, Npc in pairs(workspace.NPCs:GetChildren()) do
         if Npc.Name == "Legendary Sword Dealer" then
@@ -5794,8 +5781,8 @@ ToggleLegendarySwordEsp:OnChanged(function(Val)
     end
 end)
 
-local ToggleMasterEnhancementEsp = Tabs.T:AddToggle("ToggleMasterEnhancementEsp", {Title = "ESP Master of Enhancement", Default = false})
-ToggleMasterEnhancementEsp:OnChanged(function(Val)
+Toggles.ToggleMasterEnhancementEsp = Tabs.T:AddToggle("ToggleMasterEnhancementEsp", {Title = "ESP Master of Enhancement", Default = false})
+Toggles.ToggleMasterEnhancementEsp:OnChanged(function(Val)
     getgenv().EspMasterEnhancement = Val
     for _, Npc in pairs(workspace.NPCs:GetChildren()) do
         if Npc.Name == "Master of Enhancement" then
@@ -5825,8 +5812,8 @@ ToggleMasterEnhancementEsp:OnChanged(function(Val)
     end
 end)
 
-local ToggleMirageIslandEsp = Tabs.T:AddToggle("ToggleMirageIslandEsp", {Title = "ESP Mirage Island", Default = false})
-ToggleMirageIslandEsp:OnChanged(function(Val)
+Toggles.ToggleMirageIslandEsp = Tabs.T:AddToggle("ToggleMirageIslandEsp", {Title = "ESP Mirage Island", Default = false})
+Toggles.ToggleMirageIslandEsp:OnChanged(function(Val)
     getgenv().EspMirageIsland = Val
     for _, Loc in pairs(workspace._WorldOrigin.Locations:GetChildren()) do
         if Loc.Name == "Mirage Island" then
@@ -5852,8 +5839,8 @@ ToggleMirageIslandEsp:OnChanged(function(Val)
     end
 end)
 
-local ToggleAdvancedFruitEsp = Tabs.T:AddToggle("ToggleAdvancedFruitEsp", {Title = "ESP Advanced Fruit Dealer", Default = false})
-ToggleAdvancedFruitEsp:OnChanged(function(Val)
+Toggles.ToggleAdvancedFruitEsp = Tabs.T:AddToggle("ToggleAdvancedFruitEsp", {Title = "ESP Advanced Fruit Dealer", Default = false})
+Toggles.ToggleAdvancedFruitEsp:OnChanged(function(Val)
     getgenv().EspAdvancedFruit = Val
     for _, Npc in pairs(workspace.NPCs:GetChildren()) do
         if Npc.Name == "Advanced Fruit Dealer" then
@@ -5883,8 +5870,8 @@ ToggleAdvancedFruitEsp:OnChanged(function(Val)
     end
 end)
 
-local ToggleGearEsp = Tabs.T:AddToggle("ToggleGearEsp", {Title = "ESP Gear", Default = false})
-ToggleGearEsp:OnChanged(function(Val)
+Toggles.ToggleGearEsp = Tabs.T:AddToggle("ToggleGearEsp", {Title = "ESP Gear", Default = false})
+Toggles.ToggleGearEsp:OnChanged(function(Val)
     getgenv().EspGear = Val
     local Mystic = workspace.Map:FindFirstChild("MysticIsland")
     if Mystic then
