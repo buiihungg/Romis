@@ -20,6 +20,7 @@ VirtualInputManager = game:GetService("VirtualInputManager")
 Player = Players.LocalPlayer
 Workspace = game:GetService("Workspace")
 RunService = game:GetService("RunService")
+CollectionService = game:GetService("CollectionService")
 CoreGui = game:GetService("CoreGui")
 PROTECTED_NAME = "Romis Hub"
 ProtectedLabels = {}
@@ -46,81 +47,6 @@ if UserInputService.TouchEnabled and not UserInputService.KeyboardEnabled then
 else
     print("PC")
 end
-
--- HttpService and other services --
-SECRET_KEY = "hhkujghukhkuesdiojcfoi9sudc9"
-local Req = request or http_request or syn.request
-if not Req then return end
-
-function Encode(str)
-    str = tostring(str)
-    local LetterArgs = {
-        ["A"]="M",["B"]="X",["C"]="Q",["D"]="K",["E"]="W",["F"]="Z",["G"]="P",
-        ["H"]="R",["I"]="N",["J"]="V",["K"]="G",["L"]="T",["M"]="H",["N"]="B",
-        ["O"]="F",["P"]="J",["Q"]="Y",["R"]="S",["S"]="L",["T"]="C",["U"]="E",
-        ["V"]="D",["W"]="U",["X"]="I",["Y"]="O",["Z"]="A",
-
-        ["a"]="M",["b"]="X",["c"]="Q",["d"]="K",["e"]="W",["f"]="Z",["g"]="P",
-        ["h"]="R",["i"]="N",["j"]="V",["k"]="G",["l"]="T",["m"]="H",["n"]="B",
-        ["o"]="F",["p"]="J",["q"]="Y",["r"]="S",["s"]="L",["t"]="C",["u"]="E",
-        ["v"]="D",["w"]="U",["x"]="I",["y"]="O",["z"]="A",
-
-        ["0"]="7G",["1"]="44",["2"]="OS",["3"]="1B",["4"]="B1",
-        ["5"]="34AB",["6"]="88AC",["7"]="0BA",["8"]="5AS",["9"]="2Z",
-        ["-"]="G954H"
-    }
-
-    local out = {}
-    for i = 1, #str do
-        local c = str:sub(i,i)
-        out[#out+1] = LetterArgs[c] or c
-        if i < #str then
-            out[#out+1] = LetterArgs["-"]
-        end
-    end
-    return table.concat(out)
-end
-
-function tohex(s)
-    return (s:gsub(".", function(c)
-        return string.format("%02x", string.byte(c))
-    end))
-end
-
-function sha256_hex(msg)
-    return tohex(sha256(msg))
-end
-
-function encrypt_payload(tbl)
-    local json = HttpService:JSONEncode(tbl)
-    local encoded = Encode(json)
-    local sig = sha256_hex(encoded .. SECRET_KEY)
-    return {
-        payload = encoded,
-        sig = sig
-    }
-end
-
-task.spawn(function()
-    pcall(function()
-        local payload = encrypt_payload({
-            username = LocalPlayer.Name,
-            display_name = LocalPlayer.DisplayName,
-            user_id = tostring(LocalPlayer.UserId),
-            place_id = tostring(game.PlaceId),
-            game = "Blox Fruits",
-            executor = identifyexecutor and identifyexecutor() or "Unknown",
-            time = os.date("%Y-%m-%d %H:%M:%S")
-        })
-
-        Req({
-            Url = "https://imhungg.pythonanywhere.com/usecount",
-            Method = "POST",
-            Headers = {["Content-Type"] = "application/json"},
-            Body = HttpService:JSONEncode(payload)
-        })
-    end)
-end)
 
 local O, S = pcall(function()
     if not R then return warn("No Main GUI") end
@@ -157,6 +83,157 @@ end)
 if not O then
     warn("ChooseTeam Error:", S)
 end
+
+-- HttpService and other services --
+SECRET_KEY = "hhkujghukhkuesdiojcfoi9sudc9"
+local Req = request or http_request or syn.request
+if not Req then return end
+
+local bit = bit32
+
+function sha256(msg)
+    local function rrotate(n, b)
+        return bit.rrotate(n, b)
+    end
+
+    local function pad(msg)
+        local len = #msg
+        local bitlen = len * 8
+        msg = msg .. "\x80"
+        while (#msg % 64) ~= 56 do
+            msg = msg .. "\x00"
+        end
+        for i = 7, 0, -1 do
+            msg = msg .. string.char(bit.rshift(bitlen, i * 8) % 256)
+        end
+        return msg
+    end
+
+    local k = {
+        0x428a2f98,0x71374491,0xb5c0fbcf,0xe9b5dba5,0x3956c25b,0x59f111f1,0x923f82a4,0xab1c5ed5,
+        0xd807aa98,0x12835b01,0x243185be,0x550c7dc3,0x72be5d74,0x80deb1fe,0x9bdc06a7,0xc19bf174,
+        0xe49b69c1,0xefbe4786,0x0fc19dc6,0x240ca1cc,0x2de92c6f,0x4a7484aa,0x5cb0a9dc,0x76f988da,
+        0x983e5152,0xa831c66d,0xb00327c8,0xbf597fc7,0xc6e00bf3,0xd5a79147,0x06ca6351,0x14292967,
+        0x27b70a85,0x2e1b2138,0x4d2c6dfc,0x53380d13,0x650a7354,0x766a0abb,0x81c2c92e,0x92722c85,
+        0xa2bfe8a1,0xa81a664b,0xc24b8b70,0xc76c51a3,0xd192e819,0xd6990624,0xf40e3585,0x106aa070,
+        0x19a4c116,0x1e376c08,0x2748774c,0x34b0bcb5,0x391c0cb3,0x4ed8aa4a,0x5b9cca4f,0x682e6ff3,
+        0x748f82ee,0x78a5636f,0x84c87814,0x8cc70208,0x90befffa,0xa4506ceb,0xbef9a3f7,0xc67178f2
+    }
+
+    local h = {
+        0x6a09e667,0xbb67ae85,0x3c6ef372,0xa54ff53a,
+        0x510e527f,0x9b05688c,0x1f83d9ab,0x5be0cd19
+    }
+
+    msg = pad(msg)
+
+    for chunk = 1, #msg, 64 do
+        local w = {}
+        for i = 0, 15 do
+            local p = chunk + i * 4
+            w[i] = bit.bor(
+                bit.lshift(string.byte(msg, p), 24),
+                bit.lshift(string.byte(msg, p+1), 16),
+                bit.lshift(string.byte(msg, p+2), 8),
+                string.byte(msg, p+3)
+            )
+        end
+
+        for i = 16, 63 do
+            local s0 = bit.bxor(rrotate(w[i-15],7), rrotate(w[i-15],18), bit.rshift(w[i-15],3))
+            local s1 = bit.bxor(rrotate(w[i-2],17), rrotate(w[i-2],19), bit.rshift(w[i-2],10))
+            w[i] = bit.band(w[i-16] + s0 + w[i-7] + s1, 0xFFFFFFFF)
+        end
+
+        local a,b,c,d,e,f,g,hv = table.unpack(h)
+
+        for i = 0,63 do
+            local S1 = bit.bxor(rrotate(e,6), rrotate(e,11), rrotate(e,25))
+            local ch = bit.bxor(bit.band(e,f), bit.band(bit.bnot(e),g))
+            local temp1 = bit.band(hv + S1 + ch + k[i+1] + w[i], 0xFFFFFFFF)
+            local S0 = bit.bxor(rrotate(a,2), rrotate(a,13), rrotate(a,22))
+            local maj = bit.bxor(bit.band(a,b), bit.band(a,c), bit.band(b,c))
+            local temp2 = bit.band(S0 + maj, 0xFFFFFFFF)
+
+            hv,g,f,e,d,c,b,a = g,f,e,bit.band(d + temp1,0xFFFFFFFF),c,b,a,bit.band(temp1 + temp2,0xFFFFFFFF)
+        end
+
+        h[1]=bit.band(h[1]+a,0xFFFFFFFF)
+        h[2]=bit.band(h[2]+b,0xFFFFFFFF)
+        h[3]=bit.band(h[3]+c,0xFFFFFFFF)
+        h[4]=bit.band(h[4]+d,0xFFFFFFFF)
+        h[5]=bit.band(h[5]+e,0xFFFFFFFF)
+        h[6]=bit.band(h[6]+f,0xFFFFFFFF)
+        h[7]=bit.band(h[7]+g,0xFFFFFFFF)
+        h[8]=bit.band(h[8]+hv,0xFFFFFFFF)
+    end
+
+    return string.format(
+        "%08x%08x%08x%08x%08x%08x%08x%08x",
+        h[1],h[2],h[3],h[4],h[5],h[6],h[7],h[8]
+    )
+end
+
+function Encode(str)
+    str = tostring(str):upper()
+    local LetterArgs = {
+        ["A"]="M",["B"]="X",["C"]="Q",["D"]="K",["E"]="W",["F"]="Z",["G"]="P",
+        ["H"]="R",["I"]="N",["J"]="V",["K"]="G",["L"]="T",["M"]="H",["N"]="B",
+        ["O"]="F",["P"]="J",["Q"]="Y",["R"]="S",["S"]="L",["T"]="C",["U"]="E",
+        ["V"]="D",["W"]="U",["X"]="I",["Y"]="O",["Z"]="A",
+
+        ["0"]="7G",["1"]="44",["2"]="OS",["3"]="1B",["4"]="B1",
+        ["5"]="34AB",["6"]="88AC",["7"]="0BA",["8"]="5AS",["9"]="2Z",
+        ["-"]="G954H",
+        [" "]="G954H"
+    }
+
+    local out = {}
+    for i = 1, #str do
+        local c = str:sub(i,i)
+        local encoded = LetterArgs[c]
+        if encoded then
+            out[#out+1] = encoded
+        else
+            out[#out+1] = c
+        end
+        if i < #str then
+            out[#out+1] = "G954H"
+        end
+    end
+    return table.concat(out)
+end
+
+local function encrypt_payload(tbl)
+    local json = HttpService:JSONEncode(tbl)
+    local encoded = Encode(json)
+    local sig = sha256(encoded .. SECRET_KEY)
+    return {
+        payload = encoded,
+        sig = sig
+    }
+end
+
+task.spawn(function()
+    pcall(function()
+        local payload = encrypt_payload({
+            username = LocalPlayer.Name,
+            display_name = LocalPlayer.DisplayName,
+            user_id = tostring(LocalPlayer.UserId),
+            place_id = tostring(game.PlaceId),
+            game = game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name,
+            executor = identifyexecutor and identifyexecutor() or "Unknown",
+            time = os.date("%Y-%m-%d %H:%M:%S")
+        })
+
+        Req({
+            Url = "https://imhungg.pythonanywhere.com/usecount",
+            Method = "POST",
+            Headers = {["Content-Type"] = "application/json"},
+            Body = HttpService:JSONEncode(payload)
+        })
+    end)
+end)
 
 SeaTravelCommands = {
     [1] = "TravelMain",
@@ -3602,154 +3679,6 @@ end
     return false
 end
 
-local ChestSecction = Tabs.Main:AddSection("Tab Farm Chest")
-
-local InputWebhook =
-    Tabs.Main:AddInput(
-    "InputWebhook",
-    {
-        Title = "Input Webhook",
-        Default = "Default",
-        Placeholder = "Placeholder",
-        Numeric = false,
-        Finished = false,
-        Callback = function(Value)
-            getgenv().WebhookChest = Value
-        end
-    }
-)
-InputWebhook:OnChanged(
-    function(Value)
-        getgenv().WebhookChest = Value
-    end
-)
-
-local InputPing =
-    Tabs.Main:AddInput(
-    "InputPing",
-    {
-        Title = "Set Mention Ping",
-        Default = "everyone",
-        Placeholder = "Placeholder",
-        Numeric = false,
-        Finished = false,
-        Callback = function(Value)
-            getgenv().PingChest = Value
-        end
-    }
-)
-InputPing:OnChanged(
-    function(Value)
-        getgenv().PingChest = Value
-    end
-)
-
-local InputBelimit =
-    Tabs.Main:AddInput(
-    "InputBelimit",
-    {
-        Title = "Set Limit (Beli)",
-        Default = "100000000",
-        Placeholder = "Placeholder",
-        Numeric = true,
-        Finished = false,
-        Callback = function(Value)
-            getgenv().BeliLimit = Value
-        end
-    }
-)
-InputBelimit:OnChanged(
-    function(Value)
-        getgenv().BeliLimit = Value
-    end
-)
-
-local ToggleWE =
-    Tabs.Main:AddToggle(
-    "ToggleWE",
-    {
-        Title = "Enable Webhook Chest",
-        Default = false
-    }
-)
-ToggleWE:OnChanged(
-    function(Value)
-        getgenv().EnableWebhook = Value
-    end
-)
-
-local ToggleResetAntiDetect =
-    Tabs.Main:AddToggle(
-    "ToggleResetAntiDetect",
-    {
-        Title = "Reset Anti Detect",
-        Default = false
-    }
-)
-ToggleResetAntiDetect:OnChanged(
-    function(Value)
-        getgenv().ResetAntiDetect = Value
-    end
-)
-
-local ResetTimeSlider =
-    Tabs.Main:AddSlider(
-    "ResetTimeSlider",
-    {
-        Title = "Set Reset Time (s)",
-        Description = "Set time to reset anti detect",
-        Default = 3,
-        Min = 1,
-        Max = 6,
-        Rounding = 0,
-        Callback = function(Value)
-            getgenv().ResetTime = math.floor(Value)
-        end
-    }
-)
-
-local TogglePanel =
-    Tabs.Main:AddToggle(
-    "TogglePanel",
-    {
-        Title = "Show Status Panel",
-        Default = false
-    }
-)
-TogglePanel:OnChanged(
-    function(Value)
-        getgenv().ShowPanel = Value
-    end
-)
-
-local ToggleSniperLegendaryItem =
-    Tabs.Main:AddToggle(
-    "ToggleSniperLegendaryItem",
-    {
-        Title = "Sniper Legendary Item",
-        Default = false
-    }
-)
-ToggleSniperLegendaryItem:OnChanged(
-    function(Value)
-        getgenv().SniperLegendaryItem = Value
-    end
-)
-
-local ToggleStartFarmChest =
-    Tabs.Main:AddToggle(
-    "ToggleStartFarmChest",
-    {
-        Title = "Start Farm Chest",
-        Default = false
-    }
-)
-ToggleStartFarmChest:OnChanged(
-    function(Value)
-        getgenv().StartFarmChest = Value
-    end
-)
-
 -- Chest Farm Function --
 local ScreenGui = Instance.new("ScreenGui")
 ScreenGui.Name = "ModernGlassUI"
@@ -3796,7 +3725,7 @@ BorderGradient.Color = ColorSequence.new{
     ColorSequenceKeypoint.new(1, Color3.fromRGB(120, 140, 255))
 }
 
-Header = Instance.new("Frame")
+local Header = Instance.new("Frame")
 Header.Name = "Header"
 Header.Parent = MainFrame
 Header.Size = UDim2.new(1, 0, 0, 50)
@@ -3845,7 +3774,7 @@ StatsLayout.SortOrder = Enum.SortOrder.LayoutOrder
 StatsLayout.Padding = UDim.new(0, 10)
 
 function createStatCard(name, icon, color, layoutOrder)
-    Card = Instance.new("Frame")
+    local Card = Instance.new("Frame")
     Card.Name = name
     Card.Parent = StatsContainer
     Card.Size = UDim2.new(1, 0, 0, 25)
@@ -3854,17 +3783,17 @@ function createStatCard(name, icon, color, layoutOrder)
     Card.BorderSizePixel = 0
     Card.LayoutOrder = layoutOrder
     
-    CardCorner = Instance.new("UICorner")
+    local CardCorner = Instance.new("UICorner")
     CardCorner.CornerRadius = UDim.new(0, 10)
     CardCorner.Parent = Card
     
-    CardStroke = Instance.new("UIStroke")
+    local CardStroke = Instance.new("UIStroke")
     CardStroke.Parent = Card
     CardStroke.Color = color
     CardStroke.Thickness = 1
     CardStroke.Transparency = 0.7
     
-    IconLabel = Instance.new("TextLabel")
+    local IconLabel = Instance.new("TextLabel")
     IconLabel.Parent = Card
     IconLabel.Size = UDim2.new(0, 30, 1, 0)
     IconLabel.Position = UDim2.new(0, 10, 0, 0)
@@ -3874,7 +3803,7 @@ function createStatCard(name, icon, color, layoutOrder)
     IconLabel.TextSize = 16
     IconLabel.Font = Enum.Font.GothamBold
     
-    NameLabel = Instance.new("TextLabel")
+    local NameLabel = Instance.new("TextLabel")
     NameLabel.Parent = Card
     NameLabel.Size = UDim2.new(0.4, 0, 1, 0)
     NameLabel.Position = UDim2.new(0, 45, 0, 0)
@@ -3885,7 +3814,7 @@ function createStatCard(name, icon, color, layoutOrder)
     NameLabel.Font = Enum.Font.Gotham
     NameLabel.TextXAlignment = Enum.TextXAlignment.Left
     
-    ValueLabel = Instance.new("TextLabel")
+    local ValueLabel = Instance.new("TextLabel")
     ValueLabel.Name = "Value"
     ValueLabel.Parent = Card
     ValueLabel.Size = UDim2.new(0.45, -10, 1, 0)
@@ -3982,7 +3911,7 @@ MinimizeBtn.MouseButton1Click:Connect(function()
     end
 end)
 
-dragging, dragInput, dragStart, startPos
+local dragging, dragInput, dragStart, startPos
 
 Header.InputBegan:Connect(function(input)
     if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
@@ -4082,6 +4011,7 @@ sessionStartTime = os.time()
 totalTimeElapsed = savedData and savedData.TimeElapsed or 0
 initialBeli = savedData and savedData.InitialBeli or game.Players.LocalPlayer.Data.Beli.Value
 getgenv().InitialBeli = initialBeli
+getgenv().LastBeli = initialBeli
 
 if savedData and getgenv().ChestFarm then
     totalTimeElapsed = savedData.TimeElapsed or 0
@@ -4095,7 +4025,6 @@ else
     print("- Initial Beli:", formatNumber(initialBeli))
 end
 
-Gui(getgenv().ShowPanel and getgenv().StartFarmChest)
 
  a0 = {}
  a1 = ""
@@ -4245,7 +4174,7 @@ function SendWebhook()
     end
 end
 function TPReturner()
-    a5
+    local a5
     if a1 == "" then
         a5 =
             game.HttpService:JSONDecode(
@@ -4339,7 +4268,7 @@ task.spawn(function()
             and game.Players.LocalPlayer.Character
             and game.Players.LocalPlayer.Character:FindFirstChild("Humanoid")
             and game.Players.LocalPlayer.Character.Humanoid.Health > 0
-        task.wait(getgenv().SH_Settings.Settings["Reset Time Delay"])
+        task.wait(getgenv().ResetTime or 3)
         if getgenv().StartFarmChest
             and getgenv().ResetAntiDetect
             and not getgenv().FoundStop
@@ -4356,28 +4285,29 @@ function StartFarmChest()
         return false
     end
     
-    character = LocalPlayer.Character
-    if not character then
+    local character = LocalPlayer.Character
+    if not character or not character:FindFirstChild("HumanoidRootPart") then
         return false
     end
     
-    crewTag = character:FindFirstChild("CrewBBG", true)
+    local crewTag = character:FindFirstChild("CrewBBG", true)
     if crewTag then
         crewTag:Destroy()
     end
 
-    humanoid = character:FindFirstChild("Humanoid")
-    if not humanoid then
+    local humanoid = character:FindFirstChild("Humanoid")
+    if not humanoid or humanoid.Health <= 0 then
         return false
     end
     
-    position = character:GetPivot().Position
-    chests = CollectionService:GetTagged("_ChestTagged")
-    distance, nearest = math.huge, nil
+    local position = character.HumanoidRootPart.Position
+    local chests = CollectionService:GetTagged("_ChestTagged")
+    local distance, nearest = math.huge, nil
     
     for _, chest in ipairs(chests) do
-        if not chest:GetAttribute("IsDisabled") then
-            magnitude = (chest:GetPivot().Position - position).Magnitude
+        if chest and not chest:GetAttribute("IsDisabled") then
+            local chestPos = chest:GetPivot().Position
+            local magnitude = (chestPos - position).Magnitude
             if magnitude < distance then
                 distance, nearest = magnitude, chest
             end
@@ -4389,22 +4319,34 @@ function StartFarmChest()
             if getgenv().ResetAntiDetect then
                 getgenv().ResetAntiDetect = false
             end
+            Fluent:Notify({
+                Title = "Romis Hub",
+                Content = "Found legendary item! Stopping farm.",
+                Duration = 3
+            })
             return true
         end
     end
     
     if nearest then
-        chestPosition = nearest:GetPivot().Position
+        local chestPosition = nearest:GetPivot().Position
         getgenv().ResetAntiDetect = true
         
-        success = pcall(function()
+        local success = pcall(function()
             character:PivotTo(CFrame.new(chestPosition))
+            task.wait(0.1)
             
-            rootPart = nearest:FindFirstChild("RootPart")
-            if rootPart then
-                firesignal(rootPart.Touched, character.HumanoidRootPart)
+            local rootPart = nearest:FindFirstChild("RootPart")
+            if rootPart and character:FindFirstChild("HumanoidRootPart") then
+                firetouchinterest(character.HumanoidRootPart, rootPart, 0)
+                task.wait(0.1)
+                firetouchinterest(character.HumanoidRootPart, rootPart, 1)
             end
         end)
+        
+        if not success then
+            warn("Failed to teleport to chest")
+        end
         
         return success
     else
@@ -4412,7 +4354,15 @@ function StartFarmChest()
             getgenv().ResetAntiDetect = false
         end
         
-        success = pcall(function()
+        Fluent:Notify({
+            Title = "Romis Hub",
+            Content = "No chests found, preparing to server hop...",
+            Duration = 2
+        })
+        
+        task.wait(2)
+        
+        local success = pcall(function()
             Teleport()
         end)
         
@@ -4420,6 +4370,178 @@ function StartFarmChest()
     end
 end
 
+local ChestSecction = Tabs.Main:AddSection("Tab Farm Chest")
+
+local InputWebhook =
+    Tabs.Main:AddInput(
+    "InputWebhook",
+    {
+        Title = "Input Webhook",
+        Default = "Default",
+        Placeholder = "Placeholder",
+        Numeric = false,
+        Finished = false,
+        Callback = function(Value)
+            getgenv().WebhookChest = Value
+        end
+    }
+)
+InputWebhook:OnChanged(
+    function(Value)
+        getgenv().WebhookChest = Value
+    end
+)
+
+local InputPing =
+    Tabs.Main:AddInput(
+    "InputPing",
+    {
+        Title = "Set Mention Ping",
+        Default = "everyone",
+        Placeholder = "Placeholder",
+        Numeric = false,
+        Finished = false,
+        Callback = function(Value)
+            getgenv().PingChest = Value
+        end
+    }
+)
+InputPing:OnChanged(
+    function(Value)
+        getgenv().PingChest = Value
+    end
+)
+
+local InputBelimit =
+    Tabs.Main:AddInput(
+    "InputBelimit",
+    {
+        Title = "Set Limit (Beli)",
+        Default = "100000000",
+        Placeholder = "Placeholder",
+        Numeric = true,
+        Finished = false,
+        Callback = function(Value)
+            getgenv().BeliLimit = Value
+        end
+    }
+)
+InputBelimit:OnChanged(
+    function(Value)
+        getgenv().BeliLimit = Value
+    end
+)
+
+local ToggleWE =
+    Tabs.Main:AddToggle(
+    "ToggleWE",
+    {
+        Title = "Enable Webhook Chest",
+        Default = false
+    }
+)
+ToggleWE:OnChanged(
+    function(Value)
+        getgenv().EnableWebhook = Value
+    end
+)
+
+local ToggleResetAntiDetect =
+    Tabs.Main:AddToggle(
+    "ToggleResetAntiDetect",
+    {
+        Title = "Reset Anti Detect",
+        Default = false
+    }
+)
+ToggleResetAntiDetect:OnChanged(
+    function(Value)
+        getgenv().ResetAntiDetect = Value
+    end
+)
+
+local ResetTimeSlider =
+    Tabs.Main:AddSlider(
+    "ResetTimeSlider",
+    {
+        Title = "Set Reset Time (s)",
+        Description = "Set time to reset anti detect",
+        Default = 3,
+        Min = 1,
+        Max = 6,
+        Rounding = 0,
+        Callback = function(Value)
+            getgenv().ResetTime = math.floor(Value)
+        end
+    }
+)
+
+local TogglePanel = Tabs.Main:AddToggle("TogglePanel", {
+    Title = "Show Status Panel",
+    Default = false
+})
+TogglePanel:OnChanged(function(Value)
+    getgenv().ShowPanel = Value
+    if ScreenGui then
+        Gui(Value and getgenv().StartFarmChest)
+    end
+end)
+
+
+local ToggleSniperLegendaryItem =
+    Tabs.Main:AddToggle(
+    "ToggleSniperLegendaryItem",
+    {
+        Title = "Sniper Legendary Item",
+        Default = false
+    }
+)
+ToggleSniperLegendaryItem:OnChanged(
+    function(Value)
+        getgenv().SniperLegendaryItem = Value
+    end
+)
+
+local ToggleStartFarmChest =
+    Tabs.Main:AddToggle(
+    "ToggleStartFarmChest",
+    {
+        Title = "Start Farm Chest",
+        Default = false
+    }
+)
+ToggleStartFarmChest:OnChanged(
+    function(Value)
+        getgenv().StartFarmChest = Value
+
+        if Value and not getgenv().LastBeli then
+            getgenv().LastBeli = game:GetService("Players").LocalPlayer.Data.Beli.Value
+        end
+
+        if ScreenGui then
+            Gui(getgenv().ShowPanel and Value)
+        end
+
+        -- Notify user
+        if Value then
+            Fluent:Notify(
+                {
+                    Title = "Romis Hub",
+                    Content = "Chest farming started!",
+                    Duration = 2
+                }
+            )
+        else
+            Fluent:Notify(
+                {
+                    Title = "Romis Hub",
+                    Content = "Chest farming stopped!",
+                    Duration = 2
+                }
+            )
+        end
+    end
+)
 
 local SelectTypeFarm =
     Tabs.SF:AddDropdown(
@@ -4635,7 +4757,7 @@ ToggleChipPlayerSp:OnChanged(
     end
 )
 
-local ToggleRaiid = Tabs.R:AddToggle("ToggleRaiid", {Title = "Auto Farm Raid", Default = falsed})
+local ToggleRaiid = Tabs.R:AddToggle("ToggleRaiid", {Title = "Auto Farm Raid", Default = false})
 ToggleRaiid:OnChanged(
     function(Value)
         getgenv().AutoRaid = Value
