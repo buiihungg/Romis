@@ -1598,12 +1598,14 @@ function BuyFruitSniper()
     end
 end
 
-task.spawn(function()
-    print('[ DEBUG ] Other Func')
-    while task.wait() do
-        DeVer() DeDam() DeNo() RanPos() ReJoin() CaptureMode() FPSLOCK() BuyFruitSniper()
+function EnbalePvP()
+    if getgenv().AutoEnblePvP then
+        if game:GetService("Players").LocalPlayer.PlayerGui.Main.PvpDisabled.Visible == true then
+            game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("EnablePvp")
+        end
     end
-end)
+end
+
 print("Build Gui")
 local status, Fluent = pcall(function()
     return loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
@@ -1730,9 +1732,9 @@ local Tabs = {
 	Main = Window:AddTab({ Title = "Tab Farm", Icon = "home" }),
 	SF = Window:AddTab({ Title = "Stack Farm", Icon = "layers" }),
 	E = Window:AddTab({ Title = "Game Event", Icon = "music" }),
-	R = Window:AddTab({ Title = "Tab Dungeons", Icon = "mountain-snow" }),
+	R = Window:AddTab({ Title = "Tab Raid", Icon = "mountain-snow" }),
 	T = Window:AddTab({ Title = "Tab Travel", Icon = "map-pin" }),
-	SS = Window:AddTab({ Title = "Tab Shop", Icon = "shopping-cart" }),
+	MM = Window:AddTab({ Title = "Tab Misc", Icon = "shopping-cart" }),
 }
 
 local Options = Fluent.Options
@@ -1749,12 +1751,6 @@ local function UpdateGameTime()
     GameTimeStatus:SetDesc(string.format("%02d (H) - %02d (M) - %02d (S)", Hours, Minutes, Seconds))
 end
 
-task.spawn(function()
-    while task.wait() do
-	UpdateGameTime()
-    end
-end)
-
 local Sttt = Tabs.S:AddSection("Status")
 
 local Status14 = Tabs.S:AddParagraph({
@@ -1763,21 +1759,32 @@ local Status14 = Tabs.S:AddParagraph({
 })
 
 function FlowerItems()
-    local RaceEvolved = game.Players.LocalPlayer.Data.Race:FindFirstChild("Evolved")
-    local RaceStatus = RaceEvolved and "Player Race V2 Evolved" or "Player Race V2 Not Evolved"
-    
-    local Flower1Spawned = workspace.Flower1.Transparency ~= 1
-    local Flower2Spawned = workspace.Flower2.Transparency ~= 1
+    pcall(function()
+        local RaceEvolved = game.Players.LocalPlayer.Data.Race:FindFirstChild("Evolved")
+        local RaceStatus = RaceEvolved and "Player Race V2 Evolved" or "Player Race V2 Not Evolved"
+        
+        local Flower1 = workspace:FindFirstChild("Flower1")
+        local Flower1Spawned = Flower1 and Flower1.Transparency ~= 1 or false
+        
+        local Flower2 = workspace:FindFirstChild("Flower2")
+        local Flower2Spawned = Flower2 and Flower2.Transparency ~= 1 or false
 
-    local BartiloQuest = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BartiloQuestProgress", "Bartilo") == 0
-    local BartiloStatus = BartiloQuest and "Bartilo Quest: Incomplete " or "Bartilo Quest: Completed"
+        local BartiloQuest = false
+        local success, result = pcall(function()
+            return game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BartiloQuestProgress", "Bartilo")
+        end)
+        if success then
+            BartiloQuest = result == 0
+        end
+        local BartiloStatus = BartiloQuest and "Bartilo Quest: Incomplete " or "Bartilo Quest: Completed"
 
-    local Status13 = RaceStatus ..
-                     " | Flower1: " .. (Flower1Spawned and "Spawned!!!" or "Not Spawned") ..
-                     " | Flower2: " .. (Flower2Spawned and "Spawned!!!" or "Not Spawned") ..
-                     " | " .. BartiloStatus
-                     
-    Status14:SetDesc(Status13)
+        local Status13 = RaceStatus ..
+                         " | Flower1: " .. (Flower1Spawned and "Spawned!!!" or "Not Spawned") ..
+                         " | Flower2: " .. (Flower2Spawned and "Spawned!!!" or "Not Spawned") ..
+                         " | " .. BartiloStatus
+                         
+        Status14:SetDesc(Status13)
+    end)
 end
 
 local Status15 = Tabs.S:AddParagraph({
@@ -1786,21 +1793,25 @@ local Status15 = Tabs.S:AddParagraph({
 })
 
 function CheckLegendarySwordStatus()
-    local PlayerData = game.Players.LocalPlayer
-    local SwordStatus
-    if PlayerData and game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("LegendarySwordDealer", "1") == "Shisui" then
-        SwordStatus = "Legendary Sword: Shisui"
-    elseif PlayerData and game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("LegendarySwordDealer", "1") == "Saddi" then
-        SwordStatus = "Legendary Sword: Saddi"
-    elseif PlayerData and game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("LegendarySwordDealer", "1") == "Wando" then
-        SwordStatus = "Sword: Wando"
-    elseif PlayerData then
-        SwordStatus = "No Sword Dealer"
-    else
-        SwordStatus = "No Sword Dealer"
-    end
+    local success, result = pcall(function()
+        local PlayerData = game.Players.LocalPlayer
+        if PlayerData then
+            local swordResult = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("LegendarySwordDealer", "1")
+            if swordResult == "Shisui" then
+                return "Legendary Sword: Shisui"
+            elseif swordResult == "Saddi" then
+                return "Legendary Sword: Saddi"
+            elseif swordResult == "Wando" then
+                return "Sword: Wando"
+            else
+                return "No Sword Dealer"
+            end
+        else
+            return "N/A"
+        end
+    end)
     
-    Status15:SetDesc(SwordStatus)
+    Status15:SetDesc(success and result or "N/A")
 end
 
 local Sttt = Tabs.S:AddSection("Status")
@@ -1811,20 +1822,24 @@ local CakePrinceStatus = Tabs.S:AddParagraph({
 })
 
 local function CheckCakePrince()
-    local Response = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("CakePrinceSpawner")
-    local Status = ""
+    local success, result = pcall(function()
+        local Response = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("CakePrinceSpawner")
+        local Status = ""
 
-    if string.len(Response) == 88 then
-        Status = "Need Kill: " .. string.sub(Response, 39, 41)
-    elseif string.len(Response) == 87 then
-        Status = "Need Kill: " .. string.sub(Response, 39, 40)
-    elseif string.len(Response) == 86 then
-        Status = "Need Kill: " .. string.sub(Response, 39, 39)
-    else
-        Status = "Boss Is Spawned"
-    end
+        if string.len(Response) == 88 then
+            Status = "Need Kill: " .. string.sub(Response, 39, 41)
+        elseif string.len(Response) == 87 then
+            Status = "Need Kill: " .. string.sub(Response, 39, 40)
+        elseif string.len(Response) == 86 then
+            Status = "Need Kill: " .. string.sub(Response, 39, 39)
+        else
+            Status = "Boss Is Spawned"
+        end
+        
+        return Status
+    end)
 
-    CakePrinceStatus:SetDesc(Status)
+    CakePrinceStatus:SetDesc(success and result or "N/A")
 end
 
 local EliteStatus = Tabs.S:AddParagraph({
@@ -1833,24 +1848,29 @@ local EliteStatus = Tabs.S:AddParagraph({
 })
 
 local function CheckEliteHunter()
-    local WorkspaceEnemies = game:GetService("Workspace").Enemies
-    local Elites = {
-        "Diablo",
-        "Deandre",
-        "Urban"
-    }
+    local success, result = pcall(function()
+        local WorkspaceEnemies = game:GetService("Workspace").Enemies
+        local ReplicatedStorage = game:GetService("ReplicatedStorage")
+        local Elites = {
+            "Diablo",
+            "Deandre",
+            "Urban"
+        }
 
-    local Status = "Elite Hunter Not Spawned"
-    
-    for _, Elite in ipairs(Elites) do
-        local Fe = ReplicatedStorage:FindFirstChild(Elite) or WorkspaceEnemies:FindFirstChild(Elite)
-        if Fe then
-            Status = Elite .. " Has Spawned!"
-            break
+        local Status = "Elite Hunter Not Spawned"
+        
+        for _, Elite in ipairs(Elites) do
+            local Fe = ReplicatedStorage:FindFirstChild(Elite) or WorkspaceEnemies:FindFirstChild(Elite)
+            if Fe then
+                Status = Elite .. " Has Spawned!"
+                break
+            end
         end
-    end
+        
+        return Status
+    end)
 
-    EliteStatus:SetDesc(Status)
+    EliteStatus:SetDesc(success and result or "N/A")
 end
 
 local EliteProgressStatus = Tabs.S:AddParagraph({
@@ -1859,8 +1879,12 @@ local EliteProgressStatus = Tabs.S:AddParagraph({
 })
 
 local function CheckEliteProgress()
-    local Progress = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("EliteHunter", "Progress")
-    EliteProgressStatus:SetDesc("Elite Progress: " .. tostring(Progress))
+    local success, result = pcall(function()
+        local Progress = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("EliteHunter", "Progress")
+        return "Elite Progress: " .. tostring(Progress)
+    end)
+    
+    EliteProgressStatus:SetDesc(success and result or "N/A")
 end
 
 local Status3 = Tabs.S:AddParagraph({
@@ -1877,13 +1901,17 @@ local MoonPhases = {
 }
 
 local function MoonCheck()
-    local Lighting = game:GetService("Lighting")
-    local Sky = Lighting:FindFirstChild("Sky")
-    local MoonStatus = "Wait For Moon"
-    if Sky and Sky.MoonTextureId then
-        MoonStatus = MoonPhases[Sky.MoonTextureId] or MoonStatus
-    end
-    Status3:SetDesc("Moon Status: " .. MoonStatus)
+    local success, result = pcall(function()
+        local Lighting = game:GetService("Lighting")
+        local Sky = Lighting:FindFirstChild("Sky")
+        local MoonStatus = "Wait For Moon"
+        if Sky and Sky.MoonTextureId then
+            MoonStatus = MoonPhases[Sky.MoonTextureId] or MoonStatus
+        end
+        return "Moon Status: " .. MoonStatus
+    end)
+    
+    Status3:SetDesc(success and result or "N/A")
 end
 
 local FrozenDimensionStatus = Tabs.S:AddParagraph({
@@ -1892,19 +1920,26 @@ local FrozenDimensionStatus = Tabs.S:AddParagraph({
 })
 
 local function CheckFrozenDimension()
-    local FrozenDimension = game:GetService("Workspace").Map:FindFirstChild("FrozenDimension")
-    local Status = FrozenDimension and "Spawned!!!" or "Not Spawned"
-    FrozenDimensionStatus:SetDesc(Status)
+    local success, result = pcall(function()
+        local FrozenDimension = game:GetService("Workspace").Map:FindFirstChild("FrozenDimension")
+        return FrozenDimension and "Spawned!!!" or "Not Spawned"
+    end)
+    
+    FrozenDimensionStatus:SetDesc(success and result or "N/A")
 end
 
 local Status5 = Tabs.S:AddParagraph({
     Title = "Mirage Island",
     Content = "MirageIsland Status:"
 })
+
 local function MirageIslandCheck()
-    local MirageIsland = game.Workspace._WorldOrigin.Locations:FindFirstChild("Mirage Island")
-    local MirageStatus = MirageIsland and "Spawned!!!" or "Not Spawned."
-    Status5:SetDesc(MirageStatus)
+    local success, result = pcall(function()
+        local MirageIsland = game.Workspace._WorldOrigin.Locations:FindFirstChild("Mirage Island")
+        return MirageIsland and "Spawned!!!" or "Not Spawned."
+    end)
+    
+    Status5:SetDesc(success and result or "N/A")
 end
 
 local Status6 = Tabs.S:AddParagraph({
@@ -1913,9 +1948,12 @@ local Status6 = Tabs.S:AddParagraph({
 })
 
 local function PrehistoricIslandCheck()
-    local PrehistoricIsland = game.Workspace._WorldOrigin.Locations:FindFirstChild("Prehistoric Island") or game:GetService("Workspace").Map:FindFirstChild("PrehistoricIsland")
-    local PrehistoricStatus = PrehistoricIsland and "Spawned!!!" or "Not Spawned."
-    Status6:SetDesc(PrehistoricStatus)
+    local success, result = pcall(function()
+        local PrehistoricIsland = game.Workspace._WorldOrigin.Locations:FindFirstChild("Prehistoric Island") or game:GetService("Workspace").Map:FindFirstChild("PrehistoricIsland")
+        return PrehistoricIsland and "Spawned!!!" or "Not Spawned."
+    end)
+    
+    Status6:SetDesc(success and result or "N/A")
 end
 
 local Status4 = Tabs.S:AddParagraph({
@@ -1924,9 +1962,12 @@ local Status4 = Tabs.S:AddParagraph({
 })
 
 local function KitsuneCheck()
-    local KitsuneIsland = game.Workspace.Map:FindFirstChild("KitsuneIsland")
-    local KitsuneStatus = KitsuneIsland and "Spawned!!!" or "Not Spawned."
-    Status4:SetDesc(KitsuneStatus)
+    local success, result = pcall(function()
+        local KitsuneIsland = game.Workspace.Map:FindFirstChild("KitsuneIsland")
+        return KitsuneIsland and "Spawned!!!" or "Not Spawned."
+    end)
+    
+    Status4:SetDesc(success and result or "N/A")
 end
 
 local AncientOneStatus = Tabs.S:AddParagraph({
@@ -1935,27 +1976,31 @@ local AncientOneStatus = Tabs.S:AddParagraph({
 })
 
 local function CheckAncientOneStatus()
-    if not game.Players.LocalPlayer.Character:FindFirstChild("RaceTransformed") then
-        return "You have yet to achieve greatness"
-    end
+    local success, result = pcall(function()
+        if not game.Players.LocalPlayer.Character:FindFirstChild("RaceTransformed") then
+            return "You have yet to achieve greatness"
+        end
 
-    local Fragments, GearStatus, TrainingStatus = game.ReplicatedStorage.Remotes.CommF_:InvokeServer("UpgradeRace", "Check")
+        local Fragments, GearStatus, TrainingStatus = game.ReplicatedStorage.Remotes.CommF_:InvokeServer("UpgradeRace", "Check")
 
-    if TrainingStatus == 1 or TrainingStatus == 3 then
-        return "Required Train More"
-    elseif TrainingStatus == 2 or TrainingStatus == 4 or TrainingStatus == 7 then
-        return "Can Buy Gear With " .. Fragments .. " Fragments"
-    elseif TrainingStatus == 5 then
-        return "You Are Done Your Race."
-    elseif TrainingStatus == 6 then
-        return "Upgrades completed: " .. GearStatus - 2 .. "/3, Need Train More"
-    elseif TrainingStatus == 0 then
-        return "Ready For Trial"
-    elseif TrainingStatus == 8 then
-        return "Remaining " .. 10 - GearStatus .. " training sessions."
-    else
-        return "You have yet to achieve greatness"
-    end
+        if TrainingStatus == 1 or TrainingStatus == 3 then
+            return "Required Train More"
+        elseif TrainingStatus == 2 or TrainingStatus == 4 or TrainingStatus == 7 then
+            return "Can Buy Gear With " .. Fragments .. " Fragments"
+        elseif TrainingStatus == 5 then
+            return "You Are Done Your Race."
+        elseif TrainingStatus == 6 then
+            return "Upgrades completed: " .. GearStatus - 2 .. "/3, Need Train More"
+        elseif TrainingStatus == 0 then
+            return "Ready For Trial"
+        elseif TrainingStatus == 8 then
+            return "Remaining " .. 10 - GearStatus .. " training sessions."
+        else
+            return "You have yet to achieve greatness"
+        end
+    end)
+    
+    return success and result or "N/A"
 end
 
 local LeviathanStatus = Tabs.S:AddParagraph({
@@ -1964,15 +2009,19 @@ local LeviathanStatus = Tabs.S:AddParagraph({
 })
 
 local function CheckLeviathanChip()
-    local LeviathanInfo = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("InfoLeviathan", "1")
+    local success, result = pcall(function()
+        local LeviathanInfo = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("InfoLeviathan", "1")
 
-    if LeviathanInfo == 5 then
-        LeviathanStatus:SetDesc("Leviathan Is Ready to Sail")
-    elseif LeviathanInfo == 0 then
-        LeviathanStatus:SetDesc("I Don't Know")
-    else
-        LeviathanStatus:SetDesc("Purchase: " .. tostring(LeviathanInfo))
-    end
+        if LeviathanInfo == 5 then
+            return "Leviathan Is Ready to Sail"
+        elseif LeviathanInfo == 0 then
+            return "I Don't Know"
+        else
+            return "Purchase: " .. tostring(LeviathanInfo)
+        end
+    end)
+
+    LeviathanStatus:SetDesc(success and result or "N/A")
 end
 
 local DragonStatus = Tabs.S:AddParagraph({
@@ -1981,48 +2030,56 @@ local DragonStatus = Tabs.S:AddParagraph({
 })
 
 local function CheckDragonQuest()
-    local RequestData = {
-        [1] = { Context = "Check" }
-    }
+    local success, result = pcall(function()
+        local RequestData = {
+            [1] = { Context = "Check" }
+        }
 
-    local Response = game:GetService("ReplicatedStorage").Modules.Net:FindFirstChild("RF/DragonHunter"):InvokeServer(unpack(RequestData))
-    
-    if typeof(Response) == "table" then
-        for _, Task in pairs(Response) do
-            if Task == "Defeat 3 Venomous Assailants on Hydra Island." then
-                DragonStatus:SetDesc("Defeat 3 Venomous Assailants on Hydra Island.")
-            elseif Task == "Defeat 3 Hydra Enforcers on Hydra Island." then
-                DragonStatus:SetDesc("Defeat 3 Hydra Enforcers on Hydra Island.")
-            elseif Task == "Destroy 10 trees on Hydra Island." then
-                DragonStatus:SetDesc("Destroy 10 Trees on Hydra Island.")
-            else
-                DragonStatus:SetDesc("No Current Task.")
+        local Response = game:GetService("ReplicatedStorage").Modules.Net:FindFirstChild("RF/DragonHunter"):InvokeServer(unpack(RequestData))
+        
+        if typeof(Response) == "table" then
+            for _, Task in pairs(Response) do
+                if Task == "Defeat 3 Venomous Assailants on Hydra Island." then
+                    return "Defeat 3 Venomous Assailants on Hydra Island."
+                elseif Task == "Defeat 3 Hydra Enforcers on Hydra Island." then
+                    return "Defeat 3 Hydra Enforcers on Hydra Island."
+                elseif Task == "Destroy 10 trees on Hydra Island." then
+                    return "Destroy 10 Trees on Hydra Island."
+                else
+                    return "No Current Task."
+                end
             end
+        else
+            return "No task."
         end
-    else
-        DragonStatus:SetDesc("No task.")
-    end
+    end)
+    
+    DragonStatus:SetDesc(success and result or "N/A")
 end
 
 task.spawn(function()
-    while task.wait(0.5) do
-        local PlayerGui = game:GetService("Players").LocalPlayer:FindFirstChild("PlayerGui")
-        local MainGui = PlayerGui and PlayerGui:FindFirstChild("Main")
-        if MainGui then
-            AncientOneStatus:SetDesc(CheckAncientOneStatus())
-            CheckCakePrince()
-            CheckEliteHunter()
-            CheckEliteProgress()
-            CheckFrozenDimension()
-            MirageIslandCheck()
-            KitsuneCheck()
-            MoonCheck()
-            PrehistoricIslandCheck()
-            CheckDragonQuest()
-            CheckLeviathanChip()
-            CheckLegendarySwordStatus()
-            FlowerItems()
-        end
+    while task.wait() do
+        pcall(function()
+            local PlayerGui = game:GetService("Players").LocalPlayer:FindFirstChild("PlayerGui")
+            local MainGui = PlayerGui and PlayerGui:FindFirstChild("Main")
+            if MainGui then
+                AncientOneStatus:SetDesc(CheckAncientOneStatus())
+                UpdateGameTime()
+                CheckCakePrince()
+                CheckEliteHunter()
+                CheckEliteProgress()
+                CheckFrozenDimension()
+                MirageIslandCheck()
+                KitsuneCheck()
+                MoonCheck()
+                PrehistoricIslandCheck()
+                CheckDragonQuest()
+                CheckLeviathanChip()
+                CheckLegendarySwordStatus()
+                FlowerItems()
+                DeVer() DeDam() DeNo() RanPos() ReJoin() CaptureMode() FPSLOCK() BuyFruitSniper()
+            end
+        end)
     end
 end)
 
@@ -4798,6 +4855,147 @@ ToggleFruitCollect:OnChanged(function(Value)
     getgenv().FruitCollect = Value
 end)
 
+local GameEventSecction = Tabs.E:AddSection("Tab PvP")
+
+local ToggleTu = Tabs.E:AddToggle("ToggleTu", {Title = "Auto Enable PvP", Default = false })
+ToggleTu:OnChanged(
+    function(Value)
+        getgenv().AutoEnblePvP = Value
+    end
+)
+
+Playerslist = {}
+for i, v in pairs(game:GetService("Players"):GetPlayers()) do
+    table.insert(Playerslist, v.Name)
+end
+
+local SPToggle =
+    Tabs.E:AddDropdown(
+    "SPToggle",
+    {
+        Title = "Select Player",
+        Values = Playerslist,
+        Multi = false,
+        Default = 1
+    }
+)
+
+SPToggle:OnChanged(
+    function(Value)
+        getgenv().SelectPlayer = Value
+    end
+)
+
+Tabs.E:AddButton(
+    {
+        Title = "Refresh Player List",
+        Description = "Update the player list",
+        Callback = function()
+            Playerslist = {}
+            for i, v in pairs(game:GetService("Players"):GetPlayers()) do
+                table.insert(Playerslist, v.Name)
+            end
+            SPToggle:SetValues(Playerslist)
+        end
+    }
+)
+
+local ToggleTeleport = Tabs.E:AddToggle("ToggleTeleport", {Title = "Teleport To Player", Default = false})
+ToggleTeleport:OnChanged(
+    function(Value)
+        getgenv().TeleportSelectPlayer = Value
+        pcall(
+            function()
+                if getgenv().TeleportSelectPlayer then
+                    repeat
+                     TargetPlayer = game:GetService("Players"):FindFirstChild(getgenv().SelectPlayer)
+                        if
+                            TargetPlayer and TargetPlayer.Character and
+                                TargetPlayer.Character:FindFirstChild("HumanoidRootPart")
+                         then
+                            Tween(TargetPlayer.Character.HumanoidRootPart.CFrame)
+                        end
+                        wait()
+                    until not getgenv().TeleportSelectPlayer
+                end
+            end
+        )
+    end
+)
+
+local ToggleKillNear = Tabs.E:AddToggle("ToggleKillNear", {Title = "Teleport Kill Player Nearest", Default = false})
+ToggleKillNear:OnChanged(
+    function(Value)
+        getgenv().KillPlayerNear = Value
+    end
+)
+
+function KillPlayerNear()
+    if not getgenv().KillPlayerNear or not getgenv().SelectPlayer then
+        return false
+    end
+    if not game.Players:FindFirstChild(getgenv().SelectPlayer) then
+        return false
+    end
+    ptarget = nil
+    for _, v in pairs(game:GetService("Workspace").Characters:GetChildren()) do
+        if v.Name == getgenv().SelectPlayer and 
+           v:FindFirstChild("Humanoid") and 
+           v:FindFirstChild("HumanoidRootPart") and 
+           v.Humanoid.Health > 0 then
+            ptarget = v
+            break
+        end
+    end
+    if not ptarget then
+        return false
+    end
+    repeat
+        task.wait()
+        if ShouldInterrupt("KillPlayerNear") then
+            return false
+        end
+        if not ptarget or not ptarget.Parent or 
+           not ptarget:FindFirstChild("HumanoidRootPart") or 
+           not ptarget:FindFirstChild("Humanoid") then
+            return false
+        end
+        if not game.Players:FindFirstChild(getgenv().SelectPlayer) then
+            return false
+        end
+        if (ptarget.HumanoidRootPart.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude > 300 then
+            Tween(ptarget.HumanoidRootPart.CFrame * CFrame.new(0, 5, 0))
+        elseif (ptarget.HumanoidRootPart.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude <= 300 then
+            EnbalePvP()
+            SH(ptarget)
+        end
+        
+    until not getgenv().KillPlayerNear or 
+          not game.Players:FindFirstChild(getgenv().SelectPlayer) or
+          not ptarget.Parent or
+          not ptarget:FindFirstChild("Humanoid") or
+          ptarget.Humanoid.Health <= 0
+    
+    return true
+end
+
+local SpectateToggle = Tabs.Player:AddToggle("SpectateToggle", {Title = "Spectate Player", Default = false})
+SpectateToggle:OnChanged(
+    function(Value)
+        SpectatePlys = Value
+        local plr1 = game:GetService("Players").LocalPlayer.Character.Humanoid
+        local plr2 = game:GetService("Players"):FindFirstChild(getgenv().SelectPlayer)
+        repeat
+            wait(.1)
+            game:GetService("Workspace").Camera.CameraSubject =
+                game:GetService("Players"):FindFirstChild(getgenv().SelectPlayer).Character.Humanoid
+        until SpectatePlys == false
+        game:GetService("Workspace").Camera.CameraSubject = game:GetService("Players").LocalPlayer.Character.Humanoid
+    end
+)
+
+
+
 local Raid = Tabs.R:AddSection("Tab Raid")
     Tabs.R:AddButton({
         Title = "Teleport To Raid Lab",
@@ -5839,8 +6037,41 @@ local Queue = {
     },
 
     {
-        Name = "FarmLevel",
+        Name = "KillPlayerNear",
         Prio = 3,
+        LastResult = false,
+        Running = false,
+        ConditionCheck = function()
+            if not getgenv().KillPlayerNear or not getgenv().SelectPlayer then
+                return false, nil
+            end
+            if not game.Players:FindFirstChild(getgenv().SelectPlayer) then
+                return false, nil
+            end
+            for _, v in pairs(game:GetService("Workspace").Characters:GetChildren()) do
+                if v.Name == getgenv().SelectPlayer and 
+                   v:FindFirstChild("Humanoid") and 
+                   v:FindFirstChild("HumanoidRootPart") and 
+                   v.Humanoid.Health > 0 then
+                    return true, v
+                end
+            end
+            
+            return false, nil
+        end,
+        Func = function()
+            local result = KillPlayerNear()
+            if ShouldInterrupt("KillPlayerNear") then
+                return false
+            end
+            
+            return result
+        end
+    },
+
+    {
+        Name = "FarmLevel",
+        Prio = 4,
         LastResult = false,
         ConditionCheck = nil,
         Func = function()
@@ -5894,7 +6125,7 @@ local Queue = {
 
     {
         Name = "FarmBone",
-        Prio = 4,
+        Prio = 5,
         LastResult = false,
         ConditionCheck = nil,
         Func = function()
@@ -5908,7 +6139,7 @@ local Queue = {
 
     {
         Name = "FarmNearest",
-        Prio = 5,
+        Prio = 6,
         LastResult = false,
         ConditionCheck = nil,
         Func = function()
@@ -5922,7 +6153,7 @@ local Queue = {
 
     {
         Name = "StartFarmChest",
-        Prio = 6,
+        Prio = 7,
         LastResult = false,
         ConditionCheck = nil,
         Func = function()
@@ -5936,7 +6167,7 @@ local Queue = {
 
     {
         Name = "AutoRaid",
-        Prio = 7,
+        Prio = 8,
         LastResult = false,
         ConditionCheck = nil,
         Func = function()
@@ -5950,7 +6181,7 @@ local Queue = {
 
     {
         Name = "TweenIsland",
-        Prio = 8,
+        Prio = 9,
         LastResult = false,
         ConditionCheck = nil,
         Func = function()
@@ -5964,7 +6195,7 @@ local Queue = {
 
     {
         Name = "TweenToNpc",
-        Prio = 9,
+        Prio = 10,
         LastResult = false,
         ConditionCheck = nil,
         Func = function()
