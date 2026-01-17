@@ -3917,7 +3917,7 @@ DiscordBtn.Position = UDim2.new(0, 15, 1, -50)
 DiscordBtn.BackgroundColor3 = Color3.fromRGB(88, 101, 242)
 DiscordBtn.BackgroundTransparency = 0.2
 DiscordBtn.BorderSizePixel = 0
-DiscordBtn.Text = "🌐 Join Discord"
+DiscordBtn.Text = "Join Discord"
 DiscordBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
 DiscordBtn.TextSize = 14
 DiscordBtn.Font = Enum.Font.GothamBold
@@ -5932,21 +5932,13 @@ Run()
 
 SaveManager:SetLibrary(Fluent)
 InterfaceManager:SetLibrary(Fluent)
-
 InterfaceManager:SetFolder("Romis Hub")
 SaveManager:SetFolder("Romis Hub/Blox Fruits")
-
 InterfaceManager:BuildInterfaceSection(Tabs.Setting)
 SaveManager:BuildConfigSection(Tabs.Setting)
-
-SaveManager:LoadAutoloadConfig()
-
+SaveManager:LoadAutoSaveConfig()
 SaveManager:StartAutoSave()
-
+SaveManager:LoadAutoloadConfig()
 Window:SelectTab(1)
 print("load old settings")
-Fluent:Notify({
-    Title = "Romis Hub",
-    Content = "The script has been loaded.",
-    Duration = 5
-})
+Fluent:Notify({Title = "Romis Hub", Content = "The script has been loaded.", Duration = 5})
