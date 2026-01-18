@@ -16,7 +16,7 @@ RegisterAttack = Net:WaitForChild("RE/RegisterAttack")
 RegisterHit = Net:WaitForChild("RE/RegisterHit")
 ShootGunEvent = Net:WaitForChild("RE/ShootGunEvent")
 GunValidator = ReplicatedStorage:WaitForChild("Remotes"):WaitForChild("Validator2")
-VirtualInputManager = game:GetService("VirtualInputManager") 
+VirtualInputManager = game:GetService("VirtualInputManager")
 Player = Players.LocalPlayer
 Workspace = game:GetService("Workspace")
 RunService = game:GetService("RunService")
@@ -52,37 +52,42 @@ else
     print("PC")
 end
 
-local O, S = pcall(function()
-    if not R then return warn("No Main GUI") end
+local O, S =
+    pcall(
+    function()
+        if not R then
+            return warn("No Main GUI")
+        end
 
-    local T = R:FindFirstChild("ChooseTeam")
-    if not T then return warn("No ChooseTeam") end
-    if not getconnections then
-        return warn("Executor not support getconnections")
-    end
+        local T = R:FindFirstChild("ChooseTeam")
+        if not T then
+            return warn("No ChooseTeam")
+        end
+        if not getconnections then
+            return warn("Executor not support getconnections")
+        end
 
-    repeat
-        task.wait()
+        repeat
+            task.wait()
 
-        if T.Visible then
-            if getgenv().ChooseTeam == "Pirates" then
-                for _, E in pairs(getconnections(T.Container.Pirates.Frame.TextButton.Activated)) do
-                    E.Function()
-                end
-
-            elseif getgenv().ChooseTeam == "Marines" then
-                for _, E in pairs(getconnections(T.Container.Marines.Frame.TextButton.Activated)) do
-                    E.Function()
-                end
-
-            else
-                for _, E in pairs(getconnections(T.Container.Pirates.Frame.TextButton.Activated)) do
-                    E.Function()
+            if T.Visible then
+                if getgenv().ChooseTeam == "Pirates" then
+                    for _, E in pairs(getconnections(T.Container.Pirates.Frame.TextButton.Activated)) do
+                        E.Function()
+                    end
+                elseif getgenv().ChooseTeam == "Marines" then
+                    for _, E in pairs(getconnections(T.Container.Marines.Frame.TextButton.Activated)) do
+                        E.Function()
+                    end
+                else
+                    for _, E in pairs(getconnections(T.Container.Pirates.Frame.TextButton.Activated)) do
+                        E.Function()
+                    end
                 end
             end
-        end
-    until game.Players.LocalPlayer.Team ~= nil
-end)
+        until game.Players.LocalPlayer.Team ~= nil
+    end
+)
 
 if not O then
     warn("ChooseTeam Error:", S)
@@ -91,7 +96,9 @@ end
 -- HttpService and other services --
 SECRET_KEY = "hhkujghukhkuesdiojcfoi9sudc9"
 local Req = request or http_request or syn.request
-if not Req then return end
+if not Req then
+    return
+end
 if not LocalPlayer then
     Players:GetPropertyChangedSignal("LocalPlayer"):Wait()
     LocalPlayer = Players.LocalPlayer
@@ -118,19 +125,81 @@ function sha256(msg)
     end
 
     local k = {
-        0x428a2f98,0x71374491,0xb5c0fbcf,0xe9b5dba5,0x3956c25b,0x59f111f1,0x923f82a4,0xab1c5ed5,
-        0xd807aa98,0x12835b01,0x243185be,0x550c7dc3,0x72be5d74,0x80deb1fe,0x9bdc06a7,0xc19bf174,
-        0xe49b69c1,0xefbe4786,0x0fc19dc6,0x240ca1cc,0x2de92c6f,0x4a7484aa,0x5cb0a9dc,0x76f988da,
-        0x983e5152,0xa831c66d,0xb00327c8,0xbf597fc7,0xc6e00bf3,0xd5a79147,0x06ca6351,0x14292967,
-        0x27b70a85,0x2e1b2138,0x4d2c6dfc,0x53380d13,0x650a7354,0x766a0abb,0x81c2c92e,0x92722c85,
-        0xa2bfe8a1,0xa81a664b,0xc24b8b70,0xc76c51a3,0xd192e819,0xd6990624,0xf40e3585,0x106aa070,
-        0x19a4c116,0x1e376c08,0x2748774c,0x34b0bcb5,0x391c0cb3,0x4ed8aa4a,0x5b9cca4f,0x682e6ff3,
-        0x748f82ee,0x78a5636f,0x84c87814,0x8cc70208,0x90befffa,0xa4506ceb,0xbef9a3f7,0xc67178f2
+        0x428a2f98,
+        0x71374491,
+        0xb5c0fbcf,
+        0xe9b5dba5,
+        0x3956c25b,
+        0x59f111f1,
+        0x923f82a4,
+        0xab1c5ed5,
+        0xd807aa98,
+        0x12835b01,
+        0x243185be,
+        0x550c7dc3,
+        0x72be5d74,
+        0x80deb1fe,
+        0x9bdc06a7,
+        0xc19bf174,
+        0xe49b69c1,
+        0xefbe4786,
+        0x0fc19dc6,
+        0x240ca1cc,
+        0x2de92c6f,
+        0x4a7484aa,
+        0x5cb0a9dc,
+        0x76f988da,
+        0x983e5152,
+        0xa831c66d,
+        0xb00327c8,
+        0xbf597fc7,
+        0xc6e00bf3,
+        0xd5a79147,
+        0x06ca6351,
+        0x14292967,
+        0x27b70a85,
+        0x2e1b2138,
+        0x4d2c6dfc,
+        0x53380d13,
+        0x650a7354,
+        0x766a0abb,
+        0x81c2c92e,
+        0x92722c85,
+        0xa2bfe8a1,
+        0xa81a664b,
+        0xc24b8b70,
+        0xc76c51a3,
+        0xd192e819,
+        0xd6990624,
+        0xf40e3585,
+        0x106aa070,
+        0x19a4c116,
+        0x1e376c08,
+        0x2748774c,
+        0x34b0bcb5,
+        0x391c0cb3,
+        0x4ed8aa4a,
+        0x5b9cca4f,
+        0x682e6ff3,
+        0x748f82ee,
+        0x78a5636f,
+        0x84c87814,
+        0x8cc70208,
+        0x90befffa,
+        0xa4506ceb,
+        0xbef9a3f7,
+        0xc67178f2
     }
 
     local h = {
-        0x6a09e667,0xbb67ae85,0x3c6ef372,0xa54ff53a,
-        0x510e527f,0x9b05688c,0x1f83d9ab,0x5be0cd19
+        0x6a09e667,
+        0xbb67ae85,
+        0x3c6ef372,
+        0xa54ff53a,
+        0x510e527f,
+        0x9b05688c,
+        0x1f83d9ab,
+        0x5be0cd19
     }
 
     msg = pad(msg)
@@ -139,74 +208,109 @@ function sha256(msg)
         local w = {}
         for i = 0, 15 do
             local p = chunk + i * 4
-            w[i] = bit.bor(
+            w[i] =
+                bit.bor(
                 bit.lshift(string.byte(msg, p), 24),
-                bit.lshift(string.byte(msg, p+1), 16),
-                bit.lshift(string.byte(msg, p+2), 8),
-                string.byte(msg, p+3)
+                bit.lshift(string.byte(msg, p + 1), 16),
+                bit.lshift(string.byte(msg, p + 2), 8),
+                string.byte(msg, p + 3)
             )
         end
 
         for i = 16, 63 do
-            local s0 = bit.bxor(rrotate(w[i-15],7), rrotate(w[i-15],18), bit.rshift(w[i-15],3))
-            local s1 = bit.bxor(rrotate(w[i-2],17), rrotate(w[i-2],19), bit.rshift(w[i-2],10))
-            w[i] = bit.band(w[i-16] + s0 + w[i-7] + s1, 0xFFFFFFFF)
+            local s0 = bit.bxor(rrotate(w[i - 15], 7), rrotate(w[i - 15], 18), bit.rshift(w[i - 15], 3))
+            local s1 = bit.bxor(rrotate(w[i - 2], 17), rrotate(w[i - 2], 19), bit.rshift(w[i - 2], 10))
+            w[i] = bit.band(w[i - 16] + s0 + w[i - 7] + s1, 0xFFFFFFFF)
         end
 
-        local a,b,c,d,e,f,g,hv = table.unpack(h)
+        local a, b, c, d, e, f, g, hv = table.unpack(h)
 
-        for i = 0,63 do
-            local S1 = bit.bxor(rrotate(e,6), rrotate(e,11), rrotate(e,25))
-            local ch = bit.bxor(bit.band(e,f), bit.band(bit.bnot(e),g))
-            local temp1 = bit.band(hv + S1 + ch + k[i+1] + w[i], 0xFFFFFFFF)
-            local S0 = bit.bxor(rrotate(a,2), rrotate(a,13), rrotate(a,22))
-            local maj = bit.bxor(bit.band(a,b), bit.band(a,c), bit.band(b,c))
+        for i = 0, 63 do
+            local S1 = bit.bxor(rrotate(e, 6), rrotate(e, 11), rrotate(e, 25))
+            local ch = bit.bxor(bit.band(e, f), bit.band(bit.bnot(e), g))
+            local temp1 = bit.band(hv + S1 + ch + k[i + 1] + w[i], 0xFFFFFFFF)
+            local S0 = bit.bxor(rrotate(a, 2), rrotate(a, 13), rrotate(a, 22))
+            local maj = bit.bxor(bit.band(a, b), bit.band(a, c), bit.band(b, c))
             local temp2 = bit.band(S0 + maj, 0xFFFFFFFF)
 
-            hv,g,f,e,d,c,b,a = g,f,e,bit.band(d + temp1,0xFFFFFFFF),c,b,a,bit.band(temp1 + temp2,0xFFFFFFFF)
+            hv, g, f, e, d, c, b, a =
+                g,
+                f,
+                e,
+                bit.band(d + temp1, 0xFFFFFFFF),
+                c,
+                b,
+                a,
+                bit.band(temp1 + temp2, 0xFFFFFFFF)
         end
 
-        h[1]=bit.band(h[1]+a,0xFFFFFFFF)
-        h[2]=bit.band(h[2]+b,0xFFFFFFFF)
-        h[3]=bit.band(h[3]+c,0xFFFFFFFF)
-        h[4]=bit.band(h[4]+d,0xFFFFFFFF)
-        h[5]=bit.band(h[5]+e,0xFFFFFFFF)
-        h[6]=bit.band(h[6]+f,0xFFFFFFFF)
-        h[7]=bit.band(h[7]+g,0xFFFFFFFF)
-        h[8]=bit.band(h[8]+hv,0xFFFFFFFF)
+        h[1] = bit.band(h[1] + a, 0xFFFFFFFF)
+        h[2] = bit.band(h[2] + b, 0xFFFFFFFF)
+        h[3] = bit.band(h[3] + c, 0xFFFFFFFF)
+        h[4] = bit.band(h[4] + d, 0xFFFFFFFF)
+        h[5] = bit.band(h[5] + e, 0xFFFFFFFF)
+        h[6] = bit.band(h[6] + f, 0xFFFFFFFF)
+        h[7] = bit.band(h[7] + g, 0xFFFFFFFF)
+        h[8] = bit.band(h[8] + hv, 0xFFFFFFFF)
     end
 
-    return string.format(
-        "%08x%08x%08x%08x%08x%08x%08x%08x",
-        h[1],h[2],h[3],h[4],h[5],h[6],h[7],h[8]
-    )
+    return string.format("%08x%08x%08x%08x%08x%08x%08x%08x", h[1], h[2], h[3], h[4], h[5], h[6], h[7], h[8])
 end
 
 function Encode(str)
     str = tostring(str):upper()
     local LetterArgs = {
-        ["A"]="M",["B"]="X",["C"]="Q",["D"]="K",["E"]="W",["F"]="Z",["G"]="P",
-        ["H"]="R",["I"]="N",["J"]="V",["K"]="G",["L"]="T",["M"]="H",["N"]="B",
-        ["O"]="F",["P"]="J",["Q"]="Y",["R"]="S",["S"]="L",["T"]="C",["U"]="E",
-        ["V"]="D",["W"]="U",["X"]="I",["Y"]="O",["Z"]="A",
-
-        ["0"]="7G",["1"]="44",["2"]="OS",["3"]="1B",["4"]="B1",
-        ["5"]="34AB",["6"]="88AC",["7"]="0BA",["8"]="5AS",["9"]="2Z",
-        ["-"]="G954H",
-        [" "]="G954H"
+        ["A"] = "M",
+        ["B"] = "X",
+        ["C"] = "Q",
+        ["D"] = "K",
+        ["E"] = "W",
+        ["F"] = "Z",
+        ["G"] = "P",
+        ["H"] = "R",
+        ["I"] = "N",
+        ["J"] = "V",
+        ["K"] = "G",
+        ["L"] = "T",
+        ["M"] = "H",
+        ["N"] = "B",
+        ["O"] = "F",
+        ["P"] = "J",
+        ["Q"] = "Y",
+        ["R"] = "S",
+        ["S"] = "L",
+        ["T"] = "C",
+        ["U"] = "E",
+        ["V"] = "D",
+        ["W"] = "U",
+        ["X"] = "I",
+        ["Y"] = "O",
+        ["Z"] = "A",
+        ["0"] = "7G",
+        ["1"] = "44",
+        ["2"] = "OS",
+        ["3"] = "1B",
+        ["4"] = "B1",
+        ["5"] = "34AB",
+        ["6"] = "88AC",
+        ["7"] = "0BA",
+        ["8"] = "5AS",
+        ["9"] = "2Z",
+        ["-"] = "G954H",
+        [" "] = "G954H"
     }
 
     local out = {}
     for i = 1, #str do
-        local c = str:sub(i,i)
+        local c = str:sub(i, i)
         local encoded = LetterArgs[c]
         if encoded then
-            out[#out+1] = encoded
+            out[#out + 1] = encoded
         else
-            out[#out+1] = c
+            out[#out + 1] = c
         end
         if i < #str then
-            out[#out+1] = "G954H"
+            out[#out + 1] = "G954H"
         end
     end
     return table.concat(out)
@@ -222,33 +326,40 @@ local function encrypt_payload(tbl)
     }
 end
 
-task.spawn(function()
-    local MarketplaceService = game:GetService("MarketplaceService")
-    local productInfo = MarketplaceService:GetProductInfo(game.PlaceId)
-    local gameName = productInfo.Name
-    
-    local executorName = "Unknown"
-    if identifyexecutor then
-        executorName = identifyexecutor()
-    end
-    
-    local payload = encrypt_payload({
-        username = LocalPlayer.Name,
-        display_name = LocalPlayer.DisplayName,
-        user_id = tostring(LocalPlayer.UserId),
-        place_id = tostring(game.PlaceId),
-        game = gameName,
-        executor = executorName,
-        time = os.date("%Y-%m-%d %H:%M:%S")
-    })
+task.spawn(
+    function()
+        local MarketplaceService = game:GetService("MarketplaceService")
+        local productInfo = MarketplaceService:GetProductInfo(game.PlaceId)
+        local gameName = productInfo.Name
 
-    Req({
-        Url = "https://imhungg.pythonanywhere.com/usecount",
-        Method = "POST",
-        Headers = {["Content-Type"] = "application/json"},
-        Body = HttpService:JSONEncode(payload)
-    })
-end)
+        local executorName = "Unknown"
+        if identifyexecutor then
+            executorName = identifyexecutor()
+        end
+
+        local payload =
+            encrypt_payload(
+            {
+                username = LocalPlayer.Name,
+                display_name = LocalPlayer.DisplayName,
+                user_id = tostring(LocalPlayer.UserId),
+                place_id = tostring(game.PlaceId),
+                game = gameName,
+                executor = executorName,
+                time = os.date("%Y-%m-%d %H:%M:%S")
+            }
+        )
+
+        Req(
+            {
+                Url = "https://imhungg.pythonanywhere.com/usecount",
+                Method = "POST",
+                Headers = {["Content-Type"] = "application/json"},
+                Body = HttpService:JSONEncode(payload)
+            }
+        )
+    end
+)
 
 SeaTravelCommands = {
     [1] = "TravelMain",
@@ -273,29 +384,35 @@ end
 print("fully")
 VirtualUser = game:GetService("VirtualUser")
 if VirtualUser then
-    game:GetService("Players").LocalPlayer.Idled:Connect(function()
-        VirtualUser:Button2Down(Vector2.new(0,0), workspace.CurrentCamera.CFrame)
-        task.wait(1)
-        VirtualUser:Button2Up(Vector2.new(0,0), workspace.CurrentCamera.CFrame)
-    end)
+    game:GetService("Players").LocalPlayer.Idled:Connect(
+        function()
+            VirtualUser:Button2Down(Vector2.new(0, 0), workspace.CurrentCamera.CFrame)
+            task.wait(1)
+            VirtualUser:Button2Up(Vector2.new(0, 0), workspace.CurrentCamera.CFrame)
+        end
+    )
 end
 print("active anti afk")
-task.spawn(function()
-    while true do
-        local Character = game.Players.LocalPlayer.Character
-        if Character then
-            local Stun = Character:FindFirstChild("Stun")
-            if Stun then
-                Stun.Changed:Connect(function()
-                    if Stun.Value ~= 0 then
-                        Stun.Value = 0
-                    end
-                end)
+task.spawn(
+    function()
+        while true do
+            local Character = game.Players.LocalPlayer.Character
+            if Character then
+                local Stun = Character:FindFirstChild("Stun")
+                if Stun then
+                    Stun.Changed:Connect(
+                        function()
+                            if Stun.Value ~= 0 then
+                                Stun.Value = 0
+                            end
+                        end
+                    )
+                end
             end
+            wait(1)
         end
-        wait(1)
     end
-end)
+)
 print("active anti stun")
 function AntiLowHealth(AK)
     game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame =
@@ -319,7 +436,9 @@ function WaitForCharacter()
 end
 
 function UpdateCharacterReferences()
-    repeat task.wait() until LocalPlayer.Character
+    repeat
+        task.wait()
+    until LocalPlayer.Character
     local character = LocalPlayer.Character
 
     local humanoid = character:WaitForChild("Humanoid", 10)
@@ -338,72 +457,82 @@ function UpdateCharacterReferences()
 end
 
 function StopTween()
-    pcall(function()
-        local PLR = game.Players.LocalPlayer
-        
+    pcall(
+        function()
+            local PLR = game.Players.LocalPlayer
+
+            if TWEEN then
+                TWEEN:Cancel()
+                TWEEN = nil
+            end
+
+            if PLR.Character then
+                local partTele = PLR.Character:FindFirstChild("PartTele")
+                if partTele then
+                    partTele:Destroy()
+                end
+
+                local hrp = PLR.Character:FindFirstChild("HumanoidRootPart")
+                if hrp then
+                    local bodyVelocity = hrp:FindFirstChild("BodyVelocity")
+                    if bodyVelocity then
+                        bodyVelocity:Destroy()
+                    end
+                end
+
+                for _, PART in pairs(PLR.Character:GetDescendants()) do
+                    if PART:IsA("BasePart") then
+                        PART.CanCollide = true
+                    end
+                end
+            end
+        end
+    )
+end
+
+LocalPlayer.CharacterAdded:Connect(
+    function(character)
+        task.wait(1)
+
+        _B = false
+
         if TWEEN then
             TWEEN:Cancel()
             TWEEN = nil
         end
-        
-        if PLR.Character then
-            local partTele = PLR.Character:FindFirstChild("PartTele")
-            if partTele then
-                partTele:Destroy()
-            end
-            
-            local hrp = PLR.Character:FindFirstChild("HumanoidRootPart")
-            if hrp then
-                local bodyVelocity = hrp:FindFirstChild("BodyVelocity")
-                if bodyVelocity then
-                    bodyVelocity:Destroy()
-                end
-            end
-            
-            for _, PART in pairs(PLR.Character:GetDescendants()) do
-                if PART:IsA("BasePart") then
-                    PART.CanCollide = true
-                end
-            end
-        end
-    end)
-end
 
-LocalPlayer.CharacterAdded:Connect(function(character)
-    task.wait(1)
+        local humanoid = character:WaitForChild("Humanoid", 10)
+        local hrp = character:WaitForChild("HumanoidRootPart", 10)
 
-    _B = false
-
-    if TWEEN then
-        TWEEN:Cancel()
-        TWEEN = nil
-    end
-
-    local humanoid = character:WaitForChild("Humanoid", 10)
-    local hrp = character:WaitForChild("HumanoidRootPart", 10)
-
-    if humanoid and hrp then
-        task.spawn(function()
-            while character and character.Parent do
-                local Stun = character:FindFirstChild("Stun")
-                if Stun then
-                    Stun.Changed:Connect(function()
-                        if Stun.Value ~= 0 then
-                            Stun.Value = 0
+        if humanoid and hrp then
+            task.spawn(
+                function()
+                    while character and character.Parent do
+                        local Stun = character:FindFirstChild("Stun")
+                        if Stun then
+                            Stun.Changed:Connect(
+                                function()
+                                    if Stun.Value ~= 0 then
+                                        Stun.Value = 0
+                                    end
+                                end
+                            )
+                            break
                         end
-                    end)
-                    break
+                        wait(1)
+                    end
                 end
-                wait(1)
-            end
-        end)
+            )
+        end
     end
-end)
+)
 
-LocalPlayer.CharacterRemoving:Connect(function()
-    StopTween()
-    _B = false
-end)
+LocalPlayer.CharacterRemoving:Connect(
+    function()
+        StopTween()
+        _B = false
+    end
+)
 
 task.spawn(
     function()
@@ -411,8 +540,10 @@ task.spawn(
             if getgenv().AntiLowHealth then
                 pcall(
                     function()
-                        LOWHEALTH = game.Players.LocalPlayer.Character.Humanoid.MaxHealth * (getgenv().LowHealthPer / 100)
-                        NOTLOWHEALTH = game.Players.LocalPlayer.Character.Humanoid.MaxHealth * (getgenv().NotLowHealthPer / 100)
+                        LOWHEALTH =
+                            game.Players.LocalPlayer.Character.Humanoid.MaxHealth * (getgenv().LowHealthPer / 100)
+                        NOTLOWHEALTH =
+                            game.Players.LocalPlayer.Character.Humanoid.MaxHealth * (getgenv().NotLowHealthPer / 100)
                         if getgenv().AntiLowHealth and game.Players.LocalPlayer.Character.Humanoid.Health <= LOWHEALTH then
                             pcall(
                                 function()
@@ -494,7 +625,9 @@ function requestEntrance(TELEPORTPOS)
 end
 
 function WaitHRP(Q0)
-    if not Q0 then return end
+    if not Q0 then
+        return
+    end
     return Q0.Character:WaitForChild("HumanoidRootPart", 9)
 end
 
@@ -654,16 +787,20 @@ function RemoveEffects()
     Lighting.Brightness = 0
     settings().Rendering.QualityLevel = "Level01"
     settings().Rendering.MeshPartDetailLevel = Enum.MeshPartDetailLevel.Level04
-    pcall(function()
-        local RenderSettings = settings():GetService("RenderSettings")
-        RenderSettings.EagerBulkExecution = false
-    end)
+    pcall(
+        function()
+            local RenderSettings = settings():GetService("RenderSettings")
+            RenderSettings.EagerBulkExecution = false
+        end
+    )
 
     if sethiddenproperty then
-        pcall(function()
-            sethiddenproperty(Terrain, "Decoration", false)
-            sethiddenproperty(workspace, "Technology", 2)
-        end)
+        pcall(
+            function()
+                sethiddenproperty(Terrain, "Decoration", false)
+                sethiddenproperty(workspace, "Technology", 2)
+            end
+        )
     end
     setfflag("DebugGraphicsDisableDirect3D11", "false")
     setfflag("TextureCompositorActiveJobs", "0")
@@ -674,40 +811,46 @@ function RemoveEffects()
     setfflag("RenderGrassHeightScaler", "0")
     setfflag("RenderGrassDetailStrands", "0")
     for _, Obj in pairs(workspace:GetDescendants()) do
-        pcall(function()
-            if Obj:IsA("BasePart") and not Obj:IsA("MeshPart") then
-                Obj.Material = Enum.Material.Plastic
-                Obj.Reflectance = 0
-            elseif Obj:IsA("MeshPart") then
-                Obj.Material = Enum.Material.Plastic
-                Obj.Reflectance = 0
-                Obj.TextureID = ""
-            elseif Obj:IsA("SpecialMesh") then
-                Obj.TextureId = ""
-            elseif Obj:IsA("Decal") or Obj:IsA("Texture") then
-                Obj.Transparency = 1
-            elseif Obj:IsA("ParticleEmitter") or Obj:IsA("Trail") then
-                Obj.Enabled = false
-            elseif Obj:IsA("Explosion") then
-                Obj.BlastPressure = 1
-                Obj.BlastRadius = 1
-            elseif Obj:IsA("Fire") or Obj:IsA("SpotLight") or Obj:IsA("Smoke") or Obj:IsA("Sparkles") then
-                Obj.Enabled = false
-            elseif Obj:IsA("Shirt") or Obj:IsA("Pants") then
-                Obj[Obj.ClassName .. "Template"] = ""
+        pcall(
+            function()
+                if Obj:IsA("BasePart") and not Obj:IsA("MeshPart") then
+                    Obj.Material = Enum.Material.Plastic
+                    Obj.Reflectance = 0
+                elseif Obj:IsA("MeshPart") then
+                    Obj.Material = Enum.Material.Plastic
+                    Obj.Reflectance = 0
+                    Obj.TextureID = ""
+                elseif Obj:IsA("SpecialMesh") then
+                    Obj.TextureId = ""
+                elseif Obj:IsA("Decal") or Obj:IsA("Texture") then
+                    Obj.Transparency = 1
+                elseif Obj:IsA("ParticleEmitter") or Obj:IsA("Trail") then
+                    Obj.Enabled = false
+                elseif Obj:IsA("Explosion") then
+                    Obj.BlastPressure = 1
+                    Obj.BlastRadius = 1
+                elseif Obj:IsA("Fire") or Obj:IsA("SpotLight") or Obj:IsA("Smoke") or Obj:IsA("Sparkles") then
+                    Obj.Enabled = false
+                elseif Obj:IsA("Shirt") or Obj:IsA("Pants") then
+                    Obj[Obj.ClassName .. "Template"] = ""
+                end
             end
-        end)
+        )
     end
 
     for _, Effect in pairs(Lighting:GetChildren()) do
-        if Effect:IsA("BlurEffect") or Effect:IsA("SunRaysEffect") or Effect:IsA("ColorCorrectionEffect") or Effect:IsA("BloomEffect") or Effect:IsA("DepthOfFieldEffect") then
+        if
+            Effect:IsA("BlurEffect") or Effect:IsA("SunRaysEffect") or Effect:IsA("ColorCorrectionEffect") or
+                Effect:IsA("BloomEffect") or
+                Effect:IsA("DepthOfFieldEffect")
+         then
             Effect.Enabled = false
         end
     end
 end
 
 function cailon()
-    print('FPS BOOST')
+    print("FPS BOOST")
     fpsboost = true
     RemoveEffects()
     local decalsyeeted = true
@@ -838,207 +981,344 @@ function Hop()
     Teleport()
 end
 
-local EnemySpawns = Instance.new("Folder",workspace)
+local EnemySpawns = Instance.new("Folder", workspace)
 EnemySpawns.Name = "EnemySpawns"
 for i, v in pairs(workspace._WorldOrigin.EnemySpawns:GetChildren()) do
-if v:IsA("Part") then
-	local EnemySpawnsX2 = v:Clone()
-	local result = string.gsub(v.Name, "Lv. ", "")
-	local result2 = string.gsub(result, "[%[%]]", "")
-	local result3 = string.gsub(result2, "%d+", "")
-	local result4 = string.gsub(result3, "%s+", "")
-	EnemySpawnsX2.Name = result4
-	EnemySpawnsX2.Parent = workspace.EnemySpawns
-	EnemySpawnsX2.Anchored = true
-end
+    if v:IsA("Part") then
+        local EnemySpawnsX2 = v:Clone()
+        local result = string.gsub(v.Name, "Lv. ", "")
+        local result2 = string.gsub(result, "[%[%]]", "")
+        local result3 = string.gsub(result2, "%d+", "")
+        local result4 = string.gsub(result3, "%s+", "")
+        EnemySpawnsX2.Name = result4
+        EnemySpawnsX2.Parent = workspace.EnemySpawns
+        EnemySpawnsX2.Anchored = true
+    end
 end
 for i, v in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
-if v:IsA("Model") and v:FindFirstChild("HumanoidRootPart") then
-	print(v.HumanoidRootPart.Parent)
-	local EnemySpawnsX2 = v.HumanoidRootPart:Clone()
-    local result = string.gsub(v.Name, "Lv. ", "")
-    local result2 = string.gsub(result, "[%[%]]", "")
-    local result3 = string.gsub(result2, "%d+", "")
-    local result4 = string.gsub(result3, "%s+", "")
-	EnemySpawnsX2.Name = result4
-	EnemySpawnsX2.Parent = workspace.EnemySpawns
-	EnemySpawnsX2.Anchored = true
+    if v:IsA("Model") and v:FindFirstChild("HumanoidRootPart") then
+        print(v.HumanoidRootPart.Parent)
+        local EnemySpawnsX2 = v.HumanoidRootPart:Clone()
+        local result = string.gsub(v.Name, "Lv. ", "")
+        local result2 = string.gsub(result, "[%[%]]", "")
+        local result3 = string.gsub(result2, "%d+", "")
+        local result4 = string.gsub(result3, "%s+", "")
+        EnemySpawnsX2.Name = result4
+        EnemySpawnsX2.Parent = workspace.EnemySpawns
+        EnemySpawnsX2.Anchored = true
+    end
 end
+function CheckQuest()
+    MyLevel = game:GetService("Players").LocalPlayer.Data.Level.Value
+    if MyLevel == 1 or MyLevel <= 9 then
+        if tostring(game.Players.LocalPlayer.Team) == "Pirates" then
+            Mon = "Bandit"
+            LevelQuest = 1
+            NameQuest = "BanditQuest1"
+            NameMon = "Bandit"
+            CFrameQuest =
+                CFrame.new(
+                1059.37195,
+                15.4495068,
+                1550.4231,
+                0.939700544,
+                -0,
+                -0.341998369,
+                0,
+                1,
+                -0,
+                0.341998369,
+                0,
+                0.939700544
+            )
+            CFrameMon = CFrame.new(1045.962646484375, 27.00250816345215, 1560.8203125)
+        elseif tostring(game.Players.LocalPlayer.Team) == "Marines" then
+            Mon = "Trainee"
+            LevelQuest = 1
+            NameQuest = "MarineQuest"
+            NameMon = "Trainee"
+            CFrameQuest =
+                CFrame.new(
+                -2709.67944,
+                24.5206585,
+                2104.24585,
+                -0.744724929,
+                -3.97967455e-08,
+                -0.667371571,
+                4.32403588e-08,
+                1,
+                -1.07884304e-07,
+                0.667371571,
+                -1.09201515e-07,
+                -0.744724929
+            )
+            CFrameMon =
+                CFrame.new(
+                -2709.67944,
+                24.5206585,
+                2104.24585,
+                -0.744724929,
+                -3.97967455e-08,
+                -0.667371571,
+                4.32403588e-08,
+                1,
+                -1.07884304e-07,
+                0.667371571,
+                -1.09201515e-07,
+                -0.744724929
+            )
+        end
+    end
 end
-function CheckQuest() 
-        MyLevel = game:GetService("Players").LocalPlayer.Data.Level.Value
-            if MyLevel == 1 or MyLevel <= 9 then
-            if tostring(game.Players.LocalPlayer.Team) == "Pirates" then
-                Mon = "Bandit"
-                LevelQuest = 1
-                NameQuest = "BanditQuest1"
-                NameMon = "Bandit"
-                CFrameQuest = CFrame.new(1059.37195, 15.4495068, 1550.4231, 0.939700544, -0, -0.341998369, 0, 1, -0, 0.341998369, 0, 0.939700544)
-                CFrameMon = CFrame.new(1045.962646484375, 27.00250816345215, 1560.8203125)
-              elseif tostring(game.Players.LocalPlayer.Team) == "Marines" then
-              Mon = "Trainee"
-                LevelQuest = 1
-                NameQuest = "MarineQuest"
-                NameMon = "Trainee"
-                CFrameQuest = CFrame.new(-2709.67944, 24.5206585, 2104.24585, -0.744724929, -3.97967455e-08, -0.667371571, 4.32403588e-08, 1, -1.07884304e-07, 0.667371571, -1.09201515e-07, -0.744724929)
-                CFrameMon = CFrame.new(-2709.67944, 24.5206585, 2104.24585, -0.744724929, -3.97967455e-08, -0.667371571, 4.32403588e-08, 1, -1.07884304e-07, 0.667371571, -1.09201515e-07, -0.744724929)
-              end
-         end
- end
 local function QuestCheck()
-local Lvl = game:GetService("Players").LocalPlayer.Data.Level.Value
-if Lvl >= 210 and Lvl <= 249 then
-	MobName = "Dangerous Prisoner [Lv. 210]"
-	QuestName = "PrisonerQuest"
-	QuestLevel = 2
-	Mon = "Dangerous Prisoner"
-	NPCPosition = CFrame.new(5308.93115, 1.65517521, 475.120514, -0.0894274712, -5.00292918e-09, -0.995993316, 1.60817859e-09, 1, -5.16744869e-09, 0.995993316, -2.06384709e-09, -0.0894274712)
-	local matchingCFrames = {}
-	local result = string.gsub(MobName, "Lv. ", "")
-	result = string.gsub(result, "[%[%]]", "")
-	result = string.gsub(result, "%d+", "")
-	result = string.gsub(result, "%s+", "")
-	for i,v in pairs(game.workspace.EnemySpawns:GetChildren()) do
-		if v.Name == result then
-			table.insert(matchingCFrames, v.CFrame)
-		end
-	end
-	MobCFrame = matchingCFrames
-	return {
-		[1] = QuestLevel,
-		[2] = NPCPosition,
-		[3] = MobName,
-		[4] = QuestName,
-		[5] = LevelRequire,
-		[6] = Mon,
-		[7] = MobCFrame
-	}
+    local Lvl = game:GetService("Players").LocalPlayer.Data.Level.Value
+    if Lvl >= 210 and Lvl <= 249 then
+        MobName = "Dangerous Prisoner [Lv. 210]"
+        QuestName = "PrisonerQuest"
+        QuestLevel = 2
+        Mon = "Dangerous Prisoner"
+        NPCPosition =
+            CFrame.new(
+            5308.93115,
+            1.65517521,
+            475.120514,
+            -0.0894274712,
+            -5.00292918e-09,
+            -0.995993316,
+            1.60817859e-09,
+            1,
+            -5.16744869e-09,
+            0.995993316,
+            -2.06384709e-09,
+            -0.0894274712
+        )
+        local matchingCFrames = {}
+        local result = string.gsub(MobName, "Lv. ", "")
+        result = string.gsub(result, "[%[%]]", "")
+        result = string.gsub(result, "%d+", "")
+        result = string.gsub(result, "%s+", "")
+        for i, v in pairs(game.workspace.EnemySpawns:GetChildren()) do
+            if v.Name == result then
+                table.insert(matchingCFrames, v.CFrame)
+            end
+        end
+        MobCFrame = matchingCFrames
+        return {
+            [1] = QuestLevel,
+            [2] = NPCPosition,
+            [3] = MobName,
+            [4] = QuestName,
+            [5] = LevelRequire,
+            [6] = Mon,
+            [7] = MobCFrame
+        }
+    end
+
+    local GuideModule = require(game:GetService("ReplicatedStorage").GuideModule)
+    local Quests = require(game:GetService("ReplicatedStorage").Quests)
+
+    for i, v in pairs(GuideModule["Data"]["NPCList"]) do
+        for i1, v1 in pairs(v["Levels"]) do
+            if Lvl >= v1 then
+                if not LevelRequire then
+                    LevelRequire = 0
+                end
+                if v1 > LevelRequire then
+                    NPCPosition = i["CFrame"]
+                    QuestLevel = i1
+                    LevelRequire = v1
+                end
+                if #v["Levels"] == 3 and QuestLevel == 3 then
+                    NPCPosition = i["CFrame"]
+                    QuestLevel = 2
+                    LevelRequire = v["Levels"][2]
+                end
+            end
+        end
+    end
+
+    if Lvl >= 375 and Lvl <= 399 then
+        MobCFrame =
+            CFrame.new(
+            61122.5625,
+            18.4716396,
+            1568.16504,
+            0.893533468,
+            3.95251609e-09,
+            0.448996574,
+            -2.34327455e-08,
+            1,
+            3.78297464e-08,
+            -0.448996574,
+            -4.43233645e-08,
+            0.893533468
+        )
+        if
+            getgenv().FarmLevel and
+                (MobCFrame.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude > 3000
+         then
+            game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(
+                "requestEntrance",
+                Vector3.new(61163.8515625, 11.6796875, 1819.7841796875)
+            )
+            return
+        end
+    end
+
+    if Lvl >= 400 and Lvl <= 449 then
+        MobCFrame =
+            CFrame.new(
+            61122.5625,
+            18.4716396,
+            1568.16504,
+            0.893533468,
+            3.95251609e-09,
+            0.448996574,
+            -2.34327455e-08,
+            1,
+            3.78297464e-08,
+            -0.448996574,
+            -4.43233645e-08,
+            0.893533468
+        )
+        if
+            getgenv().FarmLevel and
+                (MobCFrame.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude > 3000
+         then
+            game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(
+                "requestEntrance",
+                Vector3.new(61163.8515625, 11.6796875, 1819.7841796875)
+            )
+            return
+        end
+    end
+
+    for i, v in pairs(Quests) do
+        for i1, v1 in pairs(v) do
+            if v1["LevelReq"] == LevelRequire and i ~= "CitizenQuest" then
+                QuestName = i
+                for i2, v2 in pairs(v1["Task"]) do
+                    MobName = i2
+                    Mon = string.split(i2, " [Lv. " .. v1["LevelReq"] .. "]")[1]
+                end
+            end
+        end
+    end
+
+    if QuestName == "MarineQuest2" then
+        QuestName = "MarineQuest2"
+        QuestLevel = 1
+        MobName = "Chief Petty Officer [Lv. 120]"
+        Mon = "Chief Petty Officer"
+        LevelRequire = 120
+    elseif QuestName == "ImpelQuest" then
+        QuestName = "PrisonerQuest"
+        QuestLevel = 2
+        MobName = "Dangerous Prisoner [Lv. 190]"
+        Mon = "Dangerous Prisoner"
+        LevelRequire = 210
+        NPCPosition =
+            CFrame.new(
+            5310.60547,
+            0.350014925,
+            474.946594,
+            0.0175017118,
+            0,
+            0.999846935,
+            0,
+            1,
+            0,
+            -0.999846935,
+            0,
+            0.0175017118
+        )
+    elseif QuestName == "SkyExp1Quest" then
+        if QuestLevel == 1 then
+            NPCPosition =
+                CFrame.new(
+                -4721.88867,
+                843.874695,
+                -1949.96643,
+                0.996191859,
+                -0,
+                -0.0871884301,
+                0,
+                1,
+                -0,
+                0.0871884301,
+                0,
+                0.996191859
+            )
+        elseif QuestLevel == 2 then
+            NPCPosition =
+                CFrame.new(
+                -7859.09814,
+                5544.19043,
+                -381.476196,
+                -0.422592998,
+                0,
+                0.906319618,
+                0,
+                1,
+                0,
+                -0.906319618,
+                0,
+                -0.422592998
+            )
+        end
+    elseif QuestName == "Area2Quest" and QuestLevel == 2 then
+        QuestName = "Area2Quest"
+        QuestLevel = 1
+        MobName = "Swan Pirate [Lv. 775]"
+        Mon = "Swan Pirate"
+        LevelRequire = 775
+    end
+
+    MobName = MobName:sub(1, #MobName)
+    if not MobName:find("Lv") then
+        for i, v in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
+            local MonLV = string.match(v.Name, "%d+")
+            if v.Name:find(MobName) and #v.Name > #MobName and tonumber(MonLV) <= Lvl + 50 then
+                MobName = v.Name
+            end
+        end
+    end
+
+    if not MobName:find("Lv") then
+        for i, v in pairs(game:GetService("ReplicatedStorage"):GetChildren()) do
+            local MonLV = string.match(v.Name, "%d+")
+            if v.Name:find(MobName) and #v.Name > #MobName and tonumber(MonLV) <= Lvl + 50 then
+                MobName = v.Name
+                Mon = MobName
+            end
+        end
+    end
+
+    matchingCFrames = {}
+    TempResult = string.gsub(MobName, "Lv. ", "")
+    TempResult = string.gsub(TempResult, "[%[%]]", "")
+    TempResult = string.gsub(TempResult, "%d+", "")
+    TempResult = string.gsub(TempResult, "%s+", "")
+
+    for i, v in pairs(game.workspace.EnemySpawns:GetChildren()) do
+        if v.Name == TempResult then
+            table.insert(matchingCFrames, v.CFrame)
+        end
+    end
+    MobCFrame = matchingCFrames
+
+    return {
+        [1] = QuestLevel,
+        [2] = NPCPosition,
+        [3] = MobName,
+        [4] = QuestName,
+        [5] = LevelRequire,
+        [6] = Mon,
+        [7] = MobCFrame,
+        [8] = MonQ or nil,
+        [9] = MobCFrameNumber or nil
+    }
 end
-
-local GuideModule = require(game:GetService("ReplicatedStorage").GuideModule)
-local Quests = require(game:GetService("ReplicatedStorage").Quests)
-
-for i,v in pairs(GuideModule["Data"]["NPCList"]) do
-	for i1,v1 in pairs(v["Levels"]) do
-		if Lvl >= v1 then
-			if not LevelRequire then
-				LevelRequire = 0
-			end
-			if v1 > LevelRequire then
-				NPCPosition = i["CFrame"]
-				QuestLevel = i1
-				LevelRequire = v1
-			end
-			if #v["Levels"] == 3 and QuestLevel == 3 then
-				NPCPosition = i["CFrame"]
-				QuestLevel = 2
-				LevelRequire = v["Levels"][2]
-			end
-		end
-	end
-end
-
-if Lvl >= 375 and Lvl <= 399 then
-	MobCFrame = CFrame.new(61122.5625, 18.4716396, 1568.16504, 0.893533468, 3.95251609e-09, 0.448996574, -2.34327455e-08, 1, 3.78297464e-08, -0.448996574, -4.43233645e-08, 0.893533468)
-	if getgenv().FarmLevel and (MobCFrame.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude > 3000 then
-		game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("requestEntrance",Vector3.new(61163.8515625, 11.6796875, 1819.7841796875))
-		return
-	end
-end
-
-if Lvl >= 400 and Lvl <= 449 then
-	MobCFrame = CFrame.new(61122.5625, 18.4716396, 1568.16504, 0.893533468, 3.95251609e-09, 0.448996574, -2.34327455e-08, 1, 3.78297464e-08, -0.448996574, -4.43233645e-08, 0.893533468)
-	if getgenv().FarmLevel and (MobCFrame.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude > 3000 then
-		game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("requestEntrance",Vector3.new(61163.8515625, 11.6796875, 1819.7841796875))
-		return
-	end
-end
-
-for i,v in pairs(Quests) do
-	for i1,v1 in pairs(v) do
-		if v1["LevelReq"] == LevelRequire and i ~= "CitizenQuest" then
-			QuestName = i
-			for i2,v2 in pairs(v1["Task"]) do
-				MobName = i2
-				Mon = string.split(i2," [Lv. ".. v1["LevelReq"] .. "]")[1]
-			end
-		end
-	end
-end
-
-if QuestName == "MarineQuest2" then
-	QuestName = "MarineQuest2"
-	QuestLevel = 1
-	MobName = "Chief Petty Officer [Lv. 120]"
-	Mon = "Chief Petty Officer"
-	LevelRequire = 120
-elseif QuestName == "ImpelQuest" then
-	QuestName = "PrisonerQuest"
-	QuestLevel = 2
-	MobName = "Dangerous Prisoner [Lv. 190]"
-	Mon = "Dangerous Prisoner"
-	LevelRequire = 210
-	NPCPosition = CFrame.new(5310.60547, 0.350014925, 474.946594, 0.0175017118, 0, 0.999846935, 0, 1, 0, -0.999846935, 0, 0.0175017118)
-elseif QuestName == "SkyExp1Quest" then
-	if QuestLevel == 1 then
-		NPCPosition = CFrame.new(-4721.88867, 843.874695, -1949.96643, 0.996191859, -0, -0.0871884301, 0, 1, -0, 0.0871884301, 0, 0.996191859)
-	elseif QuestLevel == 2 then
-		NPCPosition = CFrame.new(-7859.09814, 5544.19043, -381.476196, -0.422592998, 0, 0.906319618, 0, 1, 0, -0.906319618, 0, -0.422592998)
-	end
-elseif QuestName == "Area2Quest" and QuestLevel == 2 then
-	QuestName = "Area2Quest"
-	QuestLevel = 1
-	MobName = "Swan Pirate [Lv. 775]"
-	Mon = "Swan Pirate"
-	LevelRequire = 775
-end
-
-MobName = MobName:sub(1,#MobName)
-if not MobName:find("Lv") then
-	for i,v in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
-		local MonLV = string.match(v.Name, "%d+")
-		if v.Name:find(MobName) and #v.Name > #MobName and tonumber(MonLV) <= Lvl + 50 then
-			MobName = v.Name
-		end
-	end
-end
-
-if not MobName:find("Lv") then
-	for i,v in pairs(game:GetService("ReplicatedStorage"):GetChildren()) do
-		local MonLV = string.match(v.Name, "%d+")
-		if v.Name:find(MobName) and #v.Name > #MobName and tonumber(MonLV) <= Lvl + 50 then
-			MobName = v.Name
-			Mon = MobName
-		end
-	end
-end
-
-matchingCFrames = {}
-TempResult = string.gsub(MobName, "Lv. ", "")
-TempResult = string.gsub(TempResult, "[%[%]]", "")
-TempResult = string.gsub(TempResult, "%d+", "")
-TempResult = string.gsub(TempResult, "%s+", "")
-
-for i,v in pairs(game.workspace.EnemySpawns:GetChildren()) do
-	if v.Name == TempResult then
-		table.insert(matchingCFrames, v.CFrame)
-	end
-end
-MobCFrame = matchingCFrames
-
-return {
-	[1] = QuestLevel,
-	[2] = NPCPosition,
-	[3] = MobName,
-	[4] = QuestName,
-	[5] = LevelRequire,
-	[6] = Mon,
-	[7] = MobCFrame,
-	[8] = MonQ or nil,
-	[9] = MobCFrameNumber or nil
-}
-end
-
 
 -- Fast Attack Modules --
 local Config = {
@@ -1061,24 +1341,26 @@ local function FindRemoteEventWithId()
         ReplicatedStorage.Common,
         ReplicatedStorage.Remotes,
         ReplicatedStorage.Assets,
-        ReplicatedStorage.FX,
+        ReplicatedStorage.FX
     }
-    
+
     for _, folder in pairs(folders) do
         for _, child in pairs(folder:GetChildren()) do
-            if child:IsA('RemoteEvent') and child:GetAttribute('Id') then
-                RemoteEventId = child:GetAttribute('Id')
+            if child:IsA("RemoteEvent") and child:GetAttribute("Id") then
+                RemoteEventId = child:GetAttribute("Id")
                 RemoteEventCache = child
                 return
             end
         end
-        
-        folder.ChildAdded:Connect(function(child)
-            if child:IsA('RemoteEvent') and child:GetAttribute('Id') then
-                RemoteEventId = child:GetAttribute('Id')
-                RemoteEventCache = child
+
+        folder.ChildAdded:Connect(
+            function(child)
+                if child:IsA("RemoteEvent") and child:GetAttribute("Id") then
+                    RemoteEventId = child:GetAttribute("Id")
+                    RemoteEventCache = child
+                end
             end
-        end)
+        )
     end
 end
 
@@ -1088,35 +1370,48 @@ local FastAttack = {}
 FastAttack.__index = FastAttack
 
 function FastAttack.new()
-    local self = setmetatable({
-        Debounce = 0,
-        ComboDebounce = 0,
-        ShootDebounce = 0,
-        M1Combo = 0,
-        EnemyRootPart = nil,
-        Connections = {},
-        Overheat = {Dragonstorm = {MaxOverheat = 3, Cooldown = 0, TotalOverheat = 0, Distance = 350, Shooting = false}},
-        ShootsPerTarget = {["Dual Flintlock"] = 2},
-        SpecialShoots = {["Skull Guitar"] = "TAP", ["Bazooka"] = "Position", ["Cannon"] = "Position", ["Dragonstorm"] = "Overheat"}
-    }, FastAttack)
-    
-    pcall(function()
-    self.CombatFlags = require(Modules.Flags).COMBAT_REMOTE_THREAD
-    self.ShootFunction = getupvalue(require(ReplicatedStorage.Controllers.CombatController).Attack, 9)
-    
-    local PlayerScripts = Player:WaitForChild("PlayerScripts", 10)
-    if PlayerScripts then
-        for _, script in pairs(PlayerScripts:GetDescendants()) do
-            if script:IsA("LocalScript") and getsenv then
-                local env = getsenv(script)
-                if env and env._G and env._G.SendHitsToServer then
-                    self.HitFunction = env._G.SendHitsToServer
-                    break
+    local self =
+        setmetatable(
+        {
+            Debounce = 0,
+            ComboDebounce = 0,
+            ShootDebounce = 0,
+            M1Combo = 0,
+            EnemyRootPart = nil,
+            Connections = {},
+            Overheat = {
+                Dragonstorm = {MaxOverheat = 3, Cooldown = 0, TotalOverheat = 0, Distance = 350, Shooting = false}
+            },
+            ShootsPerTarget = {["Dual Flintlock"] = 2},
+            SpecialShoots = {
+                ["Skull Guitar"] = "TAP",
+                ["Bazooka"] = "Position",
+                ["Cannon"] = "Position",
+                ["Dragonstorm"] = "Overheat"
+            }
+        },
+        FastAttack
+    )
+
+    pcall(
+        function()
+            self.CombatFlags = require(Modules.Flags).COMBAT_REMOTE_THREAD
+            self.ShootFunction = getupvalue(require(ReplicatedStorage.Controllers.CombatController).Attack, 9)
+
+            local PlayerScripts = Player:WaitForChild("PlayerScripts", 10)
+            if PlayerScripts then
+                for _, script in pairs(PlayerScripts:GetDescendants()) do
+                    if script:IsA("LocalScript") and getsenv then
+                        local env = getsenv(script)
+                        if env and env._G and env._G.SendHitsToServer then
+                            self.HitFunction = env._G.SendHitsToServer
+                            break
+                        end
+                    end
                 end
             end
         end
-    end
-end)
+    )
     return self
 end
 
@@ -1138,23 +1433,27 @@ end
 
 function FastAttack:GetAllHits()
     local Character = Player.Character
-    if not Character then return {} end
-    
-    local HRP = Character:FindFirstChild('HumanoidRootPart')
-    if not HRP then return {} end
-    
+    if not Character then
+        return {}
+    end
+
+    local HRP = Character:FindFirstChild("HumanoidRootPart")
+    if not HRP then
+        return {}
+    end
+
     local AllHits = {}
-    
+
     local function ProcessFolder(folder)
         for _, enemy in ipairs(folder:GetChildren()) do
             if enemy ~= Character then
-                local enemyHRP = enemy:FindFirstChild('HumanoidRootPart')
-                local enemyHumanoid = enemy:FindFirstChild('Humanoid')
-                
+                local enemyHRP = enemy:FindFirstChild("HumanoidRootPart")
+                local enemyHumanoid = enemy:FindFirstChild("Humanoid")
+
                 if enemyHRP and enemyHumanoid and enemyHumanoid.Health > 0 then
                     if (enemyHRP.Position - HRP.Position).Magnitude <= Config.AttackDistance then
                         for _, part in ipairs(enemy:GetChildren()) do
-                            if part:IsA('BasePart') then
+                            if part:IsA("BasePart") then
                                 table.insert(AllHits, {enemy, part})
                             end
                         end
@@ -1163,22 +1462,22 @@ function FastAttack:GetAllHits()
             end
         end
     end
-    
+
     if Config.AttackMobs then
         ProcessFolder(Workspace.Enemies)
     end
     if Config.AttackPlayers then
-    if Workspace:FindFirstChild("Characters") then
-        ProcessFolder(Workspace.Characters)
+        if Workspace:FindFirstChild("Characters") then
+            ProcessFolder(Workspace.Characters)
+        end
     end
-end
     return AllHits
 end
 
 function FastAttack:GetClosestEnemy(Character, Distance)
     local Position = Character:GetPivot().Position
     local Closest, MinDistance = nil, math.huge
-    
+
     local function CheckFolder(folder)
         for _, Enemy in ipairs(folder:GetChildren()) do
             if Enemy ~= Character and self:IsEntityAlive(Enemy) then
@@ -1193,10 +1492,14 @@ function FastAttack:GetClosestEnemy(Character, Distance)
             end
         end
     end
-    
-    if Config.AttackMobs then CheckFolder(Workspace.Enemies) end
-    if Config.AttackPlayers then CheckFolder(Workspace.Characters) end
-    
+
+    if Config.AttackMobs then
+        CheckFolder(Workspace.Enemies)
+    end
+    if Config.AttackPlayers then
+        CheckFolder(Workspace.Characters)
+    end
+
     return Closest
 end
 
@@ -1210,19 +1513,25 @@ end
 
 function FastAttack:ShootInTarget(TargetPosition)
     local Character = Player.Character
-    if not self:IsEntityAlive(Character) then return end
-    
+    if not self:IsEntityAlive(Character) then
+        return
+    end
+
     local Equipped = Character:FindFirstChildOfClass("Tool")
-    if not Equipped or Equipped.ToolTip ~= "Gun" then return end
-    
+    if not Equipped or Equipped.ToolTip ~= "Gun" then
+        return
+    end
+
     local Cooldown = Equipped:FindFirstChild("Cooldown") and Equipped.Cooldown.Value or 0.3
-    if (tick() - self.ShootDebounce) < Cooldown then return end
-    
+    if (tick() - self.ShootDebounce) < Cooldown then
+        return
+    end
+
     local ShootType = self.SpecialShoots[Equipped.Name] or "Normal"
     if ShootType == "Position" or (ShootType == "TAP" and Equipped:FindFirstChild("RemoteEvent")) then
         Equipped:SetAttribute("LocalTotalShots", (Equipped:GetAttribute("LocalTotalShots") or 0) + 1)
         GunValidator:FireServer(self:GetValidator2())
-        
+
         if ShootType == "TAP" then
             Equipped.RemoteEvent:FireServer("TAP", TargetPosition)
         else
@@ -1238,8 +1547,10 @@ function FastAttack:ShootInTarget(TargetPosition)
 end
 
 function FastAttack:GetValidator2()
-    if not self.ShootFunction then return 0, 0 end
-    
+    if not self.ShootFunction then
+        return 0, 0
+    end
+
     local v1 = getupvalue(self.ShootFunction, 15)
     local v2 = getupvalue(self.ShootFunction, 13)
     local v3 = getupvalue(self.ShootFunction, 16)
@@ -1247,14 +1558,14 @@ function FastAttack:GetValidator2()
     local v5 = getupvalue(self.ShootFunction, 14)
     local v6 = getupvalue(self.ShootFunction, 12)
     local v7 = getupvalue(self.ShootFunction, 18)
-    
+
     local v8 = v6 * v2
     local v9 = (v5 * v2 + v6 * v1) % v3
     v9 = (v9 * v3 + v8) % v4
     v5 = math.floor(v9 / v3)
     v6 = v9 - v5 * v3
     v7 = v7 + 1
-    
+
     setupvalue(self.ShootFunction, 15, v1)
     setupvalue(self.ShootFunction, 13, v2)
     setupvalue(self.ShootFunction, 16, v3)
@@ -1262,56 +1573,76 @@ function FastAttack:GetValidator2()
     setupvalue(self.ShootFunction, 14, v5)
     setupvalue(self.ShootFunction, 12, v6)
     setupvalue(self.ShootFunction, 18, v7)
-    
+
     return math.floor(v9 / v4 * 16777215), v7
 end
 
 function FastAttack:UseFruitM1(Character, Equipped, Combo)
     local Targets = self:GetAllHits()
-    if not Targets[1] then return end
-    
+    if not Targets[1] then
+        return
+    end
+
     local Direction = (Targets[1][2].Position - Character:GetPivot().Position).Unit
     Equipped.LeftClickRemote:FireServer(Direction, Combo)
 end
 
 function FastAttack:Attack()
-    if not Config.AutoClickEnabled then return end
-    
+    if not Config.AutoClickEnabled then
+        return
+    end
+
     local Character = Player.Character
-    if not Character or not self:IsEntityAlive(Character) then return end
-    
+    if not Character or not self:IsEntityAlive(Character) then
+        return
+    end
+
     local Equipped = Character:FindFirstChildOfClass("Tool")
-    if not Equipped then return end
-    
-    local WeaponType = Equipped:GetAttribute('WeaponType')
+    if not Equipped then
+        return
+    end
+
+    local WeaponType = Equipped:GetAttribute("WeaponType")
     local ToolTip = Equipped.ToolTip
-    if WeaponType == 'Melee' or WeaponType == 'Sword' or ToolTip == "Melee" or ToolTip == "Sword" then
+    if WeaponType == "Melee" or WeaponType == "Sword" or ToolTip == "Melee" or ToolTip == "Sword" then
         local AllHits = self:GetAllHits()
-        
+
         if #AllHits > 0 then
-            pcall(function()
-                require(Net):RemoteEvent('RegisterHit', true)
-                RegisterAttack:FireServer()
-                
-                local HeadPart = AllHits[1][1]:FindFirstChild('Head')
-                
-                if HeadPart then
-                    local userId = tostring(Player.UserId):sub(2, 4)
-                    local coroutineId = tostring(coroutine.running()):sub(11, 15)
-                    local validationString = userId .. coroutineId
-                    RegisterHit:FireServer(HeadPart, AllHits, {}, validationString)
-                    if RemoteEventCache and RemoteEventId then
-                        local encryptedString = string.gsub('RE/RegisterHit', '.', function(char)
-                            return string.char(bit32.bxor(string.byte(char), math.floor(workspace:GetServerTimeNow() / 10 % 10) + 1))
-                        end)
-                        
-                        local seedValue = Net.seed:InvokeServer()
-                        local encryptedId = bit32.bxor(RemoteEventId + 909090, seedValue * 2)
-                        
-                        cloneref(RemoteEventCache):FireServer(encryptedString, encryptedId, HeadPart, AllHits)
+            pcall(
+                function()
+                    require(Net):RemoteEvent("RegisterHit", true)
+                    RegisterAttack:FireServer()
+
+                    local HeadPart = AllHits[1][1]:FindFirstChild("Head")
+
+                    if HeadPart then
+                        local userId = tostring(Player.UserId):sub(2, 4)
+                        local coroutineId = tostring(coroutine.running()):sub(11, 15)
+                        local validationString = userId .. coroutineId
+                        RegisterHit:FireServer(HeadPart, AllHits, {}, validationString)
+                        if RemoteEventCache and RemoteEventId then
+                            local encryptedString =
+                                string.gsub(
+                                "RE/RegisterHit",
+                                ".",
+                                function(char)
+                                    return string.char(
+                                        bit32.bxor(
+                                            string.byte(char),
+                                            math.floor(workspace:GetServerTimeNow() / 10 % 10) + 1
+                                        )
+                                    )
+                                end
+                            )
+
+                            local seedValue = Net.seed:InvokeServer()
+                            local encryptedId = bit32.bxor(RemoteEventId + 909090, seedValue * 2)
+
+                            cloneref(RemoteEventCache):FireServer(encryptedString, encryptedId, HeadPart, AllHits)
+                        end
                     end
                 end
-            end)
+            )
         end
     elseif ToolTip == "Blox Fruit" and Equipped:FindFirstChild("LeftClickRemote") then
         local Combo = self:GetCombo()
@@ -1326,57 +1657,81 @@ end
 
 local AttackInstance = FastAttack.new()
 
-task.spawn(function()
-    while task.wait(Config.AttackCooldown) do
-        AttackInstance:Attack()
+task.spawn(
+    function()
+        while task.wait(Config.AttackCooldown) do
+            AttackInstance:Attack()
+        end
     end
-end)
+)
 
-table.insert(AttackInstance.Connections, RunService.Stepped:Connect(function()
-    pcall(function()
-        AttackInstance:Attack()
-    end)
-end))
+table.insert(
+    AttackInstance.Connections,
+    RunService.Stepped:Connect(
+        function()
+            pcall(
+                function()
+                    AttackInstance:Attack()
+                end
+            )
+        end
+    )
+)
 
 for _, v in pairs(getgc(true)) do
     if typeof(v) == "function" and iscclosure(v) then
         local name = debug.getinfo(v).name
         if name == "Attack" or name == "attack" or name == "RegisterHit" then
-            hookfunction(v, function(...)
-                pcall(function()
-                    AttackInstance:Attack()
-                end)
-                return v(...)
-            end)
+            hookfunction(
+                v,
+                function(...)
+                    pcall(
+                        function()
+                            AttackInstance:Attack()
+                        end
+                    )
+                    return v(...)
+                end
+            )
         end
     end
 end
 
 function EQ(Tool)
-	pcall(function()
-		if game.Players.LocalPlayer.Backpack:FindFirstChild(Tool) then 
-			local ToolHumanoid = game.Players.LocalPlayer.Backpack:FindFirstChild(Tool) 
-			game.Players.LocalPlayer.Character.Humanoid:EquipTool(ToolHumanoid) 
-		end
-	end)
+    pcall(
+        function()
+            if game.Players.LocalPlayer.Backpack:FindFirstChild(Tool) then
+                local ToolHumanoid = game.Players.LocalPlayer.Backpack:FindFirstChild(Tool)
+                game.Players.LocalPlayer.Character.Humanoid:EquipTool(ToolHumanoid)
+            end
+        end
+    )
 end
 
 local player = game:GetService("Players").LocalPlayer
 local Enemies = game:GetService("Workspace").Enemies
 
 local function getDistance(b, c)
-    if type(b) ~= 'vector' then b = b.Position end
-    if type(c) ~= 'vector' then c = c.Position end
+    if type(b) ~= "vector" then
+        b = b.Position
+    end
+    if type(c) ~= "vector" then
+        c = c.Position
+    end
     return math.round((b - c).Magnitude)
 end
 
 local function isModel(b)
-    if type(b) ~= 'userdata' then return false end
-    return b:IsA('Model') and b:FindFirstChild('HumanoidRootPart') ~= nil
+    if type(b) ~= "userdata" then
+        return false
+    end
+    return b:IsA("Model") and b:FindFirstChild("HumanoidRootPart") ~= nil
 end
 
 local function GetModelCFrame(model)
-    if not isModel(model) then return nil end
+    if not isModel(model) then
+        return nil
+    end
     return model:GetModelCFrame() or model.HumanoidRootPart.CFrame
 end
 
@@ -1393,16 +1748,18 @@ local function disableObjectCanCollide(mob)
 end
 
 local function freeze(mob)
-    if not isModel(mob) then return end
+    if not isModel(mob) then
+        return
+    end
     disableObjectCanCollide(mob)
     mob.HumanoidRootPart.Transparency = 1
     mob.HumanoidRootPart.Size = Vector3.new(60, 60, 60)
     mob.Humanoid.WalkSpeed = 0
     mob.Humanoid.JumpPower = 0
-    if not findProperty(mob.HumanoidRootPart, 'jacky', true) then
-        local bv = Instance.new('BodyVelocity')
+    if not findProperty(mob.HumanoidRootPart, "jacky", true) then
+        local bv = Instance.new("BodyVelocity")
         bv.Parent = mob.HumanoidRootPart
-        bv.Name = 'jacky'
+        bv.Name = "jacky"
         bv.MaxForce = Vector3.new(math.huge, math.huge, math.huge)
         bv.Velocity = Vector3.new(0, 0, 0)
     end
@@ -1461,14 +1818,18 @@ function EquipWeapon(i)
 end
 
 function SH(target)
-    if not isModel(target) then return end
+    if not isModel(target) then
+        return
+    end
     local character = game:GetService("Players").LocalPlayer.Character
     if not character then
         UpdateCharacterReferences()
         task.wait(0.5)
         character = game:GetService("Players").LocalPlayer.Character
     end
-    if not character then return end
+    if not character then
+        return
+    end
     local targetCFrame = GetModelCFrame(target)
     Tween(targetCFrame * RandomCFrame)
     if getDistance(character.HumanoidRootPart, target.HumanoidRootPart) <= 50 then
@@ -1476,7 +1837,7 @@ function SH(target)
             game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("Buso")
         end
         if getgenv().BringMob then
-        task.spawn(bring, target.Name, targetCFrame)
+            task.spawn(bring, target.Name, targetCFrame)
         end
         task.spawn(EQ, getgenv().WeaponChoose, "Melee", "Melee")
         pcall(freeze, target)
@@ -1485,20 +1846,41 @@ function SH(target)
 end
 
 local HooksTable = {
-    {Name = "Death", Function = require(game:GetService("ReplicatedStorage").Effect.Container.Death), HookedFunction = function() end},
-    {Name = "Respawn", Function = require(game:GetService("ReplicatedStorage").Effect.Container.Respawn), HookedFunction = function() end},
-    {Name = "ChangeDisplayedNPC", Function = require(game:GetService("ReplicatedStorage"):WaitForChild("GuideModule")).ChangeDisplayedNPC, HookedFunction = function() return end},
-    {Name = "Error", Function = error, HookedFunction = function() end},
-    {Name = "Warn", Function = warn, HookedFunction = function() end}
+    {
+        Name = "Death",
+        Function = require(game:GetService("ReplicatedStorage").Effect.Container.Death),
+        HookedFunction = function()
+        end
+    },
+    {
+        Name = "Respawn",
+        Function = require(game:GetService("ReplicatedStorage").Effect.Container.Respawn),
+        HookedFunction = function()
+        end
+    },
+    {
+        Name = "ChangeDisplayedNPC",
+        Function = require(game:GetService("ReplicatedStorage"):WaitForChild("GuideModule")).ChangeDisplayedNPC,
+        HookedFunction = function()
+            return
+        end
+    },
+    {Name = "Error", Function = error, HookedFunction = function()
+        end},
+    {Name = "Warn", Function = warn, HookedFunction = function()
+        end}
 }
 
-task.delay(1, function()
-    if hookfunction and not islclosure(hookfunction) then
-        for _, hook in ipairs(HooksTable) do
-            hookfunction(hook.Function, hook.HookedFunction)
+task.delay(
+    1,
+    function()
+        if hookfunction and not islclosure(hookfunction) then
+            for _, hook in ipairs(HooksTable) do
+                hookfunction(hook.Function, hook.HookedFunction)
+            end
         end
     end
-end)
+)
 
 function DeVer()
     local MainGui = game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("Main")
@@ -1509,7 +1891,7 @@ end
 
 function DeDam()
     local Damage = game:GetService("ReplicatedStorage").Assets.GUI.DamageCounter
-        Damage.Enabled = not getgenv().DeleteDamageText
+    Damage.Enabled = not getgenv().DeleteDamageText
 end
 
 function DeNo()
@@ -1535,19 +1917,19 @@ function RanPos()
 end
 
 function CaptureMode()
-    if getgenv().KaitunCapMode == 'Mobile' then
+    if getgenv().KaitunCapMode == "Mobile" then
         getgenv().MobileMode = true
-    elseif getgenv().KaitunCapMode == 'Pc' then
+    elseif getgenv().KaitunCapMode == "Pc" then
         getgenv().MobileMode = false
     end
 end
 
 function FPSLOCK()
     if getgenv().FPSLock then
-		setfpscap(getgenv().FPSAmount)
-	else
-		setfpscap(120)
-	end
+        setfpscap(getgenv().FPSAmount)
+    else
+        setfpscap(120)
+    end
 end
 
 function ReJoin()
@@ -1570,20 +1952,24 @@ function BuyFruitSniper()
     local ad = game.ReplicatedStorage:FindFirstChild("Remotes").CommF_:InvokeServer("GetFruits")
     Table_DevilFruitSniper = {}
     ShopDevilSell = {}
-    
+
     for i, v in next, ad do
         table.insert(Table_DevilFruitSniper, v.Name)
         if v.OnSale then
             table.insert(ShopDevilSell, v.Name)
         end
     end
-    
+
     if getgenv().EnableFruitSniper then
         if type(getgenv().FruitToSniper) == "table" then
             for _, SelectedFruit in pairs(getgenv().FruitToSniper) do
                 for _, fruitOnSale in pairs(ShopDevilSell) do
                     if SelectedFruit == fruitOnSale then
-                        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("PurchaseRawFruit", SelectedFruit, false)
+                        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(
+                            "PurchaseRawFruit",
+                            SelectedFruit,
+                            false
+                        )
                     end
                 end
             end
@@ -1599,80 +1985,402 @@ function EnbalePvP()
     end
 end
 
-function AddPoint(StatName, Amount)
-    if Amount > 0 then
-        StatRemote:InvokeServer("AddPoint", StatName, Amount)
+function AutoStats()
+    if not getgenv().AutoStats then
+        return
+    end
+    local data = LocalPlayer.Data
+    if not data then
+        return
+    end
+    local points = data.Points.Value
+    if points <= 0 then
+        return
+    end
+    local amount = getgenv().AmountStats
+    if points < amount then
+        amount = points
+    end
+    local selected = getgenv().SelectedStats
+    if not selected then
+        return
+    end
+    if selected["Smart Stats"] then
+        if data.Level.Value < 1200 then
+            StatRemote:InvokeServer("AddPoint", "Melee", amount)
+            return
+        end
+
+        local half = amount // 2
+        local rest = amount - half
+
+        if data.Level.Value < 2200 then
+            StatRemote:InvokeServer("AddPoint", "Melee", half)
+            StatRemote:InvokeServer("AddPoint", "Defense", rest)
+        else
+            StatRemote:InvokeServer("AddPoint", "Sword", half)
+            StatRemote:InvokeServer("AddPoint", "Demon Fruit", rest)
+        end
+        return
+    end
+
+    if selected.Melee then
+        StatRemote:InvokeServer("AddPoint", "Melee", amount)
+    elseif selected.Defense then
+        StatRemote:InvokeServer("AddPoint", "Defense", amount)
+    elseif selected.Sword then
+        StatRemote:InvokeServer("AddPoint", "Sword", amount)
+    elseif selected["Demon Fruit"] then
+        StatRemote:InvokeServer("AddPoint", "Demon Fruit", amount)
     end
 end
 
-function AutoStats()
-    if getgenv().AutoStats then
-        local Data = LocalPlayer:FindFirstChild("Data")
-        local Stats = Data and Data:FindFirstChild("Stats")
+function InfGeppo()
+    if getgenv().InfGeppo then
+        pcall(
+            function()
+                if not game:GetService("Players").LocalPlayer.Character:FindFirstChild("Geppo") then
+                    return
+                end
 
-        if Data and Stats then
-            local Level = Data:FindFirstChild("Level") and Data.Level.Value or 0
-            local Points = Data:FindFirstChild("Points") and Data.Points.Value or 0
-
-            if Points > 0 then
-                local Selected = getgenv().SelectedStats
-                local UseAmount = math.min(getgenv().AmountStats, Points)
-
-                if Selected["Smart Stats"] then
-                    if Level < 1200 then
-                        AddPoint("Melee", UseAmount)
-                    elseif Level < 2200 then
-                        local Half = math.floor(UseAmount / 2)
-                        AddPoint("Melee", Half)
-                        AddPoint("Defense", UseAmount - Half)
-                    else
-                        local Half = math.floor(UseAmount / 2)
-                        AddPoint("Sword", Half)
-                        AddPoint("Demon Fruit", UseAmount - Half)
-                    end
-                else
-                    local EnabledStats = {}
-                    for StatName, Enabled in pairs(Selected) do
-                        if Enabled then
-                            table.insert(EnabledStats, StatName)
-                        end
-                    end
-
-                    if #EnabledStats > 0 then
-                        local PointsPerStat = math.floor(UseAmount / #EnabledStats)
-                        for _, StatName in ipairs(EnabledStats) do
-                            AddPoint(StatName, PointsPerStat)
+                for _, func in ipairs(getgc(true)) do
+                    if
+                        typeof(func) == "function" and
+                            getfenv(func).script ==
+                                game:GetService("Players").LocalPlayer.Character:FindFirstChild("Geppo")
+                     then
+                        for i, v in next, getupvalues(func) do
+                            if tostring(i) == "9" then
+                                setupvalue(func, i, 0)
+                            end
                         end
                     end
                 end
             end
-        else
-            warn("Data or Stats not found.")
-        end
+        )
     end
 end
 
+function WalkOnWater()
+    if getgenv().WalkOnWater then
+        game:GetService("Workspace").Map["WaterBase-Plane"].Size = Vector3.new(1000, 112, 1000)
+    else
+        game:GetService("Workspace").Map["WaterBase-Plane"].Size = Vector3.new(1000, 80, 1000)
+    end
+end
+
+function RemoveFog()
+    local Lighting = game:GetService("Lighting")
+
+    if Lighting:FindFirstChild("LightingLayers") then
+        Lighting.LightingLayers:Destroy()
+    end
+
+    local sky = Lighting:FindFirstChild("Sky")
+    if sky then
+        sky.CelestialBodiesShown = false
+        sky.SkyboxBk = ""
+        sky.SkyboxDn = ""
+        sky.SkyboxFt = ""
+        sky.SkyboxLf = ""
+        sky.SkyboxRt = ""
+        sky.SkyboxUp = ""
+    end
+
+    Lighting.FogEnd = 100000
+    Lighting.FogStart = 0
+    Lighting.Brightness = 2
+    Lighting.ClockTime = 12
+    Lighting.GlobalShadows = false
+    Lighting.OutdoorAmbient = Color3.fromRGB(128, 128, 128)
+
+    if Lighting:FindFirstChild("Atmosphere") then
+        Lighting.Atmosphere.Density = 0
+        Lighting.Atmosphere.Offset = 0
+    end
+end
+
+function TweenTemple()
+    game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(
+        "requestEntrance",
+        Vector3.new(28282.5703125, 14896.8505859375, 105.1042709350586)
+    )
+end
+
+function BuyGear()
+    game.ReplicatedStorage.Remotes.CommF_:InvokeServer("UpgradeRace", "Buy")
+    Fluent:Notify(
+        {
+            Title = "Notification",
+            Content = "You Should Reset Character To Countine!!!",
+            SubContent = "vh so cute!!!",
+            Duration = 5
+        }
+    )
+end
+
+function AutoBuyGear()
+    pcall(
+        function()
+            if getgenv().AutoBuyGear then
+                local b_ = CheckAcientOneStatus()
+                if string.find(b_, "Can Buy Gear") then
+                    v229, v228, v227 = game.ReplicatedStorage.Remotes.CommF_:InvokeServer("UpgradeRace", "Check")
+                    if v227 and game.Players.LocalPlayer.Data.Fragments.Value >= v227 then
+                        BuyGear()
+                    end
+                end
+            end
+            task.wait(5)
+        end
+    )
+end
+
+function CheckAndTweenTemple()
+    if (TempleOfTimeCFrame.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude > 1200 then
+        TweenTemple()
+    end
+    if (TempleOfTimeCFrame.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude > 1200 then
+        TweenTemple()
+    end
+end
+
+function fireremotechoosegear(bH)
+    v = bH
+    if v == "Gear1" then
+        print("Gear3")
+        local args = {[1] = "TempleClock", [2] = "SpendPoint"}
+        game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("CommF_"):InvokeServer(unpack(args))
+    elseif v == "Gear2" then
+        print("Gear2")
+        local args = {[1] = "TempleClock", [2] = "SpendPoint", [3] = "Gear2", [4] = "Omega"}
+        game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("CommF_"):InvokeServer(unpack(args))
+    elseif v == "Gear4" then
+        print("Gear4")
+        if condimemeaymeci.B == 2 then
+            print("Gear 4 Omega")
+            local args = {[1] = "TempleClock", [2] = "SpendPoint", [3] = "Gear4", [4] = "Omega"}
+            game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("CommF_"):InvokeServer(
+                unpack(args)
+            )
+        elseif condimemeaymeci.A == 2 then
+            print("Gear 4 Alpha")
+            local args = {[1] = "TempleClock", [2] = "SpendPoint", [3] = "Gear4", [4] = "Alpha"}
+            game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("CommF_"):InvokeServer(
+                unpack(args)
+            )
+        elseif condimemeaymeci.A < 2 then
+            v14 = game.ReplicatedStorage.Remotes.CommF_:InvokeServer("TempleClock", "Check")
+            condimemeaymeci = v14.RaceDetails
+            print("Gear 4 Alpha")
+            local args = {[1] = "TempleClock", [2] = "SpendPoint", [3] = "Gear4", [4] = "Alpha"}
+            game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("CommF_"):InvokeServer(
+                unpack(args)
+            )
+        end
+    elseif v == "Gear3" then
+        print("Gear3")
+        local args = {[1] = "TempleClock", [2] = "SpendPoint", [3] = "Gear3", [4] = "Alpha"}
+        game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("CommF_"):InvokeServer(unpack(args))
+    elseif v == "Gear5" then
+        print("Gear5")
+        local args = {[1] = "TempleClock", [2] = "SpendPoint", [3] = "Gear5", [4] = "Default"}
+        game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("CommF_"):InvokeServer(unpack(args))
+    end
+    Fluent:Notify(
+        {
+            Title = "Notification",
+            Content = "Choose Gear",
+            SubContent = v,
+            Duration = 10
+        }
+    )
+end
+
+function InstantChooseGear()
+    v14 = game.ReplicatedStorage.Remotes.CommF_:InvokeServer("TempleClock", "Check")
+    if v14 and v14.HadPoint then
+        condimemeaymeci = v14.RaceDetails
+        CheckAndTweenTemple()
+        Tween(workspace.Map["Temple of Time"].Prompt.CFrame)
+        if
+            (workspace.Map["Temple of Time"].Prompt.Position -
+                game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude < 3
+         then
+            wait(1)
+            fireproximityprompt(workspace.Map["Temple of Time"].Prompt.ProximityPrompt)
+            wait(5)
+            for r, v in pairs(workspace.Map["Temple of Time"].InnerClock:GetChildren()) do
+                if v:FindFirstChild("Highlight") and v.Highlight.Enabled then
+                    print(v.Name)
+                    spawn(
+                        function()
+                            fireremotechoosegear(v.Name)
+                        end
+                    )
+                end
+            end
+        end
+        task.wait(5)
+    else
+        Fluent:Notify(
+            {
+                Title = "Notification",
+                Content = "Choose Gear",
+                SubContent = "You hadnt point to choose",
+                Duration = 10
+            }
+        )
+        task.wait(30)
+    end
+end
+
+function AutoChooseGear()
+    pcall(
+        function()
+            if getgenv().AutoChooseGear then
+                InstantChooseGear()
+            end
+        end
+    )
+end
+
+function LockMoon()
+    pcall(
+        function()
+            if getgenv().LockCamToMoon then
+                workspace.CurrentCamera.CFrame =
+                    CFrame.new(
+                    workspace.CurrentCamera.CFrame.Position,
+                    game:GetService("Lighting"):GetMoonDirection() + workspace.CurrentCamera.CFrame.Position
+                )
+            end
+        end
+    )
+end
+
+function InfDoge()
+    if getgenv().InfDoge then
+        pcall(
+            function()
+                if not game:GetService("Players").LocalPlayer.Character:FindFirstChild("Dodge") then
+                    return
+                end
+
+                for _, func in ipairs(getgc(true)) do
+                    if
+                        typeof(func) == "function" and
+                            getfenv(func).script ==
+                                game:GetService("Players").LocalPlayer.Character:FindFirstChild("Dodge")
+                     then
+                        for i, v in next, getupvalues(func) do
+                            if tostring(v) == "0.1" then
+                                repeat
+                                    task.wait(0.2)
+                                    setupvalue(func, i, 0)
+                                until not getgenv().InfDoge
+                            end
+                        end
+                    end
+                end
+            end
+        )
+    end
+end
+
+function InfDoge()
+    pcall(
+        function()
+            if getgenv().InfSoru and game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+                for i, v in next, getgc() do
+                    if game:GetService("Players").LocalPlayer.Character:FindFirstChild("Soru") then
+                        if
+                            typeof(v) == "function" and
+                                getfenv(v).script == game:GetService("Players").LocalPlayer.Character.Soru
+                         then
+                            for i2, v2 in next, getupvalues(v) do
+                                if typeof(v2) == "table" then
+                                    repeat
+                                        task.wait(0.1)
+                                        v2.LastUse = 0
+                                    until not getgenv().InfSoru or
+                                        game:GetService("Players").LocalPlayer.Character.Humanoid.Health <= 0
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    )
+end
+
+function UseFullSkill()
+    game:GetService("VirtualInputManager"):SendKeyEvent(true, "Z", false, game)
+    wait(0.1)
+    game:GetService("VirtualInputManager"):SendKeyEvent(false, "Z", false, game)
+    wait(0.1)
+    game:GetService("VirtualInputManager"):SendKeyEvent(true, "X", false, game)
+    wait(0.1)
+    game:GetService("VirtualInputManager"):SendKeyEvent(false, "X", false, game)
+    wait(0.1)
+    game:GetService("VirtualInputManager"):SendKeyEvent(true, "C", false, game)
+    wait(0.1)
+    game:GetService("VirtualInputManager"):SendKeyEvent(false, "C", false, game)
+    wait(0.1)
+    game:GetService("VirtualInputManager"):SendKeyEvent(true, "V", false, game)
+    wait(0.1)
+    game:GetService("VirtualInputManager"):SendKeyEvent(false, "V", false, game)
+end
+
+function UseAllWeapon()
+    EquipWeapon("Melee")
+    UseFullSkill()
+    wait(1.5)
+    EquipWeapon("Sword")
+    UseFullSkill()
+    wait(1.5)
+    EquipWeapon("Blox Fruit")
+    UseFullSkill()
+    wait(1.5)
+    EquipWeapon("Gun")
+    UseFullSkill()
+    wait(0.5)
+end
+
 print("Build Gui")
-local status, Fluent = pcall(function()
-    return loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
-end)
+local status, Fluent =
+    pcall(
+    function()
+        return loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
+    end
+)
 if not status then
     warn("gui-error | try again!")
 end
 
-local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/buiihungg/Romis/refs/heads/main/Fluent_AutoSave.lua"))()
-local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
+local SaveManager =
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/buiihungg/Romis/refs/heads/main/Fluent_AutoSave.lua"))()
+local InterfaceManager =
+    loadstring(
+    game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua")
+)()
 
-local Window = Fluent:CreateWindow({
-    Title = "Romis Hub",
-    SubTitle = "[ Blox Fruit ] - https://discord.gg/zED9HmrvVU",
-    TabWidth = 170,
-    Size = UDim2.fromOffset(540, 370),
-    Acrylic = false,
-    Theme = "Darker",
-    MinimizeKey = Enum.KeyCode.LeftControl
-})
--- Floating Button
+local Window =
+    Fluent:CreateWindow(
+    {
+        Title = "Romis Hub",
+        SubTitle = "[ Blox Fruit ] - https://discord.gg/zED9HmrvVU",
+        TabWidth = 170,
+        Size = UDim2.fromOffset(540, 370),
+        Acrylic = false,
+        Theme = "Darker",
+        MinimizeKey = Enum.KeyCode.LeftControl
+    }
+)
+
+-- Open/Close Button --
+
 local ScreenGui = Instance.new("ScreenGui")
 local ImageButton = Instance.new("ImageButton")
 local UICorner = Instance.new("UICorner")
@@ -1712,22 +2420,20 @@ local function dragify(Frame)
     local dragInput = nil
     local dragStart = nil
     local startPos = nil
-    
+
     local function updateInput(input)
         local Delta = input.Position - dragStart
-        local Position = UDim2.new(
-            startPos.X.Scale, 
-            startPos.X.Offset + Delta.X, 
-            startPos.Y.Scale, 
-            startPos.Y.Offset + Delta.Y
-        )
+        local Position =
+            UDim2.new(startPos.X.Scale, startPos.X.Offset + Delta.X, startPos.Y.Scale, startPos.Y.Offset + Delta.Y)
         TweenService:Create(Frame, TweenInfo.new(dragSpeed), {Position = Position}):Play()
     end
-    
+
     Frame.InputBegan:Connect(
         function(input)
-            if (input.UserInputType == Enum.UserInputType.MouseButton1 or
-                input.UserInputType == Enum.UserInputType.Touch) then
+            if
+                (input.UserInputType == Enum.UserInputType.MouseButton1 or
+                    input.UserInputType == Enum.UserInputType.Touch)
+             then
                 dragToggle = true
                 dragStart = input.Position
                 startPos = Frame.Position
@@ -1741,16 +2447,18 @@ local function dragify(Frame)
             end
         end
     )
-    
+
     Frame.InputChanged:Connect(
         function(input)
-            if (input.UserInputType == Enum.UserInputType.MouseMovement or
-                input.UserInputType == Enum.UserInputType.Touch) then
+            if
+                (input.UserInputType == Enum.UserInputType.MouseMovement or
+                    input.UserInputType == Enum.UserInputType.Touch)
+             then
                 dragInput = input
             end
         end
     )
-    
+
     game:GetService("UserInputService").InputChanged:Connect(
         function(input)
             if input == dragInput and dragToggle then
@@ -1760,35 +2468,39 @@ local function dragify(Frame)
     )
 end
 
-ImageButton.MouseButton1Click:Connect(function()
-    Effect()
-    local vim = game:GetService("VirtualInputManager")
-    vim:SendKeyEvent(true, Enum.KeyCode.LeftControl, false, game)
-    task.wait(0.05)
-    vim:SendKeyEvent(false, Enum.KeyCode.LeftControl, false, game)
-end)
+ImageButton.MouseButton1Click:Connect(
+    function()
+        Effect()
+        local vim = game:GetService("VirtualInputManager")
+        vim:SendKeyEvent(true, Enum.KeyCode.LeftControl, false, game)
+        task.wait(0.05)
+        vim:SendKeyEvent(false, Enum.KeyCode.LeftControl, false, game)
+    end
+)
 
 dragify(ImageButton)
 
-
 local Tabs = {
-	S = Window:AddTab({ Title = "Game-Status", Icon = "boxes" }),
-	LC = Window:AddTab({ Title = "Local Player", Icon = "user" }),
-	Setting = Window:AddTab({ Title = "Settings", Icon = "cog" }),
-	Main = Window:AddTab({ Title = "Tab Farm", Icon = "home" }),
-	SF = Window:AddTab({ Title = "Stack Farm", Icon = "layers" }),
-	E = Window:AddTab({ Title = "Game Event", Icon = "music" }),
-	R = Window:AddTab({ Title = "Tab Raid", Icon = "mountain-snow" }),
-	T = Window:AddTab({ Title = "Tab Travel", Icon = "map-pin" }),
-	MM = Window:AddTab({ Title = "Tab Misc", Icon = "shopping-cart" }),
+    S = Window:AddTab({Title = "Game-Status", Icon = "boxes"}),
+    LC = Window:AddTab({Title = "Local Player", Icon = "user"}),
+    Setting = Window:AddTab({Title = "Settings", Icon = "cog"}),
+    Main = Window:AddTab({Title = "Tab Farm", Icon = "home"}),
+    SF = Window:AddTab({Title = "Stack Farm", Icon = "layers"}),
+    E = Window:AddTab({Title = "Game Event", Icon = "music"}),
+    R = Window:AddTab({Title = "Tab Raid", Icon = "mountain-snow"}),
+    T = Window:AddTab({Title = "Tab Travel", Icon = "map-pin"}),
+    MM = Window:AddTab({Title = "Tab Misc", Icon = "shopping-cart"})
 }
 
 local Options = Fluent.Options
 
-local GameTimeStatus = Tabs.S:AddParagraph({
-    Title = "Client Time",
-    Content = "Time:"
-})
+local GameTimeStatus =
+    Tabs.S:AddParagraph(
+    {
+        Title = "Client Time",
+        Content = "Time:"
+    }
+)
 local function UpdateGameTime()
     local TotalSeconds = math.floor(workspace.DistributedGameTime + 0.5)
     local Hours = math.floor(TotalSeconds / (60 ^ 2)) % 24
@@ -1799,144 +2511,184 @@ end
 
 local Sttt = Tabs.S:AddSection("Status")
 
-local Status14 = Tabs.S:AddParagraph({
-    Title = "Flower Status",
-    Content = "Status:"
-})
+local Status14 =
+    Tabs.S:AddParagraph(
+    {
+        Title = "Flower Status",
+        Content = "Status:"
+    }
+)
 
 function FlowerItems()
-    pcall(function()
-        local RaceEvolved = game.Players.LocalPlayer.Data.Race:FindFirstChild("Evolved")
-        local RaceStatus = RaceEvolved and "Player Race V2 Evolved" or "Player Race V2 Not Evolved"
-        
-        local Flower1 = workspace:FindFirstChild("Flower1")
-        local Flower1Spawned = Flower1 and Flower1.Transparency ~= 1 or false
-        
-        local Flower2 = workspace:FindFirstChild("Flower2")
-        local Flower2Spawned = Flower2 and Flower2.Transparency ~= 1 or false
+    pcall(
+        function()
+            local RaceEvolved = game.Players.LocalPlayer.Data.Race:FindFirstChild("Evolved")
+            local RaceStatus = RaceEvolved and "Player Race V2 Evolved" or "Player Race V2 Not Evolved"
 
-        local BartiloQuest = false
-        local success, result = pcall(function()
-            return game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BartiloQuestProgress", "Bartilo")
-        end)
-        if success then
-            BartiloQuest = result == 0
+            local Flower1 = workspace:FindFirstChild("Flower1")
+            local Flower1Spawned = Flower1 and Flower1.Transparency ~= 1 or false
+
+            local Flower2 = workspace:FindFirstChild("Flower2")
+            local Flower2Spawned = Flower2 and Flower2.Transparency ~= 1 or false
+
+            local BartiloQuest = false
+            local success, result =
+                pcall(
+                function()
+                    return game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(
+                        "BartiloQuestProgress",
+                        "Bartilo"
+                    )
+                end
+            )
+            if success then
+                BartiloQuest = result == 0
+            end
+            local BartiloStatus = BartiloQuest and "Bartilo Quest: Incomplete " or "Bartilo Quest: Completed"
+
+            local Status13 =
+                RaceStatus ..
+                " | Flower1: " ..
+                    (Flower1Spawned and "Spawned!!!" or "Not Spawned") ..
+                        " | Flower2: " .. (Flower2Spawned and "Spawned!!!" or "Not Spawned") .. " | " .. BartiloStatus
+
+            Status14:SetDesc(Status13)
         end
-        local BartiloStatus = BartiloQuest and "Bartilo Quest: Incomplete " or "Bartilo Quest: Completed"
-
-        local Status13 = RaceStatus ..
-                         " | Flower1: " .. (Flower1Spawned and "Spawned!!!" or "Not Spawned") ..
-                         " | Flower2: " .. (Flower2Spawned and "Spawned!!!" or "Not Spawned") ..
-                         " | " .. BartiloStatus
-                         
-        Status14:SetDesc(Status13)
-    end)
+    )
 end
 
-local Status15 = Tabs.S:AddParagraph({
-    Title = "Legendary Sword Status",
-    Content = "Status:"
-})
+local Status15 =
+    Tabs.S:AddParagraph(
+    {
+        Title = "Legendary Sword Status",
+        Content = "Status:"
+    }
+)
 
 function CheckLegendarySwordStatus()
-    local success, result = pcall(function()
-        local PlayerData = game.Players.LocalPlayer
-        if PlayerData then
-            local swordResult = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("LegendarySwordDealer", "1")
-            if swordResult == "Shisui" then
-                return "Legendary Sword: Shisui"
-            elseif swordResult == "Saddi" then
-                return "Legendary Sword: Saddi"
-            elseif swordResult == "Wando" then
-                return "Sword: Wando"
+    local success, result =
+        pcall(
+        function()
+            local PlayerData = game.Players.LocalPlayer
+            if PlayerData then
+                local swordResult =
+                    game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("LegendarySwordDealer", "1")
+                if swordResult == "Shisui" then
+                    return "Legendary Sword: Shisui"
+                elseif swordResult == "Saddi" then
+                    return "Legendary Sword: Saddi"
+                elseif swordResult == "Wando" then
+                    return "Sword: Wando"
+                else
+                    return "No Sword Dealer"
+                end
             else
-                return "No Sword Dealer"
+                return "N/A"
             end
-        else
-            return "N/A"
         end
-    end)
-    
+    )
+
     Status15:SetDesc(success and result or "N/A")
 end
 
 local Sttt = Tabs.S:AddSection("Status")
 
-local CakePrinceStatus = Tabs.S:AddParagraph({
-    Title = "Cake Prince",
-    Content = "Status:"
-})
+local CakePrinceStatus =
+    Tabs.S:AddParagraph(
+    {
+        Title = "Cake Prince",
+        Content = "Status:"
+    }
+)
 
 local function CheckCakePrince()
-    local success, result = pcall(function()
-        local Response = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("CakePrinceSpawner")
-        local Status = ""
+    local success, result =
+        pcall(
+        function()
+            local Response = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("CakePrinceSpawner")
+            local Status = ""
 
-        if string.len(Response) == 88 then
-            Status = "Need Kill: " .. string.sub(Response, 39, 41)
-        elseif string.len(Response) == 87 then
-            Status = "Need Kill: " .. string.sub(Response, 39, 40)
-        elseif string.len(Response) == 86 then
-            Status = "Need Kill: " .. string.sub(Response, 39, 39)
-        else
-            Status = "Boss Is Spawned"
+            if string.len(Response) == 88 then
+                Status = "Need Kill: " .. string.sub(Response, 39, 41)
+            elseif string.len(Response) == 87 then
+                Status = "Need Kill: " .. string.sub(Response, 39, 40)
+            elseif string.len(Response) == 86 then
+                Status = "Need Kill: " .. string.sub(Response, 39, 39)
+            else
+                Status = "Boss Is Spawned"
+            end
+
+            return Status
         end
-        
-        return Status
-    end)
+    )
 
     CakePrinceStatus:SetDesc(success and result or "N/A")
 end
 
-local EliteStatus = Tabs.S:AddParagraph({
-    Title = "Elite Hunter",
-    Content = "Status:"
-})
+local EliteStatus =
+    Tabs.S:AddParagraph(
+    {
+        Title = "Elite Hunter",
+        Content = "Status:"
+    }
+)
 
 local function CheckEliteHunter()
-    local success, result = pcall(function()
-        local WorkspaceEnemies = game:GetService("Workspace").Enemies
-        local ReplicatedStorage = game:GetService("ReplicatedStorage")
-        local Elites = {
-            "Diablo",
-            "Deandre",
-            "Urban"
-        }
+    local success, result =
+        pcall(
+        function()
+            local WorkspaceEnemies = game:GetService("Workspace").Enemies
+            local ReplicatedStorage = game:GetService("ReplicatedStorage")
+            local Elites = {
+                "Diablo",
+                "Deandre",
+                "Urban"
+            }
 
-        local Status = "Elite Hunter Not Spawned"
-        
-        for _, Elite in ipairs(Elites) do
-            local Fe = ReplicatedStorage:FindFirstChild(Elite) or WorkspaceEnemies:FindFirstChild(Elite)
-            if Fe then
-                Status = Elite .. " Has Spawned!"
-                break
+            local Status = "Elite Hunter Not Spawned"
+
+            for _, Elite in ipairs(Elites) do
+                local Fe = ReplicatedStorage:FindFirstChild(Elite) or WorkspaceEnemies:FindFirstChild(Elite)
+                if Fe then
+                    Status = Elite .. " Has Spawned!"
+                    break
+                end
             end
+
+            return Status
         end
-        
-        return Status
-    end)
+    )
 
     EliteStatus:SetDesc(success and result or "N/A")
 end
 
-local EliteProgressStatus = Tabs.S:AddParagraph({
-    Title = "Elite Progress",
-    Content = "Progress:"
-})
+local EliteProgressStatus =
+    Tabs.S:AddParagraph(
+    {
+        Title = "Elite Progress",
+        Content = "Progress:"
+    }
+)
 
 local function CheckEliteProgress()
-    local success, result = pcall(function()
-        local Progress = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("EliteHunter", "Progress")
-        return "Elite Progress: " .. tostring(Progress)
-    end)
-    
+    local success, result =
+        pcall(
+        function()
+            local Progress = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("EliteHunter", "Progress")
+            return "Elite Progress: " .. tostring(Progress)
+        end
+    )
+
     EliteProgressStatus:SetDesc(success and result or "N/A")
 end
 
-local Status3 = Tabs.S:AddParagraph({
-    Title = "Moon",
-    Content = "MoonStatus:"
-})
+local Status3 =
+    Tabs.S:AddParagraph(
+    {
+        Title = "Moon",
+        Content = "MoonStatus:"
+    }
+)
 
 local MoonPhases = {
     ["http://www.roblox.com/asset/?id=9709149431"] = "Full Moon 5/5",
@@ -1947,202 +2699,315 @@ local MoonPhases = {
 }
 
 local function MoonCheck()
-    local success, result = pcall(function()
-        local Lighting = game:GetService("Lighting")
-        local Sky = Lighting:FindFirstChild("Sky")
-        local MoonStatus = "Wait For Moon"
-        if Sky and Sky.MoonTextureId then
-            MoonStatus = MoonPhases[Sky.MoonTextureId] or MoonStatus
+    local success, result =
+        pcall(
+        function()
+            local Lighting = game:GetService("Lighting")
+            local Sky = Lighting:FindFirstChild("Sky")
+            local MoonStatus = "Wait For Moon"
+            if Sky and Sky.MoonTextureId then
+                MoonStatus = MoonPhases[Sky.MoonTextureId] or MoonStatus
+            end
+            return "Moon Status: " .. MoonStatus
         end
-        return "Moon Status: " .. MoonStatus
-    end)
-    
+    )
+
     Status3:SetDesc(success and result or "N/A")
 end
 
-local FrozenDimensionStatus = Tabs.S:AddParagraph({
-    Title = "Frozen Dimension",
-    Content = "Status:"
-})
+local FrozenDimensionStatus =
+    Tabs.S:AddParagraph(
+    {
+        Title = "Frozen Dimension",
+        Content = "Status:"
+    }
+)
 
 local function CheckFrozenDimension()
-    local success, result = pcall(function()
-        local FrozenDimension = game:GetService("Workspace").Map:FindFirstChild("FrozenDimension")
-        return FrozenDimension and "Spawned!!!" or "Not Spawned"
-    end)
-    
+    local success, result =
+        pcall(
+        function()
+            local FrozenDimension = game:GetService("Workspace").Map:FindFirstChild("FrozenDimension")
+            return FrozenDimension and "Spawned!!!" or "Not Spawned"
+        end
+    )
+
     FrozenDimensionStatus:SetDesc(success and result or "N/A")
 end
 
-local Status5 = Tabs.S:AddParagraph({
-    Title = "Mirage Island",
-    Content = "MirageIsland Status:"
-})
+local Status5 =
+    Tabs.S:AddParagraph(
+    {
+        Title = "Mirage Island",
+        Content = "MirageIsland Status:"
+    }
+)
 
 local function MirageIslandCheck()
-    local success, result = pcall(function()
-        local MirageIsland = game.Workspace._WorldOrigin.Locations:FindFirstChild("Mirage Island")
-        return MirageIsland and "Spawned!!!" or "Not Spawned."
-    end)
-    
+    local success, result =
+        pcall(
+        function()
+            local MirageIsland = game.Workspace._WorldOrigin.Locations:FindFirstChild("Mirage Island")
+            return MirageIsland and "Spawned!!!" or "Not Spawned."
+        end
+    )
+
     Status5:SetDesc(success and result or "N/A")
 end
 
-local Status6 = Tabs.S:AddParagraph({
-    Title = "Prehistoric Island",
-    Content = "Status:"
-})
+local Status6 =
+    Tabs.S:AddParagraph(
+    {
+        Title = "Prehistoric Island",
+        Content = "Status:"
+    }
+)
 
 local function PrehistoricIslandCheck()
-    local success, result = pcall(function()
-        local PrehistoricIsland = game.Workspace._WorldOrigin.Locations:FindFirstChild("Prehistoric Island") or game:GetService("Workspace").Map:FindFirstChild("PrehistoricIsland")
-        return PrehistoricIsland and "Spawned!!!" or "Not Spawned."
-    end)
-    
+    local success, result =
+        pcall(
+        function()
+            local PrehistoricIsland =
+                game.Workspace._WorldOrigin.Locations:FindFirstChild("Prehistoric Island") or
+                game:GetService("Workspace").Map:FindFirstChild("PrehistoricIsland")
+            return PrehistoricIsland and "Spawned!!!" or "Not Spawned."
+        end
+    )
+
     Status6:SetDesc(success and result or "N/A")
 end
 
-local Status4 = Tabs.S:AddParagraph({
-    Title = "Kitsune Island",
-    Content = "Status:"
-})
+local Status4 =
+    Tabs.S:AddParagraph(
+    {
+        Title = "Kitsune Island",
+        Content = "Status:"
+    }
+)
 
 local function KitsuneCheck()
-    local success, result = pcall(function()
-        local KitsuneIsland = game.Workspace.Map:FindFirstChild("KitsuneIsland")
-        return KitsuneIsland and "Spawned!!!" or "Not Spawned."
-    end)
-    
+    local success, result =
+        pcall(
+        function()
+            local KitsuneIsland = game.Workspace.Map:FindFirstChild("KitsuneIsland")
+            return KitsuneIsland and "Spawned!!!" or "Not Spawned."
+        end
+    )
+
     Status4:SetDesc(success and result or "N/A")
 end
 
-local AncientOneStatus = Tabs.S:AddParagraph({
-    Title = "Ancient One Status",
-    Content = "Status:"
-})
+local AncientOneStatus =
+    Tabs.S:AddParagraph(
+    {
+        Title = "Ancient One Status",
+        Content = "Status:"
+    }
+)
 
 local function CheckAncientOneStatus()
-    local success, result = pcall(function()
-        if not game.Players.LocalPlayer.Character:FindFirstChild("RaceTransformed") then
-            return "You have yet to achieve greatness"
-        end
+    local success, result =
+        pcall(
+        function()
+            if not game.Players.LocalPlayer.Character:FindFirstChild("RaceTransformed") then
+                return "You have yet to achieve greatness"
+            end
 
-        local Fragments, GearStatus, TrainingStatus = game.ReplicatedStorage.Remotes.CommF_:InvokeServer("UpgradeRace", "Check")
+            local Fragments, GearStatus, TrainingStatus =
+                game.ReplicatedStorage.Remotes.CommF_:InvokeServer("UpgradeRace", "Check")
 
-        if TrainingStatus == 1 or TrainingStatus == 3 then
-            return "Required Train More"
-        elseif TrainingStatus == 2 or TrainingStatus == 4 or TrainingStatus == 7 then
-            return "Can Buy Gear With " .. Fragments .. " Fragments"
-        elseif TrainingStatus == 5 then
-            return "You Are Done Your Race."
-        elseif TrainingStatus == 6 then
-            return "Upgrades completed: " .. GearStatus - 2 .. "/3, Need Train More"
-        elseif TrainingStatus == 0 then
-            return "Ready For Trial"
-        elseif TrainingStatus == 8 then
-            return "Remaining " .. 10 - GearStatus .. " training sessions."
-        else
-            return "You have yet to achieve greatness"
+            if TrainingStatus == 1 or TrainingStatus == 3 then
+                return "Required Train More"
+            elseif TrainingStatus == 2 or TrainingStatus == 4 or TrainingStatus == 7 then
+                return "Can Buy Gear With " .. Fragments .. " Fragments"
+            elseif TrainingStatus == 5 then
+                return "You Are Done Your Race."
+            elseif TrainingStatus == 6 then
+                return "Upgrades completed: " .. GearStatus - 2 .. "/3, Need Train More"
+            elseif TrainingStatus == 0 then
+                return "Ready For Trial"
+            elseif TrainingStatus == 8 then
+                return "Remaining " .. 10 - GearStatus .. " training sessions."
+            else
+                return "You have yet to achieve greatness"
+            end
         end
-    end)
-    
+    )
+
     return success and result or "N/A"
 end
 
-local LeviathanStatus = Tabs.S:AddParagraph({
-    Title = "Bribe Spy",
-    Content = "Status:"
-})
+local LeviathanStatus =
+    Tabs.S:AddParagraph(
+    {
+        Title = "Bribe Spy",
+        Content = "Status:"
+    }
+)
 
 local function CheckLeviathanChip()
-    local success, result = pcall(function()
-        local LeviathanInfo = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("InfoLeviathan", "1")
+    local success, result =
+        pcall(
+        function()
+            local LeviathanInfo = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("InfoLeviathan", "1")
 
-        if LeviathanInfo == 5 then
-            return "Leviathan Is Ready to Sail"
-        elseif LeviathanInfo == 0 then
-            return "I Don't Know"
-        else
-            return "Purchase: " .. tostring(LeviathanInfo)
+            if LeviathanInfo == 5 then
+                return "Leviathan Is Ready to Sail"
+            elseif LeviathanInfo == 0 then
+                return "I Don't Know"
+            else
+                return "Purchase: " .. tostring(LeviathanInfo)
+            end
         end
-    end)
+    )
 
     LeviathanStatus:SetDesc(success and result or "N/A")
 end
 
-local DragonStatus = Tabs.S:AddParagraph({
-    Title = "Dragon Hunter Quest",
-    Content = "Status:"
-})
+local DragonStatus =
+    Tabs.S:AddParagraph(
+    {
+        Title = "Dragon Hunter Quest",
+        Content = "Status:"
+    }
+)
 
 local function CheckDragonQuest()
-    local success, result = pcall(function()
-        local RequestData = {
-            [1] = { Context = "Check" }
-        }
+    local success, result =
+        pcall(
+        function()
+            local RequestData = {
+                [1] = {Context = "Check"}
+            }
 
-        local Response = game:GetService("ReplicatedStorage").Modules.Net:FindFirstChild("RF/DragonHunter"):InvokeServer(unpack(RequestData))
-        
-        if typeof(Response) == "table" then
-            for _, Task in pairs(Response) do
-                if Task == "Defeat 3 Venomous Assailants on Hydra Island." then
-                    return "Defeat 3 Venomous Assailants on Hydra Island."
-                elseif Task == "Defeat 3 Hydra Enforcers on Hydra Island." then
-                    return "Defeat 3 Hydra Enforcers on Hydra Island."
-                elseif Task == "Destroy 10 trees on Hydra Island." then
-                    return "Destroy 10 Trees on Hydra Island."
-                else
-                    return "No Current Task."
+            local Response =
+                game:GetService("ReplicatedStorage").Modules.Net:FindFirstChild("RF/DragonHunter"):InvokeServer(
+                unpack(RequestData)
+            )
+
+            if typeof(Response) == "table" then
+                for _, Task in pairs(Response) do
+                    if Task == "Defeat 3 Venomous Assailants on Hydra Island." then
+                        return "Defeat 3 Venomous Assailants on Hydra Island."
+                    elseif Task == "Defeat 3 Hydra Enforcers on Hydra Island." then
+                        return "Defeat 3 Hydra Enforcers on Hydra Island."
+                    elseif Task == "Destroy 10 trees on Hydra Island." then
+                        return "Destroy 10 Trees on Hydra Island."
+                    else
+                        return "No Current Task."
+                    end
                 end
+            else
+                return "No task."
             end
-        else
-            return "No task."
         end
-    end)
-    
+    )
+
     DragonStatus:SetDesc(success and result or "N/A")
 end
 
-task.spawn(function()
-    while task.wait() do
-        pcall(function()
-            local PlayerGui = game:GetService("Players").LocalPlayer:FindFirstChild("PlayerGui")
-            local MainGui = PlayerGui and PlayerGui:FindFirstChild("Main")
-            if MainGui then
-                AncientOneStatus:SetDesc(CheckAncientOneStatus())
-                UpdateGameTime()
-                CheckCakePrince()
-                CheckEliteHunter()
-                CheckEliteProgress()
-                CheckFrozenDimension()
-                MirageIslandCheck()
-                KitsuneCheck()
-                MoonCheck()
-                PrehistoricIslandCheck()
-                CheckDragonQuest()
-                CheckLeviathanChip()
-                CheckLegendarySwordStatus()
-                FlowerItems()
-                DeVer() DeDam() DeNo() RanPos() ReJoin() CaptureMode() FPSLOCK() BuyFruitSniper()
-                AutoStats()
-                EnbalePvP()
-            end
-        end)
+task.spawn(
+    function()
+        while task.wait() do
+            pcall(
+                function()
+                    local PlayerGui = game:GetService("Players").LocalPlayer:FindFirstChild("PlayerGui")
+                    local MainGui = PlayerGui and PlayerGui:FindFirstChild("Main")
+                    if MainGui then
+                        AncientOneStatus:SetDesc(CheckAncientOneStatus())
+                        UpdateGameTime()
+                        CheckCakePrince()
+                        CheckEliteHunter()
+                        CheckEliteProgress()
+                        CheckFrozenDimension()
+                        MirageIslandCheck()
+                        KitsuneCheck()
+                        MoonCheck()
+                        PrehistoricIslandCheck()
+                        CheckDragonQuest()
+                        CheckLeviathanChip()
+                        CheckLegendarySwordStatus()
+                        FlowerItems()
+                        DeVer()
+                        DeDam()
+                        DeNo()
+                        RanPos()
+                        ReJoin()
+                        CaptureMode()
+                        FPSLOCK()
+                        BuyFruitSniper()
+                        AutoStats()
+                        EnbalePvP()
+                        WalkOnWater()
+                        LockMoon()
+                        AutoChooseGear()
+                        AutoBuyGear()
+                        InfDoge()
+                        InfDoge()
+                        InfGeppo()
+                    end
+                end
+            )
+        end
     end
-end)
+)
 
 local hoicham = Tabs.S:AddSection("Game Function")
 
 local function encodeJobId(jobId)
     local LetterArgs = {
-        ["A"] = "Lone", ["B"] = "CAK", ["C"] = "Bucu", ["D"] = "MANO", ["E"] = "NARUTO", ["F"] = "IDK", ["G"] = "ghe",
-        ["H"] = "NUNGVL", ["I"] = "NHINCL", ["J"] = "LON", ["K"] = "HUCE", ["L"] = "HUAT", ["M"] = "DIME", ["N"] = "DUMA",
-        ["O"] = "CL", ["P"] = "VL", ["Q"] = "MATDAY", ["R"] = "ADU", ["S"] = "CUNGMANH", ["T"] = "ALIME", ["U"] = "QUADU",
-        ["V"] = "DELL", ["W"] = "MANH", ["X"] = "VAYAK", ["Y"] = "LOVE", ["Z"] = "YEU",
-        ["a"] = "GKE", ["b"] = "OK", ["c"] = "chien", ["d"] = "uoc", ["e"] = "chiuluon", ["f"] = "vcl", ["g"] = "fbi",
-        ["h"] = "clm", ["i"] = "dmm", ["j"] = "cac", ["k"] = "hihi", ["l"] = "ngaivl", ["m"] = "nhincmm", ["n"] = "dungma",
-        ["o"] = "huhu", ["p"] = "chiuroi", ["q"] = "thaidog", ["r"] = "ngulol", ["s"] = "chetdi", ["t"] = "gaixinh",
-        ["u"] = "united", ["v"] = "xxx", ["w"] = "hiepdam", ["x"] = "mupz", ["y"] = "nunglon", ["z"] = "ranuoc",
+        ["A"] = "Lone",
+        ["B"] = "CAK",
+        ["C"] = "Bucu",
+        ["D"] = "MANO",
+        ["E"] = "NARUTO",
+        ["F"] = "IDK",
+        ["G"] = "ghe",
+        ["H"] = "NUNGVL",
+        ["I"] = "NHINCL",
+        ["J"] = "LON",
+        ["K"] = "HUCE",
+        ["L"] = "HUAT",
+        ["M"] = "DIME",
+        ["N"] = "DUMA",
+        ["O"] = "CL",
+        ["P"] = "VL",
+        ["Q"] = "MATDAY",
+        ["R"] = "ADU",
+        ["S"] = "CUNGMANH",
+        ["T"] = "ALIME",
+        ["U"] = "QUADU",
+        ["V"] = "DELL",
+        ["W"] = "MANH",
+        ["X"] = "VAYAK",
+        ["Y"] = "LOVE",
+        ["Z"] = "YEU",
+        ["a"] = "GKE",
+        ["b"] = "OK",
+        ["c"] = "chien",
+        ["d"] = "uoc",
+        ["e"] = "chiuluon",
+        ["f"] = "vcl",
+        ["g"] = "fbi",
+        ["h"] = "clm",
+        ["i"] = "dmm",
+        ["j"] = "cac",
+        ["k"] = "hihi",
+        ["l"] = "ngaivl",
+        ["m"] = "nhincmm",
+        ["n"] = "dungma",
+        ["o"] = "huhu",
+        ["p"] = "chiuroi",
+        ["q"] = "thaidog",
+        ["r"] = "ngulol",
+        ["s"] = "chetdi",
+        ["t"] = "gaixinh",
+        ["u"] = "united",
+        ["v"] = "xxx",
+        ["w"] = "hiepdam",
+        ["x"] = "mupz",
+        ["y"] = "nunglon",
+        ["z"] = "ranuoc",
         ["-"] = "abcvvco"
     }
     local encoded = "SkullHub_"
@@ -2154,14 +3019,58 @@ end
 
 local function decodeJobId(encodedJobId)
     local DecodeArgs = {
-        ["Lone"] = "A", ["CAK"] = "B", ["Bucu"] = "C", ["MANO"] = "D", ["NARUTO"] = "E", ["IDK"] = "F", ["ghe"] = "G",
-        ["NUNGVL"] = "H", ["NHINCL"] = "I", ["LON"] = "J", ["HUCE"] = "K", ["HUAT"] = "L", ["DIME"] = "M", ["DUMA"] = "N",
-        ["CL"] = "O", ["VL"] = "P", ["MATDAY"] = "Q", ["ADU"] = "R", ["CUNGMANH"] = "S", ["ALIME"] = "T", ["QUADU"] = "U",
-        ["DELL"] = "V", ["MANH"] = "W", ["VAYAK"] = "X", ["LOVE"] = "Y", ["YEU"] = "Z",
-        ["GKE"] = "a", ["OK"] = "b", ["chien"] = "c", ["uoc"] = "d", ["chiuluon"] = "e", ["vcl"] = "f", ["fbi"] = "g",
-        ["clm"] = "h", ["dmm"] = "i", ["cac"] = "j", ["hihi"] = "k", ["ngaivl"] = "l", ["nhincmm"] = "m", ["dungma"] = "n",
-        ["huhu"] = "o", ["chiuroi"] = "p", ["thaidog"] = "q", ["ngulol"] = "r", ["chetdi"] = "s", ["gaixinh"] = "t",
-        ["united"] = "u", ["xxx"] = "v", ["hiepdam"] = "w", ["mupz"] = "x", ["nunglon"] = "y", ["ranuoc"] = "z",
+        ["Lone"] = "A",
+        ["CAK"] = "B",
+        ["Bucu"] = "C",
+        ["MANO"] = "D",
+        ["NARUTO"] = "E",
+        ["IDK"] = "F",
+        ["ghe"] = "G",
+        ["NUNGVL"] = "H",
+        ["NHINCL"] = "I",
+        ["LON"] = "J",
+        ["HUCE"] = "K",
+        ["HUAT"] = "L",
+        ["DIME"] = "M",
+        ["DUMA"] = "N",
+        ["CL"] = "O",
+        ["VL"] = "P",
+        ["MATDAY"] = "Q",
+        ["ADU"] = "R",
+        ["CUNGMANH"] = "S",
+        ["ALIME"] = "T",
+        ["QUADU"] = "U",
+        ["DELL"] = "V",
+        ["MANH"] = "W",
+        ["VAYAK"] = "X",
+        ["LOVE"] = "Y",
+        ["YEU"] = "Z",
+        ["GKE"] = "a",
+        ["OK"] = "b",
+        ["chien"] = "c",
+        ["uoc"] = "d",
+        ["chiuluon"] = "e",
+        ["vcl"] = "f",
+        ["fbi"] = "g",
+        ["clm"] = "h",
+        ["dmm"] = "i",
+        ["cac"] = "j",
+        ["hihi"] = "k",
+        ["ngaivl"] = "l",
+        ["nhincmm"] = "m",
+        ["dungma"] = "n",
+        ["huhu"] = "o",
+        ["chiuroi"] = "p",
+        ["thaidog"] = "q",
+        ["ngulol"] = "r",
+        ["chetdi"] = "s",
+        ["gaixinh"] = "t",
+        ["united"] = "u",
+        ["xxx"] = "v",
+        ["hiepdam"] = "w",
+        ["mupz"] = "x",
+        ["nunglon"] = "y",
+        ["ranuoc"] = "z",
         ["abcvvco"] = "-"
     }
     local decoded = ""
@@ -2209,117 +3118,151 @@ GFunction = {
     SJToggle = {}
 }
 
-GFunction.TPSlider = Tabs.S:AddSlider("SliderTP", {
-    Title = "Player Amount",
-    Description = "Select player limit for teleport",
-    Default = 6,
-    Min = 1,
-    Max = 12,
-    Rounding = 0,
-    Callback = function(Value)
+GFunction.TPSlider =
+    Tabs.S:AddSlider(
+    "SliderTP",
+    {
+        Title = "Player Amount",
+        Description = "Select player limit for teleport",
+        Default = 6,
+        Min = 1,
+        Max = 12,
+        Rounding = 0,
+        Callback = function(Value)
+            getgenv().PlayerAmount = math.floor(Value)
+        end
+    }
+)
+
+GFunction.TPSlider:OnChanged(
+    function(Value)
         getgenv().PlayerAmount = math.floor(Value)
     end
-})
+)
 
-GFunction.TPSlider:OnChanged(function(Value)
-    getgenv().PlayerAmount = math.floor(Value)
-end)
-
-local ButtonTP = Tabs.S:AddButton({
-    Title = "Teleport",
-    Description = "Instant Tp",
-    Callback = function()
-        wait('2')
-        TeleportToSmallestServer()
-    end
-})
-
-local CopyJobIdButton = Tabs.S:AddButton({
-    Title = "Copy Server Job ID",
-    Description = "Copy current server Job ID to clipboard",
-    Callback = function()
-        local jobId = game.JobId
-        if jobId and jobId ~= "" then
-            setclipboard(jobId)
-            Fluent:Notify({
-                Title = "Romis Hub Notification",
-                Content = "Server Job ID Copied",
-                SubContent = jobId,
-                Duration = 3
-            })
-        else
-            Fluent:Notify({
-                Title = "Romis Hub Notification",
-                Content = "Failed to Copy Job ID",
-                SubContent = "No valid Job ID found.",
-                Duration = 3
-            })
+local ButtonTP =
+    Tabs.S:AddButton(
+    {
+        Title = "Teleport",
+        Description = "Instant Tp",
+        Callback = function()
+            wait("2")
+            TeleportToSmallestServer()
         end
-    end
-})
+    }
+)
 
-local CopySkullHubIdButton = Tabs.S:AddButton({
-    Title = "Copy Romis Hub ID",
-    Description = "Copy server Romis Hub Job ID",
-    Callback = function()
-        local jobId = game.JobId
-        if jobId and jobId ~= "" then
-            local encodedJobId = encodeJobId(jobId)
-            setclipboard(encodedJobId)
-            Fluent:Notify({
-                Title = "Romis Hub Notification",
-                Content = "Server Job ID Copied",
-                SubContent = encodedJobId,
-                Duration = 3
-            })
-        else
-            Fluent:Notify({
-                Title = "Romis Hub Notification",
-                Content = "Failed to Copy Job ID",
-                SubContent = "No valid Job ID found.",
-                Duration = 3
-            })
-        end
-    end
-})
-
-GFunction.SVCInput = Tabs.S:AddInput("ServerCodeInput", {
-    Title = "Input Server Code",
-    Default = "",
-    Placeholder = "Input server code...",
-    Numeric = false,
-    Finished = true,
-    Callback = function(Value)
-        getgenv().ServerCode = Value
-        Fluent:Notify({
-            Title = "Romis Hub Notification",
-            Content = "Server Code Set",
-            SubContent = "Code: " .. getgenv().ServerCode,
-            Duration = 3
-        })
-    end
-})
-
-local JoinServerButton = Tabs.S:AddButton({
-    Title = "Join Server",
-    Description = "Join using the set server code",
-    Callback = function()
-        if getgenv().ServerCode and getgenv().ServerCode ~= "" then
-            local jobId = getgenv().ServerCode
-            if jobId:find("^SkullHub_") then
-                jobId = decodeJobId(jobId:gsub("SkullHub_", ""))
+local CopyJobIdButton =
+    Tabs.S:AddButton(
+    {
+        Title = "Copy Server Job ID",
+        Description = "Copy current server Job ID to clipboard",
+        Callback = function()
+            local jobId = game.JobId
+            if jobId and jobId ~= "" then
+                setclipboard(jobId)
+                Fluent:Notify(
+                    {
+                        Title = "Romis Hub Notification",
+                        Content = "Server Job ID Copied",
+                        SubContent = jobId,
+                        Duration = 3
+                    }
+                )
+            else
+                Fluent:Notify(
+                    {
+                        Title = "Romis Hub Notification",
+                        Content = "Failed to Copy Job ID",
+                        SubContent = "No valid Job ID found.",
+                        Duration = 3
+                    }
+                )
             end
-            TeleportService:TeleportToPlaceInstance(game.PlaceId, jobId, Players.LocalPlayer)
-        else
-            Fluent:Notify({
-                Title = "Romis Hub Notification",
-                Content = "Invalid Server Code",
-                SubContent = "Please enter a valid server code.",
-                Duration = 3
-            })
         end
-    end
-})
+    }
+)
+
+local CopySkullHubIdButton =
+    Tabs.S:AddButton(
+    {
+        Title = "Copy Romis Hub ID",
+        Description = "Copy server Romis Hub Job ID",
+        Callback = function()
+            local jobId = game.JobId
+            if jobId and jobId ~= "" then
+                local encodedJobId = encodeJobId(jobId)
+                setclipboard(encodedJobId)
+                Fluent:Notify(
+                    {
+                        Title = "Romis Hub Notification",
+                        Content = "Server Job ID Copied",
+                        SubContent = encodedJobId,
+                        Duration = 3
+                    }
+                )
+            else
+                Fluent:Notify(
+                    {
+                        Title = "Romis Hub Notification",
+                        Content = "Failed to Copy Job ID",
+                        SubContent = "No valid Job ID found.",
+                        Duration = 3
+                    }
+                )
+            end
+        end
+    }
+)
+
+GFunction.SVCInput =
+    Tabs.S:AddInput(
+    "ServerCodeInput",
+    {
+        Title = "Input Server Code",
+        Default = "",
+        Placeholder = "Input server code...",
+        Numeric = false,
+        Finished = true,
+        Callback = function(Value)
+            getgenv().ServerCode = Value
+            Fluent:Notify(
+                {
+                    Title = "Romis Hub Notification",
+                    Content = "Server Code Set",
+                    SubContent = "Code: " .. getgenv().ServerCode,
+                    Duration = 3
+                }
+            )
+        end
+    }
+)
+
+local JoinServerButton =
+    Tabs.S:AddButton(
+    {
+        Title = "Join Server",
+        Description = "Join using the set server code",
+        Callback = function()
+            if getgenv().ServerCode and getgenv().ServerCode ~= "" then
+                local jobId = getgenv().ServerCode
+                if jobId:find("^SkullHub_") then
+                    jobId = decodeJobId(jobId:gsub("SkullHub_", ""))
+                end
+                TeleportService:TeleportToPlaceInstance(game.PlaceId, jobId, Players.LocalPlayer)
+            else
+                Fluent:Notify(
+                    {
+                        Title = "Romis Hub Notification",
+                        Content = "Invalid Server Code",
+                        SubContent = "Please enter a valid server code.",
+                        Duration = 3
+                    }
+                )
+            end
+        end
+    }
+)
 
 local ButtonRejoin =
     Tabs.S:AddButton(
@@ -2334,740 +3277,1049 @@ local ButtonRejoin =
     }
 )
 
-GFunction.SJToggle = Tabs.S:AddToggle("SpamJoinToggle", {
-    Title = "Spam Join Server",
-    Default = false
-})
-GFunction.SJToggle:OnChanged(function(Value)
-    getgenv().SpamJoin = Value
-    Fluent:Notify({
-        Title = "Romis Hub Notification",
-        Content = Value and "Spam Join Enabled" or "Spam Join Disabled",
-        Duration = 1
-    })    
-    if Value then
-        task.spawn(function()
-            while getgenv().SpamJoin do
-                if getgenv().ServerCode and getgenv().ServerCode ~= "" then
-                    local jobId = getgenv().ServerCode
-                    if jobId:find("^SkullHub_") then
-                        jobId = decodeJobId(jobId:gsub("SkullHub_", ""))
+GFunction.SJToggle =
+    Tabs.S:AddToggle(
+    "SpamJoinToggle",
+    {
+        Title = "Spam Join Server",
+        Default = false
+    }
+)
+GFunction.SJToggle:OnChanged(
+    function(Value)
+        getgenv().SpamJoin = Value
+        Fluent:Notify(
+            {
+                Title = "Romis Hub Notification",
+                Content = Value and "Spam Join Enabled" or "Spam Join Disabled",
+                Duration = 1
+            }
+        )
+        if Value then
+            task.spawn(
+                function()
+                    while getgenv().SpamJoin do
+                        if getgenv().ServerCode and getgenv().ServerCode ~= "" then
+                            local jobId = getgenv().ServerCode
+                            if jobId:find("^SkullHub_") then
+                                jobId = decodeJobId(jobId:gsub("SkullHub_", ""))
+                            end
+                            TeleportService:TeleportToPlaceInstance(game.PlaceId, jobId, Players.LocalPlayer)
+                        else
+                            Fluent:Notify(
+                                {
+                                    Title = "Romis Hub Notification",
+                                    Content = "No Server Code Found",
+                                    SubContent = "Please set a server code first.",
+                                    Duration = 3
+                                }
+                            )
+                            break
+                        end
+                        task.wait(1)
                     end
-                    TeleportService:TeleportToPlaceInstance(game.PlaceId, jobId, Players.LocalPlayer)
-                else
-                    Fluent:Notify({
-                        Title = "Romis Hub Notification",
-                        Content = "No Server Code Found",
-                        SubContent = "Please set a server code first.",
-                        Duration = 3
-                    })
-                    break
                 end
-                task.wait(1)
-            end
-        end)
+            )
+        end
     end
-end)
+)
 
 local Lc = Tabs.LC:AddSection("Tab Kaitun Cap")
 
 function CapTureShow()
-print('Capture Items Show')
-local LocalPlayer = game:GetService('Players').LocalPlayer
-local PlayerGui = LocalPlayer:WaitForChild('PlayerGui')
-local MainScreen = PlayerGui:WaitForChild('Main')
-local AwakeningToggler = MainScreen:WaitForChild('AwakeningToggler')
-local HttpService = game:GetService('HttpService')
-local PostionXCount = 0
-local ItemRange = 0
-local PositionYCount = 0
-local PostionXCountFruit = 800
-local ItemRangeFruit = 0
-local ItemMaxFruit = 2
-local PositionYCountFruit = 113
-local RequestGetInvertory
-local __Config = {
-    ['Rarity'] = {
-        __Mythical = _G.MythicalCut,
-        __Legendary = _G.LegendaryCut,
-        __Rare = _G.RareCut,
-        __Uncommon = _G.UncommonCut,
-        __Common = _G.CommonCut
-    },
-    ['MaxLength'] = _G.MaxCountItem,
-    ['ShowMastery'] = _G.ShowMasteryCut,
-    ['LevelShowMastery'] = _G.LevelMasteryCut,
-}
-local MaleeList = {}
-local ItemMax = __Config['MaxLength']
-local Requirement = {
-    ['Mythical'] = {},
-    ['Legendary'] = {},
-    ['Rare'] = {},
-    ['Uncommon'] = {},
-    ['Common'] = {}
-}
-local ViewportSize = workspace.CurrentCamera.ViewportSize
-local IconModule = require(game.Players.LocalPlayer.PlayerGui.Main.UIController.Inventory.Spritesheets)
+    print("Capture Items Show")
+    local LocalPlayer = game:GetService("Players").LocalPlayer
+    local PlayerGui = LocalPlayer:WaitForChild("PlayerGui")
+    local MainScreen = PlayerGui:WaitForChild("Main")
+    local AwakeningToggler = MainScreen:WaitForChild("AwakeningToggler")
+    local HttpService = game:GetService("HttpService")
+    local PostionXCount = 0
+    local ItemRange = 0
+    local PositionYCount = 0
+    local PostionXCountFruit = 800
+    local ItemRangeFruit = 0
+    local ItemMaxFruit = 2
+    local PositionYCountFruit = 113
+    local RequestGetInvertory
+    local __Config = {
+        ["Rarity"] = {
+            __Mythical = _G.MythicalCut,
+            __Legendary = _G.LegendaryCut,
+            __Rare = _G.RareCut,
+            __Uncommon = _G.UncommonCut,
+            __Common = _G.CommonCut
+        },
+        ["MaxLength"] = _G.MaxCountItem,
+        ["ShowMastery"] = _G.ShowMasteryCut,
+        ["LevelShowMastery"] = _G.LevelMasteryCut
+    }
+    local MaleeList = {}
+    local ItemMax = __Config["MaxLength"]
+    local Requirement = {
+        ["Mythical"] = {},
+        ["Legendary"] = {},
+        ["Rare"] = {},
+        ["Uncommon"] = {},
+        ["Common"] = {}
+    }
+    local ViewportSize = workspace.CurrentCamera.ViewportSize
+    local IconModule = require(game.Players.LocalPlayer.PlayerGui.Main.UIController.Inventory.Spritesheets)
 
-if game.CoreGui:FindFirstChild('CreateItem') then
-    game.CoreGui:FindFirstChild('CreateItem'):Destroy()
-end
-function OffsetXToSacle(offset)
-    return offset / ViewportSize.X
-end
-function OffsetYToSacle(offset)
-    return offset / ViewportSize.Y
-end
-function SacleXToOffeset(offset)
-    return offset / ViewportSize.X
-end
-function SacleYToOffeset(offset)
-    return offset / ViewportSize.Y
-end
-function queryData(ItemName)
-    local v1 = ItemName:gsub("'", ""):gsub(":", "") .. "1.png"
-    local v2 = ItemName:gsub("'", ""):gsub(":", "") .. "2.png"
-    for i, _ in pairs(IconModule) do
-        for v, __ in pairs(_) do
-            if v == v1 then
-                local j = __
-                local q = i
-                return {
-                    ['Name'] = q,
-                    ['Value'] = __
-                }
+    if game.CoreGui:FindFirstChild("CreateItem") then
+        game.CoreGui:FindFirstChild("CreateItem"):Destroy()
+    end
+    function OffsetXToSacle(offset)
+        return offset / ViewportSize.X
+    end
+    function OffsetYToSacle(offset)
+        return offset / ViewportSize.Y
+    end
+    function SacleXToOffeset(offset)
+        return offset / ViewportSize.X
+    end
+    function SacleYToOffeset(offset)
+        return offset / ViewportSize.Y
+    end
+    function queryData(ItemName)
+        local v1 = ItemName:gsub("'", ""):gsub(":", "") .. "1.png"
+        local v2 = ItemName:gsub("'", ""):gsub(":", "") .. "2.png"
+        for i, _ in pairs(IconModule) do
+            for v, __ in pairs(_) do
+                if v == v1 then
+                    local j = __
+                    local q = i
+                    return {
+                        ["Name"] = q,
+                        ["Value"] = __
+                    }
+                end
             end
         end
     end
-end
-function formatNumber(nb)
-    local i, k, j = tostring(nb):match("(%-?%d?)(%d*)(%.?.*)")
-    return i .. k:reverse():gsub("(%d%d%d)", "%1,"):reverse() .. j
-end
-local CreateItemScreen = Instance.new("ScreenGui")
-local CreateItems = Instance.new('Frame')
-local CreateItemFruit = Instance.new('Frame')
-
-CreateItemScreen.Name = 'CreateItem'
-CreateItemScreen.Parent = game.CoreGui
-
-CreateItems.Name = HttpService:GenerateGUID()
-CreateItems.Parent = CreateItemScreen
-CreateItems.Size = UDim2.new(1, 0, 1, 0)
-CreateItems.BackgroundTransparency = 1.000
-
-CreateItemFruit.Name = HttpService:GenerateGUID()
-CreateItemFruit.Parent = CreateItemScreen
-CreateItemFruit.Size = UDim2.new(1, 0, 1, 0)
-CreateItemFruit.BackgroundTransparency = 1.000
-local Fragments = Instance.new("TextLabel")
-Fragments.Name = HttpService:GenerateGUID()
-Fragments.Parent = CreateItemScreen
-Fragments.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Fragments.BackgroundTransparency = 1.000
-Fragments.Position = getgenv().MobileMode and UDim2.new(0, 4, 0.7, 0) or UDim2.new(0, 6, 0.65, 0)
-Fragments.Size = getgenv().MobileMode and UDim2.new(0.1, 0, 0.04, 5) or UDim2.new(0.15, 0, 0.06, 5)
-Fragments.ZIndex = -9
-Fragments.Font = Enum.Font.SourceSansBold
-Fragments.Text = 'ƒ' .. formatNumber(game:GetService("Players").LocalPlayer.Data.Fragments.Value)
-Fragments.TextColor3 = Color3.fromRGB(177, 121, 255)
-Fragments.TextScaled = true
-Fragments.TextSize = getgenv().MobileMode and 24 or 36
-Fragments.TextStrokeTransparency = 0.000
-Fragments.TextWrapped = true
-Fragments.TextXAlignment = Enum.TextXAlignment.Left
-game:GetService("Players").LocalPlayer.PlayerGui.Main.MenuButton.Position = getgenv().MobileMode and UDim2.new(0, 6, 0.65, 0) or UDim2.new(0, 10, 0.6, 0)
-local ClearButton = Instance.new("TextButton")
-ClearButton.Name = HttpService:GenerateGUID()
-ClearButton.Parent = CreateItemScreen
-ClearButton.BackgroundColor3 = Color3.fromRGB(255, 50, 50)
-ClearButton.Position = getgenv().MobileMode and UDim2.new(0.85, 0, 0.05, 0) or UDim2.new(0.9, 0, 0.05, 0)
-ClearButton.Size = getgenv().MobileMode and UDim2.new(0.1, 0, 0.05, 0) or UDim2.new(0.08, 0, 0.06, 0)
-ClearButton.Font = Enum.Font.SourceSansBold
-ClearButton.Text = "Clear"
-ClearButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-ClearButton.TextScaled = true
-ClearButton.TextSize = getgenv().MobileMode and 18 or 24
-ClearButton.ZIndex = 10
-ClearButton.MouseButton1Click:Connect(function()
-    if game.CoreGui:FindFirstChild('CreateItem') then
-        game.CoreGui:FindFirstChild('CreateItem'):Destroy()
+    function formatNumber(nb)
+        local i, k, j = tostring(nb):match("(%-?%d?)(%d*)(%.?.*)")
+        return i .. k:reverse():gsub("(%d%d%d)", "%1,"):reverse() .. j
     end
-end)
-function CreateItemFruit(ItemType, ItemNames, ItemIcon, ImageRectSize, ItemRectOffset, ItemBackgroundColor, ExtraData, Data)
-    local _1 = Instance.new("Frame")
-    local ItemLine2 = Instance.new("TextLabel")
-    local ItemName = Instance.new("TextLabel")
-    local Background = Instance.new("ImageLabel")
-    local UICorner = Instance.new("UICorner")
-    local UIGradient = Instance.new("UIGradient")
-    local Icon = Instance.new("ImageLabel")
-    
-    if ItemRangeFruit >= ItemMaxFruit then
-        PositionYCountFruit = PositionYCountFruit + (getgenv().MobileMode and 61 or 105)
-        ItemRangeFruit = 0
-        PostionXCountFruit = getgenv().MobileMode and 400 or 800
-    end
-    
-    _1.Name = HttpService:GenerateGUID()
-    _1.Parent = CreateItems
-    _1.BackgroundColor3 = Color3.fromRGB(255, 0, 4)
-    _1.BackgroundTransparency = 1.000
-    _1.LayoutOrder = 1
-    _1.Size = getgenv().MobileMode and UDim2.new(0, 60, 0, 60) or UDim2.new(0, 100, 0, 100)
-    _1.Position = UDim2.new(OffsetXToSacle(PostionXCountFruit), 0, OffsetYToSacle(PositionYCountFruit), 0)
-    PostionXCountFruit = PostionXCountFruit + (getgenv().MobileMode and 61 or 101)
-    ItemRangeFruit = ItemRangeFruit + 1
-    
-    ItemLine2.Name = HttpService:GenerateGUID()
-    ItemLine2.Parent = _1
-    ItemLine2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    ItemLine2.BackgroundTransparency = 1.000
-    ItemLine2.Position = UDim2.new(0.08, 0, 0.02, 0)
-    ItemLine2.Size = getgenv().MobileMode and UDim2.new(0.7, 0, 0.2, 0) or UDim2.new(0.7, 0, 0.15, 0)
-    ItemLine2.ZIndex = 5
-    ItemLine2.Font = Enum.Font.SourceSansItalic
-    ItemLine2.Text = ItemType
-    ItemLine2.TextColor3 = Color3.fromRGB(255, 255, 255)
-    ItemLine2.TextScaled = true
-    ItemLine2.TextSize = getgenv().MobileMode and 10 or 14
-    ItemLine2.TextStrokeTransparency = 0.600
-    ItemLine2.TextWrapped = true
-    ItemLine2.TextXAlignment = Enum.TextXAlignment.Left
-    ItemLine2.TextYAlignment = Enum.TextYAlignment.Top
+    local CreateItemScreen = Instance.new("ScreenGui")
+    local CreateItems = Instance.new("Frame")
+    local CreateItemFruit = Instance.new("Frame")
 
-    ItemName.Name = HttpService:GenerateGUID()
-    ItemName.Parent = _1
-    ItemName.AnchorPoint = Vector2.new(1, 1)
-    ItemName.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    ItemName.BackgroundTransparency = 1.000
-    ItemName.Position = UDim2.new(0.96, 0, 0.98, 0)
-    ItemName.Size = getgenv().MobileMode and UDim2.new(0.6, 0, 0.4, 0) or UDim2.new(0.6, 0, 0.32, 0)
-    ItemName.ZIndex = 5
-    ItemName.Font = Enum.Font.SourceSansSemibold
-    ItemName.Text = ItemNames
-    ItemName.TextColor3 = Color3.fromRGB(255, 255, 255)
-    ItemName.TextScaled = true
-    ItemName.TextSize = getgenv().MobileMode and 10 or 14
-    ItemName.TextStrokeTransparency = 0.600
-    ItemName.TextWrapped = true
-    ItemName.TextXAlignment = Enum.TextXAlignment.Right
-    ItemName.TextYAlignment = Enum.TextYAlignment.Bottom
+    CreateItemScreen.Name = "CreateItem"
+    CreateItemScreen.Parent = game.CoreGui
 
-    Background.Name = HttpService:GenerateGUID()
-    Background.Parent = _1
-    Background.BackgroundColor3 = ItemBackgroundColor
-    Background.BorderSizePixel = 0
-    Background.Size = UDim2.new(1, 0, 1, 0)
-    Background.ZIndex = 3
-    Background.Image = "http://www.roblox.com/asset/?id=9944431153"
-    Background.ImageColor3 = Color3.fromRGB(0, 0, 0)
-    Background.ImageTransparency = 1.000
+    CreateItems.Name = HttpService:GenerateGUID()
+    CreateItems.Parent = CreateItemScreen
+    CreateItems.Size = UDim2.new(1, 0, 1, 0)
+    CreateItems.BackgroundTransparency = 1.000
 
-    UICorner.CornerRadius = UDim.new(0.07, 0)
-    UICorner.Parent = Background
+    CreateItemFruit.Name = HttpService:GenerateGUID()
+    CreateItemFruit.Parent = CreateItemScreen
+    CreateItemFruit.Size = UDim2.new(1, 0, 1, 0)
+    CreateItemFruit.BackgroundTransparency = 1.000
+    local Fragments = Instance.new("TextLabel")
+    Fragments.Name = HttpService:GenerateGUID()
+    Fragments.Parent = CreateItemScreen
+    Fragments.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    Fragments.BackgroundTransparency = 1.000
+    Fragments.Position = getgenv().MobileMode and UDim2.new(0, 4, 0.7, 0) or UDim2.new(0, 6, 0.65, 0)
+    Fragments.Size = getgenv().MobileMode and UDim2.new(0.1, 0, 0.04, 5) or UDim2.new(0.15, 0, 0.06, 5)
+    Fragments.ZIndex = -9
+    Fragments.Font = Enum.Font.SourceSansBold
+    Fragments.Text = "ƒ" .. formatNumber(game:GetService("Players").LocalPlayer.Data.Fragments.Value)
+    Fragments.TextColor3 = Color3.fromRGB(177, 121, 255)
+    Fragments.TextScaled = true
+    Fragments.TextSize = getgenv().MobileMode and 24 or 36
+    Fragments.TextStrokeTransparency = 0.000
+    Fragments.TextWrapped = true
+    Fragments.TextXAlignment = Enum.TextXAlignment.Left
+    game:GetService("Players").LocalPlayer.PlayerGui.Main.MenuButton.Position =
+        getgenv().MobileMode and UDim2.new(0, 6, 0.65, 0) or UDim2.new(0, 10, 0.6, 0)
+    local ClearButton = Instance.new("TextButton")
+    ClearButton.Name = HttpService:GenerateGUID()
+    ClearButton.Parent = CreateItemScreen
+    ClearButton.BackgroundColor3 = Color3.fromRGB(255, 50, 50)
+    ClearButton.Position = getgenv().MobileMode and UDim2.new(0.85, 0, 0.05, 0) or UDim2.new(0.9, 0, 0.05, 0)
+    ClearButton.Size = getgenv().MobileMode and UDim2.new(0.1, 0, 0.05, 0) or UDim2.new(0.08, 0, 0.06, 0)
+    ClearButton.Font = Enum.Font.SourceSansBold
+    ClearButton.Text = "Clear"
+    ClearButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+    ClearButton.TextScaled = true
+    ClearButton.TextSize = getgenv().MobileMode and 18 or 24
+    ClearButton.ZIndex = 10
+    ClearButton.MouseButton1Click:Connect(
+        function()
+            if game.CoreGui:FindFirstChild("CreateItem") then
+                game.CoreGui:FindFirstChild("CreateItem"):Destroy()
+            end
+        end
+    )
+    function CreateItemFruit(
+        ItemType,
+        ItemNames,
+        ItemIcon,
+        ImageRectSize,
+        ItemRectOffset,
+        ItemBackgroundColor,
+        ExtraData,
+        Data)
+        local _1 = Instance.new("Frame")
+        local ItemLine2 = Instance.new("TextLabel")
+        local ItemName = Instance.new("TextLabel")
+        local Background = Instance.new("ImageLabel")
+        local UICorner = Instance.new("UICorner")
+        local UIGradient = Instance.new("UIGradient")
+        local Icon = Instance.new("ImageLabel")
 
-    UIGradient.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(172, 172, 172)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(225, 225, 225))}
-    UIGradient.Rotation = 90
-    UIGradient.Parent = Background
+        if ItemRangeFruit >= ItemMaxFruit then
+            PositionYCountFruit = PositionYCountFruit + (getgenv().MobileMode and 61 or 105)
+            ItemRangeFruit = 0
+            PostionXCountFruit = getgenv().MobileMode and 400 or 800
+        end
 
-    Icon.Name = HttpService:GenerateGUID()
-    Icon.Parent = _1
-    Icon.AnchorPoint = Vector2.new(0.5, 0.5)
-    Icon.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    Icon.BackgroundTransparency = 1.000
-    Icon.Position = UDim2.new(0.5, 0, 0.5, 0)
-    Icon.Size = getgenv().MobileMode and UDim2.new(0.9, 0, 0.9, 0) or UDim2.new(0.9, 0, 0.9, 0)
-    Icon.Visible = true
-    Icon.ZIndex = 4
-    Icon.Image = ItemIcon
-    Icon.ScaleType = Enum.ScaleType.Fit
-    Icon.ImageRectSize = ItemRectOffset
-    Icon.ImageRectOffset = ImageRectSize
-    if ExtraData then
-        local ItemLine1 = Instance.new("TextLabel")
-        ItemLine1.Name = HttpService:GenerateGUID()
-        ItemLine1.Parent = _1
-        ItemLine1.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-        ItemLine1.BackgroundTransparency = 1.000
-        ItemLine1.Position = UDim2.new(0.08, 0, 0.14, 0)
-        ItemLine1.Size = getgenv().MobileMode and UDim2.new(0.7, 0, 0.2, 0) or UDim2.new(0.7, 0, 0.15, 0)
-        ItemLine1.Visible = true
-        ItemLine1.ZIndex = 5
-        ItemLine1.Font = Enum.Font.SourceSansSemibold
-        ItemLine1.Text = Data
-        ItemLine1.TextColor3 = Color3.fromRGB(255, 255, 255)
-        ItemLine1.TextScaled = true
-        ItemLine1.TextSize = getgenv().MobileMode and 10 or 14
-        ItemLine1.TextStrokeTransparency = 0.600
-        ItemLine1.TextWrapped = true
-        ItemLine1.TextXAlignment = Enum.TextXAlignment.Left
-        ItemLine1.TextYAlignment = Enum.TextYAlignment.Top
-    end
-end
+        _1.Name = HttpService:GenerateGUID()
+        _1.Parent = CreateItems
+        _1.BackgroundColor3 = Color3.fromRGB(255, 0, 4)
+        _1.BackgroundTransparency = 1.000
+        _1.LayoutOrder = 1
+        _1.Size = getgenv().MobileMode and UDim2.new(0, 60, 0, 60) or UDim2.new(0, 100, 0, 100)
+        _1.Position = UDim2.new(OffsetXToSacle(PostionXCountFruit), 0, OffsetYToSacle(PositionYCountFruit), 0)
+        PostionXCountFruit = PostionXCountFruit + (getgenv().MobileMode and 61 or 101)
+        ItemRangeFruit = ItemRangeFruit + 1
 
-function CreateItem(ItemType, ItemNames, ItemIcon, ImageRectSize, ItemRectOffset, ItemBackgroundColor, ExtraData, Data)
-    local _1 = Instance.new("Frame")
-    local ItemLine2 = Instance.new("TextLabel")
-    local ItemName = Instance.new("TextLabel")
-    local Background = Instance.new("ImageLabel")
-    local UICorner = Instance.new("UICorner")
-    local UIGradient = Instance.new("UIGradient")
-    local Icon = Instance.new("ImageLabel")
-    
-    if ItemRange >= ItemMax then
-        PositionYCount = PositionYCount + (getgenv().MobileMode and 61 or 101)
-        ItemRange = 0
-        PostionXCount = 0
-    end
-    
-    _1.Name = HttpService:GenerateGUID()
-    _1.Parent = CreateItems
-    _1.BackgroundColor3 = Color3.fromRGB(255, 0, 4)
-    _1.BackgroundTransparency = 1.000
-    _1.LayoutOrder = 1
-    _1.Size = getgenv().MobileMode and UDim2.new(0, 60, 0, 60) or UDim2.new(0, 100, 0, 100)
-    _1.Position = UDim2.new(0, PostionXCount, 0, PositionYCount)
-    PostionXCount = PostionXCount + (getgenv().MobileMode and 61 or 101)
-    ItemRange = ItemRange + 1
-    
-    ItemLine2.Name = HttpService:GenerateGUID()
-    ItemLine2.Parent = _1
-    ItemLine2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    ItemLine2.BackgroundTransparency = 1.000
-    ItemLine2.Position = UDim2.new(0.08, 0, 0.02, 0)
-    ItemLine2.Size = getgenv().MobileMode and UDim2.new(0.7, 0, 0.2, 0) or UDim2.new(0.7, 0, 0.15, 0)
-    ItemLine2.ZIndex = 5
-    ItemLine2.Font = Enum.Font.SourceSansItalic
-    ItemLine2.Text = ItemType
-    ItemLine2.TextColor3 = Color3.fromRGB(255, 255, 255)
-    ItemLine2.TextScaled = true
-    ItemLine2.TextSize = getgenv().MobileMode and 10 or 14
-    ItemLine2.TextStrokeTransparency = 0.600
-    ItemLine2.TextWrapped = true
-    ItemLine2.TextXAlignment = Enum.TextXAlignment.Left
-    ItemLine2.TextYAlignment = Enum.TextYAlignment.Top
+        ItemLine2.Name = HttpService:GenerateGUID()
+        ItemLine2.Parent = _1
+        ItemLine2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+        ItemLine2.BackgroundTransparency = 1.000
+        ItemLine2.Position = UDim2.new(0.08, 0, 0.02, 0)
+        ItemLine2.Size = getgenv().MobileMode and UDim2.new(0.7, 0, 0.2, 0) or UDim2.new(0.7, 0, 0.15, 0)
+        ItemLine2.ZIndex = 5
+        ItemLine2.Font = Enum.Font.SourceSansItalic
+        ItemLine2.Text = ItemType
+        ItemLine2.TextColor3 = Color3.fromRGB(255, 255, 255)
+        ItemLine2.TextScaled = true
+        ItemLine2.TextSize = getgenv().MobileMode and 10 or 14
+        ItemLine2.TextStrokeTransparency = 0.600
+        ItemLine2.TextWrapped = true
+        ItemLine2.TextXAlignment = Enum.TextXAlignment.Left
+        ItemLine2.TextYAlignment = Enum.TextYAlignment.Top
 
-    ItemName.Name = HttpService:GenerateGUID()
-    ItemName.Parent = _1
-    ItemName.AnchorPoint = Vector2.new(1, 1)
-    ItemName.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    ItemName.BackgroundTransparency = 1.000
-    ItemName.Position = UDim2.new(0.96, 0, 0.98, 0)
-    ItemName.Size = getgenv().MobileMode and UDim2.new(0.6, 0, 0.4, 0) or UDim2.new(0.6, 0, 0.32, 0)
-    ItemName.ZIndex = 5
-    ItemName.Font = Enum.Font.SourceSansSemibold
-    ItemName.Text = ItemNames
-    ItemName.TextColor3 = Color3.fromRGB(255, 255, 255)
-    ItemName.TextScaled = true
-    ItemName.TextSize = getgenv().MobileMode and 10 or 14
-    ItemName.TextStrokeTransparency = 0.600
-    ItemName.TextWrapped = true
-    ItemName.TextXAlignment = Enum.TextXAlignment.Right
-    ItemName.TextYAlignment = Enum.TextYAlignment.Bottom
+        ItemName.Name = HttpService:GenerateGUID()
+        ItemName.Parent = _1
+        ItemName.AnchorPoint = Vector2.new(1, 1)
+        ItemName.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+        ItemName.BackgroundTransparency = 1.000
+        ItemName.Position = UDim2.new(0.96, 0, 0.98, 0)
+        ItemName.Size = getgenv().MobileMode and UDim2.new(0.6, 0, 0.4, 0) or UDim2.new(0.6, 0, 0.32, 0)
+        ItemName.ZIndex = 5
+        ItemName.Font = Enum.Font.SourceSansSemibold
+        ItemName.Text = ItemNames
+        ItemName.TextColor3 = Color3.fromRGB(255, 255, 255)
+        ItemName.TextScaled = true
+        ItemName.TextSize = getgenv().MobileMode and 10 or 14
+        ItemName.TextStrokeTransparency = 0.600
+        ItemName.TextWrapped = true
+        ItemName.TextXAlignment = Enum.TextXAlignment.Right
+        ItemName.TextYAlignment = Enum.TextYAlignment.Bottom
 
-    Background.Name = HttpService:GenerateGUID()
-    Background.Parent = _1
-    Background.BackgroundColor3 = ItemBackgroundColor
-    Background.BorderSizePixel = 0
-    Background.Size = UDim2.new(1, 0, 1, 0)
-    Background.ZIndex = 3
-    Background.Image = "http://www.roblox.com/asset/?id=9944431153"
-    Background.ImageColor3 = Color3.fromRGB(0, 0, 0)
-    Background.ImageTransparency = 1.000
-    UICorner.CornerRadius = UDim.new(0.07, 0)
-    UICorner.Parent = Background
-    UIGradient.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(172, 172, 172)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(225, 225, 225))}
-    UIGradient.Rotation = 90
-    UIGradient.Parent = Background
-    Icon.Name = HttpService:GenerateGUID()
-    Icon.Parent = _1
-    Icon.AnchorPoint = Vector2.new(0.5, 0.5)
-    Icon.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    Icon.BackgroundTransparency = 1.000
-    Icon.Position = UDim2.new(0.5, 0, 0.5, 0)
-    Icon.Size = getgenv().MobileMode and UDim2.new(0.9, 0, 0.9, 0) or UDim2.new(0.9, 0, 0.9, 0)
-    Icon.Visible = true
-    Icon.ZIndex = 4
-    Icon.Image = ItemIcon
-    Icon.ScaleType = Enum.ScaleType.Fit
-    Icon.ImageRectSize = ItemRectOffset
-    Icon.ImageRectOffset = ImageRectSize
-    if ExtraData then
-        local ItemLine1 = Instance.new("TextLabel")
-        ItemLine1.Name = HttpService:GenerateGUID()
-        ItemLine1.Parent = _1
-        ItemLine1.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-        ItemLine1.BackgroundTransparency = 1.000
-        ItemLine1.Position = UDim2.new(0.08, 0, 0.14, 0)
-        ItemLine1.Size = getgenv().MobileMode and UDim2.new(0.7, 0, 0.2, 0) or UDim2.new(0.7, 0, 0.15, 0)
-        ItemLine1.Visible = true
-        ItemLine1.ZIndex = 5
-        ItemLine1.Font = Enum.Font.SourceSansSemibold
-        ItemLine1.Text = Data
-        ItemLine1.TextColor3 = Color3.fromRGB(255, 255, 255)
-        ItemLine1.TextScaled = true
-        ItemLine1.TextSize = getgenv().MobileMode and 10 or 14
-        ItemLine1.TextStrokeTransparency = 0.600
-        ItemLine1.TextWrapped = true
-        ItemLine1.TextXAlignment = Enum.TextXAlignment.Left
-        ItemLine1.TextYAlignment = Enum.TextYAlignment.Top
-    end
-end
-RequestGetInvertory = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("getInventory")
-function getBackgroundColor(Rarity)
-    if Rarity == 0 then
-        return Color3.fromRGB(179, 179, 179)
-    elseif Rarity == 1 then
-        return Color3.fromRGB(92, 140, 211)
-    elseif Rarity == 2 then
-        return Color3.fromRGB(140, 82, 255)
-    elseif Rarity == 3 then
-        return Color3.fromRGB(213, 43, 228)
-    elseif Rarity == 4 then
-        return Color3.fromRGB(238, 47, 50)
-    end
-end
-for _, __ in pairs(RequestGetInvertory) do
-    if __['Rarity'] == 4 then
-        if __Config['Rarity']['__Mythical'] then
-            table.insert(Requirement['Mythical'], __)
+        Background.Name = HttpService:GenerateGUID()
+        Background.Parent = _1
+        Background.BackgroundColor3 = ItemBackgroundColor
+        Background.BorderSizePixel = 0
+        Background.Size = UDim2.new(1, 0, 1, 0)
+        Background.ZIndex = 3
+        Background.Image = "http://www.roblox.com/asset/?id=9944431153"
+        Background.ImageColor3 = Color3.fromRGB(0, 0, 0)
+        Background.ImageTransparency = 1.000
+
+        UICorner.CornerRadius = UDim.new(0.07, 0)
+        UICorner.Parent = Background
+
+        UIGradient.Color =
+            ColorSequence.new {
+            ColorSequenceKeypoint.new(0.00, Color3.fromRGB(172, 172, 172)),
+            ColorSequenceKeypoint.new(1.00, Color3.fromRGB(225, 225, 225))
+        }
+        UIGradient.Rotation = 90
+        UIGradient.Parent = Background
+
+        Icon.Name = HttpService:GenerateGUID()
+        Icon.Parent = _1
+        Icon.AnchorPoint = Vector2.new(0.5, 0.5)
+        Icon.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+        Icon.BackgroundTransparency = 1.000
+        Icon.Position = UDim2.new(0.5, 0, 0.5, 0)
+        Icon.Size = getgenv().MobileMode and UDim2.new(0.9, 0, 0.9, 0) or UDim2.new(0.9, 0, 0.9, 0)
+        Icon.Visible = true
+        Icon.ZIndex = 4
+        Icon.Image = ItemIcon
+        Icon.ScaleType = Enum.ScaleType.Fit
+        Icon.ImageRectSize = ItemRectOffset
+        Icon.ImageRectOffset = ImageRectSize
+        if ExtraData then
+            local ItemLine1 = Instance.new("TextLabel")
+            ItemLine1.Name = HttpService:GenerateGUID()
+            ItemLine1.Parent = _1
+            ItemLine1.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+            ItemLine1.BackgroundTransparency = 1.000
+            ItemLine1.Position = UDim2.new(0.08, 0, 0.14, 0)
+            ItemLine1.Size = getgenv().MobileMode and UDim2.new(0.7, 0, 0.2, 0) or UDim2.new(0.7, 0, 0.15, 0)
+            ItemLine1.Visible = true
+            ItemLine1.ZIndex = 5
+            ItemLine1.Font = Enum.Font.SourceSansSemibold
+            ItemLine1.Text = Data
+            ItemLine1.TextColor3 = Color3.fromRGB(255, 255, 255)
+            ItemLine1.TextScaled = true
+            ItemLine1.TextSize = getgenv().MobileMode and 10 or 14
+            ItemLine1.TextStrokeTransparency = 0.600
+            ItemLine1.TextWrapped = true
+            ItemLine1.TextXAlignment = Enum.TextXAlignment.Left
+            ItemLine1.TextYAlignment = Enum.TextYAlignment.Top
         end
     end
-    if __['Rarity'] == 3 then
-        if __Config['Rarity']['__Legendary'] then
-            table.insert(Requirement['Legendary'], __)
+
+    function CreateItem(
+        ItemType,
+        ItemNames,
+        ItemIcon,
+        ImageRectSize,
+        ItemRectOffset,
+        ItemBackgroundColor,
+        ExtraData,
+        Data)
+        local _1 = Instance.new("Frame")
+        local ItemLine2 = Instance.new("TextLabel")
+        local ItemName = Instance.new("TextLabel")
+        local Background = Instance.new("ImageLabel")
+        local UICorner = Instance.new("UICorner")
+        local UIGradient = Instance.new("UIGradient")
+        local Icon = Instance.new("ImageLabel")
+
+        if ItemRange >= ItemMax then
+            PositionYCount = PositionYCount + (getgenv().MobileMode and 61 or 101)
+            ItemRange = 0
+            PostionXCount = 0
+        end
+
+        _1.Name = HttpService:GenerateGUID()
+        _1.Parent = CreateItems
+        _1.BackgroundColor3 = Color3.fromRGB(255, 0, 4)
+        _1.BackgroundTransparency = 1.000
+        _1.LayoutOrder = 1
+        _1.Size = getgenv().MobileMode and UDim2.new(0, 60, 0, 60) or UDim2.new(0, 100, 0, 100)
+        _1.Position = UDim2.new(0, PostionXCount, 0, PositionYCount)
+        PostionXCount = PostionXCount + (getgenv().MobileMode and 61 or 101)
+        ItemRange = ItemRange + 1
+
+        ItemLine2.Name = HttpService:GenerateGUID()
+        ItemLine2.Parent = _1
+        ItemLine2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+        ItemLine2.BackgroundTransparency = 1.000
+        ItemLine2.Position = UDim2.new(0.08, 0, 0.02, 0)
+        ItemLine2.Size = getgenv().MobileMode and UDim2.new(0.7, 0, 0.2, 0) or UDim2.new(0.7, 0, 0.15, 0)
+        ItemLine2.ZIndex = 5
+        ItemLine2.Font = Enum.Font.SourceSansItalic
+        ItemLine2.Text = ItemType
+        ItemLine2.TextColor3 = Color3.fromRGB(255, 255, 255)
+        ItemLine2.TextScaled = true
+        ItemLine2.TextSize = getgenv().MobileMode and 10 or 14
+        ItemLine2.TextStrokeTransparency = 0.600
+        ItemLine2.TextWrapped = true
+        ItemLine2.TextXAlignment = Enum.TextXAlignment.Left
+        ItemLine2.TextYAlignment = Enum.TextYAlignment.Top
+
+        ItemName.Name = HttpService:GenerateGUID()
+        ItemName.Parent = _1
+        ItemName.AnchorPoint = Vector2.new(1, 1)
+        ItemName.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+        ItemName.BackgroundTransparency = 1.000
+        ItemName.Position = UDim2.new(0.96, 0, 0.98, 0)
+        ItemName.Size = getgenv().MobileMode and UDim2.new(0.6, 0, 0.4, 0) or UDim2.new(0.6, 0, 0.32, 0)
+        ItemName.ZIndex = 5
+        ItemName.Font = Enum.Font.SourceSansSemibold
+        ItemName.Text = ItemNames
+        ItemName.TextColor3 = Color3.fromRGB(255, 255, 255)
+        ItemName.TextScaled = true
+        ItemName.TextSize = getgenv().MobileMode and 10 or 14
+        ItemName.TextStrokeTransparency = 0.600
+        ItemName.TextWrapped = true
+        ItemName.TextXAlignment = Enum.TextXAlignment.Right
+        ItemName.TextYAlignment = Enum.TextYAlignment.Bottom
+
+        Background.Name = HttpService:GenerateGUID()
+        Background.Parent = _1
+        Background.BackgroundColor3 = ItemBackgroundColor
+        Background.BorderSizePixel = 0
+        Background.Size = UDim2.new(1, 0, 1, 0)
+        Background.ZIndex = 3
+        Background.Image = "http://www.roblox.com/asset/?id=9944431153"
+        Background.ImageColor3 = Color3.fromRGB(0, 0, 0)
+        Background.ImageTransparency = 1.000
+        UICorner.CornerRadius = UDim.new(0.07, 0)
+        UICorner.Parent = Background
+        UIGradient.Color =
+            ColorSequence.new {
+            ColorSequenceKeypoint.new(0.00, Color3.fromRGB(172, 172, 172)),
+            ColorSequenceKeypoint.new(1.00, Color3.fromRGB(225, 225, 225))
+        }
+        UIGradient.Rotation = 90
+        UIGradient.Parent = Background
+        Icon.Name = HttpService:GenerateGUID()
+        Icon.Parent = _1
+        Icon.AnchorPoint = Vector2.new(0.5, 0.5)
+        Icon.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+        Icon.BackgroundTransparency = 1.000
+        Icon.Position = UDim2.new(0.5, 0, 0.5, 0)
+        Icon.Size = getgenv().MobileMode and UDim2.new(0.9, 0, 0.9, 0) or UDim2.new(0.9, 0, 0.9, 0)
+        Icon.Visible = true
+        Icon.ZIndex = 4
+        Icon.Image = ItemIcon
+        Icon.ScaleType = Enum.ScaleType.Fit
+        Icon.ImageRectSize = ItemRectOffset
+        Icon.ImageRectOffset = ImageRectSize
+        if ExtraData then
+            local ItemLine1 = Instance.new("TextLabel")
+            ItemLine1.Name = HttpService:GenerateGUID()
+            ItemLine1.Parent = _1
+            ItemLine1.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+            ItemLine1.BackgroundTransparency = 1.000
+            ItemLine1.Position = UDim2.new(0.08, 0, 0.14, 0)
+            ItemLine1.Size = getgenv().MobileMode and UDim2.new(0.7, 0, 0.2, 0) or UDim2.new(0.7, 0, 0.15, 0)
+            ItemLine1.Visible = true
+            ItemLine1.ZIndex = 5
+            ItemLine1.Font = Enum.Font.SourceSansSemibold
+            ItemLine1.Text = Data
+            ItemLine1.TextColor3 = Color3.fromRGB(255, 255, 255)
+            ItemLine1.TextScaled = true
+            ItemLine1.TextSize = getgenv().MobileMode and 10 or 14
+            ItemLine1.TextStrokeTransparency = 0.600
+            ItemLine1.TextWrapped = true
+            ItemLine1.TextXAlignment = Enum.TextXAlignment.Left
+            ItemLine1.TextYAlignment = Enum.TextYAlignment.Top
         end
     end
-    if __['Rarity'] == 2 then
-        if __Config['Rarity']['__Rare'] then
-            table.insert(Requirement['Rare'], __)
+    RequestGetInvertory = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("getInventory")
+    function getBackgroundColor(Rarity)
+        if Rarity == 0 then
+            return Color3.fromRGB(179, 179, 179)
+        elseif Rarity == 1 then
+            return Color3.fromRGB(92, 140, 211)
+        elseif Rarity == 2 then
+            return Color3.fromRGB(140, 82, 255)
+        elseif Rarity == 3 then
+            return Color3.fromRGB(213, 43, 228)
+        elseif Rarity == 4 then
+            return Color3.fromRGB(238, 47, 50)
         end
     end
-    if __['Rarity'] == 1 then
-        if __Config['Rarity']['__Uncommon'] then
-            table.insert(Requirement['Uncommon'], __)
+    for _, __ in pairs(RequestGetInvertory) do
+        if __["Rarity"] == 4 then
+            if __Config["Rarity"]["__Mythical"] then
+                table.insert(Requirement["Mythical"], __)
+            end
         end
-    end
-    if __['Rarity'] == 0 then
-        if __Config['Rarity']['__Common'] then
-            table.insert(Requirement['Common'], __)
+        if __["Rarity"] == 3 then
+            if __Config["Rarity"]["__Legendary"] then
+                table.insert(Requirement["Legendary"], __)
+            end
         end
-    end
-end
-function SortItemSword(itemType)
-    for i, __ in pairs(Requirement['Mythical']) do
-        if __['Type'] == itemType then
-            local IconData = queryData(__['Name'])
-            local Offset = Vector2.new(IconData['Value'][3], IconData['Value'][4])
-            local Size = Vector2.new(IconData['Value'][1], IconData['Value'][2])
-            if __['Mastery'] >= __Config['LevelShowMastery'] and __Config['ShowMastery'] then
-                CreateItem('Sword', __['Name'], IconData['Name'], Size, Offset, getBackgroundColor(__['Rarity']), true, "Mastery - " .. tostring(__['Mastery']))
-            else
-                CreateItem('Sword', __['Name'], IconData['Name'], Size, Offset, getBackgroundColor(__['Rarity']), false, "")
+        if __["Rarity"] == 2 then
+            if __Config["Rarity"]["__Rare"] then
+                table.insert(Requirement["Rare"], __)
+            end
+        end
+        if __["Rarity"] == 1 then
+            if __Config["Rarity"]["__Uncommon"] then
+                table.insert(Requirement["Uncommon"], __)
+            end
+        end
+        if __["Rarity"] == 0 then
+            if __Config["Rarity"]["__Common"] then
+                table.insert(Requirement["Common"], __)
             end
         end
     end
-    for i, __ in pairs(Requirement['Legendary']) do
-        if __['Type'] == itemType then
-            local IconData = queryData(__['Name'])
-            local Offset = Vector2.new(IconData['Value'][3], IconData['Value'][4])
-            local Size = Vector2.new(IconData['Value'][1], IconData['Value'][2])
-            if __['Mastery'] >= __Config['LevelShowMastery'] and __Config['ShowMastery'] then
-                CreateItem('Sword', __['Name'], IconData['Name'], Size, Offset, getBackgroundColor(__['Rarity']), true, "Mastery - " .. tostring(__['Mastery']))
-            else
-                CreateItem('Sword', __['Name'], IconData['Name'], Size, Offset, getBackgroundColor(__['Rarity']), false, "")
+    function SortItemSword(itemType)
+        for i, __ in pairs(Requirement["Mythical"]) do
+            if __["Type"] == itemType then
+                local IconData = queryData(__["Name"])
+                local Offset = Vector2.new(IconData["Value"][3], IconData["Value"][4])
+                local Size = Vector2.new(IconData["Value"][1], IconData["Value"][2])
+                if __["Mastery"] >= __Config["LevelShowMastery"] and __Config["ShowMastery"] then
+                    CreateItem(
+                        "Sword",
+                        __["Name"],
+                        IconData["Name"],
+                        Size,
+                        Offset,
+                        getBackgroundColor(__["Rarity"]),
+                        true,
+                        "Mastery - " .. tostring(__["Mastery"])
+                    )
+                else
+                    CreateItem(
+                        "Sword",
+                        __["Name"],
+                        IconData["Name"],
+                        Size,
+                        Offset,
+                        getBackgroundColor(__["Rarity"]),
+                        false,
+                        ""
+                    )
+                end
             end
         end
-    end
-    for i, __ in pairs(Requirement['Rare']) do
-        if __['Type'] == itemType then
-            local IconData = queryData(__['Name'])
-            local Offset = Vector2.new(IconData['Value'][3], IconData['Value'][4])
-            local Size = Vector2.new(IconData['Value'][1], IconData['Value'][2])
-            if __['Mastery'] >= __Config['LevelShowMastery'] and __Config['ShowMastery'] then
-                CreateItem('Sword', __['Name'], IconData['Name'], Size, Offset, getBackgroundColor(__['Rarity']), true, "Mastery - " .. tostring(__['Mastery']))
-            else
-                CreateItem('Sword', __['Name'], IconData['Name'], Size, Offset, getBackgroundColor(__['Rarity']), false, "")
+        for i, __ in pairs(Requirement["Legendary"]) do
+            if __["Type"] == itemType then
+                local IconData = queryData(__["Name"])
+                local Offset = Vector2.new(IconData["Value"][3], IconData["Value"][4])
+                local Size = Vector2.new(IconData["Value"][1], IconData["Value"][2])
+                if __["Mastery"] >= __Config["LevelShowMastery"] and __Config["ShowMastery"] then
+                    CreateItem(
+                        "Sword",
+                        __["Name"],
+                        IconData["Name"],
+                        Size,
+                        Offset,
+                        getBackgroundColor(__["Rarity"]),
+                        true,
+                        "Mastery - " .. tostring(__["Mastery"])
+                    )
+                else
+                    CreateItem(
+                        "Sword",
+                        __["Name"],
+                        IconData["Name"],
+                        Size,
+                        Offset,
+                        getBackgroundColor(__["Rarity"]),
+                        false,
+                        ""
+                    )
+                end
             end
         end
-    end
-    for i, __ in pairs(Requirement['Uncommon']) do
-        if __['Type'] == itemType then
-            local IconData = queryData(__['Name'])
-            local Offset = Vector2.new(IconData['Value'][3], IconData['Value'][4])
-            local Size = Vector2.new(IconData['Value'][1], IconData['Value'][2])
-            if __['Mastery'] >= __Config['LevelShowMastery'] and __Config['ShowMastery'] then
-                CreateItem('Sword', __['Name'], IconData['Name'], Size, Offset, getBackgroundColor(__['Rarity']), true, "Mastery - " .. tostring(__['Mastery']))
-            else
-                CreateItem('Sword', __['Name'], IconData['Name'], Size, Offset, getBackgroundColor(__['Rarity']), false, "")
+        for i, __ in pairs(Requirement["Rare"]) do
+            if __["Type"] == itemType then
+                local IconData = queryData(__["Name"])
+                local Offset = Vector2.new(IconData["Value"][3], IconData["Value"][4])
+                local Size = Vector2.new(IconData["Value"][1], IconData["Value"][2])
+                if __["Mastery"] >= __Config["LevelShowMastery"] and __Config["ShowMastery"] then
+                    CreateItem(
+                        "Sword",
+                        __["Name"],
+                        IconData["Name"],
+                        Size,
+                        Offset,
+                        getBackgroundColor(__["Rarity"]),
+                        true,
+                        "Mastery - " .. tostring(__["Mastery"])
+                    )
+                else
+                    CreateItem(
+                        "Sword",
+                        __["Name"],
+                        IconData["Name"],
+                        Size,
+                        Offset,
+                        getBackgroundColor(__["Rarity"]),
+                        false,
+                        ""
+                    )
+                end
             end
         end
-    end
-    for i, __ in pairs(Requirement['Common']) do
-        if __['Type'] == itemType then
-            local IconData = queryData(__['Name'])
-            local Offset = Vector2.new(IconData['Value'][3], IconData['Value'][4])
-            local Size = Vector2.new(IconData['Value'][1], IconData['Value'][2])
-            if __['Mastery'] >= __Config['LevelShowMastery'] and __Config['ShowMastery'] then
-                CreateItem('Sword', __['Name'], IconData['Name'], Size, Offset, getBackgroundColor(__['Rarity']), true, "Mastery - " .. tostring(__['Mastery']))
-            else
-                CreateItem('Sword', __['Name'], IconData['Name'], Size, Offset, getBackgroundColor(__['Rarity']), false, "")
+        for i, __ in pairs(Requirement["Uncommon"]) do
+            if __["Type"] == itemType then
+                local IconData = queryData(__["Name"])
+                local Offset = Vector2.new(IconData["Value"][3], IconData["Value"][4])
+                local Size = Vector2.new(IconData["Value"][1], IconData["Value"][2])
+                if __["Mastery"] >= __Config["LevelShowMastery"] and __Config["ShowMastery"] then
+                    CreateItem(
+                        "Sword",
+                        __["Name"],
+                        IconData["Name"],
+                        Size,
+                        Offset,
+                        getBackgroundColor(__["Rarity"]),
+                        true,
+                        "Mastery - " .. tostring(__["Mastery"])
+                    )
+                else
+                    CreateItem(
+                        "Sword",
+                        __["Name"],
+                        IconData["Name"],
+                        Size,
+                        Offset,
+                        getBackgroundColor(__["Rarity"]),
+                        false,
+                        ""
+                    )
+                end
             end
         end
+        for i, __ in pairs(Requirement["Common"]) do
+            if __["Type"] == itemType then
+                local IconData = queryData(__["Name"])
+                local Offset = Vector2.new(IconData["Value"][3], IconData["Value"][4])
+                local Size = Vector2.new(IconData["Value"][1], IconData["Value"][2])
+                if __["Mastery"] >= __Config["LevelShowMastery"] and __Config["ShowMastery"] then
+                    CreateItem(
+                        "Sword",
+                        __["Name"],
+                        IconData["Name"],
+                        Size,
+                        Offset,
+                        getBackgroundColor(__["Rarity"]),
+                        true,
+                        "Mastery - " .. tostring(__["Mastery"])
+                    )
+                else
+                    CreateItem(
+                        "Sword",
+                        __["Name"],
+                        IconData["Name"],
+                        Size,
+                        Offset,
+                        getBackgroundColor(__["Rarity"]),
+                        false,
+                        ""
+                    )
+                end
+            end
+        end
+        ItemRange = ItemMax
     end
-    ItemRange = ItemMax
-end
-SortItemSword('Sword')
-function SortItemBloxFruit(itemType)
-    for i, __ in pairs(Requirement['Mythical']) do
-        if __['Type'] == itemType then
-            local IconData = queryData(__['Name'])
-            local Offset = Vector2.new(IconData['Value'][3], IconData['Value'][4])
-            local Size = Vector2.new(IconData['Value'][1], IconData['Value'][2])
-            CreateItemFruit(__['Type'], __['Name'], IconData['Name'], Size, Offset, getBackgroundColor(__['Rarity']), true, "x" .. __['Count'])
+    SortItemSword("Sword")
+    function SortItemBloxFruit(itemType)
+        for i, __ in pairs(Requirement["Mythical"]) do
+            if __["Type"] == itemType then
+                local IconData = queryData(__["Name"])
+                local Offset = Vector2.new(IconData["Value"][3], IconData["Value"][4])
+                local Size = Vector2.new(IconData["Value"][1], IconData["Value"][2])
+                CreateItemFruit(
+                    __["Type"],
+                    __["Name"],
+                    IconData["Name"],
+                    Size,
+                    Offset,
+                    getBackgroundColor(__["Rarity"]),
+                    true,
+                    "x" .. __["Count"]
+                )
+            end
+        end
+        for i, __ in pairs(Requirement["Legendary"]) do
+            if __["Type"] == itemType then
+                local IconData = queryData(__["Name"])
+                local Offset = Vector2.new(IconData["Value"][3], IconData["Value"][4])
+                local Size = Vector2.new(IconData["Value"][1], IconData["Value"][2])
+                CreateItemFruit(
+                    __["Type"],
+                    __["Name"],
+                    IconData["Name"],
+                    Size,
+                    Offset,
+                    getBackgroundColor(__["Rarity"]),
+                    true,
+                    "x" .. __["Count"]
+                )
+            end
+        end
+        for i, __ in pairs(Requirement["Rare"]) do
+            if __["Type"] == itemType then
+                local IconData = queryData(__["Name"])
+                local Offset = Vector2.new(IconData["Value"][3], IconData["Value"][4])
+                local Size = Vector2.new(IconData["Value"][1], IconData["Value"][2])
+                CreateItemFruit(
+                    __["Type"],
+                    __["Name"],
+                    IconData["Name"],
+                    Size,
+                    Offset,
+                    getBackgroundColor(__["Rarity"]),
+                    true,
+                    "x" .. __["Count"]
+                )
+            end
+        end
+        for i, __ in pairs(Requirement["Uncommon"]) do
+            if __["Type"] == itemType then
+                local IconData = queryData(__["Name"])
+                local Offset = Vector2.new(IconData["Value"][3], IconData["Value"][4])
+                local Size = Vector2.new(IconData["Value"][1], IconData["Value"][2])
+                CreateItemFruit(
+                    __["Type"],
+                    __["Name"],
+                    IconData["Name"],
+                    Size,
+                    Offset,
+                    getBackgroundColor(__["Rarity"]),
+                    true,
+                    "x" .. __["Count"]
+                )
+            end
+        end
+        for i, __ in pairs(Requirement["Common"]) do
+            if __["Type"] == itemType then
+                local IconData = queryData(__["Name"])
+                local Offset = Vector2.new(IconData["Value"][3], IconData["Value"][4])
+                local Size = Vector2.new(IconData["Value"][1], IconData["Value"][2])
+                CreateItemFruit(
+                    __["Type"],
+                    __["Name"],
+                    IconData["Name"],
+                    Size,
+                    Offset,
+                    getBackgroundColor(__["Rarity"]),
+                    true,
+                    "x" .. __["Count"]
+                )
+            end
+        end
+        ItemRange = ItemMax
+    end
+    SortItemBloxFruit("Blox Fruit")
+    function SortItemWear(itemType)
+        for i, __ in pairs(Requirement["Mythical"]) do
+            if __["Type"] == itemType then
+                local IconData = queryData(__["Name"])
+                local Offset = Vector2.new(IconData["Value"][3], IconData["Value"][4])
+                local Size = Vector2.new(IconData["Value"][1], IconData["Value"][2])
+                CreateItem(
+                    "Accessory",
+                    __["Name"],
+                    IconData["Name"],
+                    Size,
+                    Offset,
+                    getBackgroundColor(__["Rarity"]),
+                    false,
+                    ""
+                )
+            end
+        end
+        for i, __ in pairs(Requirement["Legendary"]) do
+            if __["Type"] == itemType then
+                local IconData = queryData(__["Name"])
+                local Offset = Vector2.new(IconData["Value"][3], IconData["Value"][4])
+                local Size = Vector2.new(IconData["Value"][1], IconData["Value"][2])
+                CreateItem(
+                    "Accessory",
+                    __["Name"],
+                    IconData["Name"],
+                    Size,
+                    Offset,
+                    getBackgroundColor(__["Rarity"]),
+                    false,
+                    ""
+                )
+            end
+        end
+        for i, __ in pairs(Requirement["Rare"]) do
+            if __["Type"] == itemType then
+                local IconData = queryData(__["Name"])
+                local Offset = Vector2.new(IconData["Value"][3], IconData["Value"][4])
+                local Size = Vector2.new(IconData["Value"][1], IconData["Value"][2])
+                CreateItem(
+                    "Accessory",
+                    __["Name"],
+                    IconData["Name"],
+                    Size,
+                    Offset,
+                    getBackgroundColor(__["Rarity"]),
+                    false,
+                    ""
+                )
+            end
+        end
+        for i, __ in pairs(Requirement["Uncommon"]) do
+            if __["Type"] == itemType then
+                local IconData = queryData(__["Name"])
+                local Offset = Vector2.new(IconData["Value"][3], IconData["Value"][4])
+                local Size = Vector2.new(IconData["Value"][1], IconData["Value"][2])
+                CreateItem(
+                    "Accessory",
+                    __["Name"],
+                    IconData["Name"],
+                    Size,
+                    Offset,
+                    getBackgroundColor(__["Rarity"]),
+                    false,
+                    ""
+                )
+            end
+        end
+        for i, __ in pairs(Requirement["Common"]) do
+            if __["Type"] == itemType then
+                local IconData = queryData(__["Name"])
+                local Offset = Vector2.new(IconData["Value"][3], IconData["Value"][4])
+                local Size = Vector2.new(IconData["Value"][1], IconData["Value"][2])
+                CreateItem(
+                    "Accessory",
+                    __["Name"],
+                    IconData["Name"],
+                    Size,
+                    Offset,
+                    getBackgroundColor(__["Rarity"]),
+                    false,
+                    ""
+                )
+            end
+        end
+        ItemRange = ItemMax
+    end
+    function SortItemGun(itemType)
+        for i, __ in pairs(Requirement["Mythical"]) do
+            if __["Type"] == itemType then
+                local IconData = queryData(__["Name"])
+                local Offset = Vector2.new(IconData["Value"][3], IconData["Value"][4])
+                local Size = Vector2.new(IconData["Value"][1], IconData["Value"][2])
+                CreateItem(
+                    "Gun",
+                    __["Name"],
+                    IconData["Name"],
+                    Size,
+                    Offset,
+                    getBackgroundColor(__["Rarity"]),
+                    false,
+                    ""
+                )
+            end
+        end
+        for i, __ in pairs(Requirement["Legendary"]) do
+            if __["Type"] == itemType then
+                local IconData = queryData(__["Name"])
+                local Offset = Vector2.new(IconData["Value"][3], IconData["Value"][4])
+                local Size = Vector2.new(IconData["Value"][1], IconData["Value"][2])
+                CreateItem(
+                    "Gun",
+                    __["Name"],
+                    IconData["Name"],
+                    Size,
+                    Offset,
+                    getBackgroundColor(__["Rarity"]),
+                    false,
+                    ""
+                )
+            end
+        end
+        for i, __ in pairs(Requirement["Rare"]) do
+            if __["Type"] == itemType then
+                local IconData = queryData(__["Name"])
+                local Offset = Vector2.new(IconData["Value"][3], IconData["Value"][4])
+                local Size = Vector2.new(IconData["Value"][1], IconData["Value"][2])
+                CreateItem(
+                    "Gun",
+                    __["Name"],
+                    IconData["Name"],
+                    Size,
+                    Offset,
+                    getBackgroundColor(__["Rarity"]),
+                    false,
+                    ""
+                )
+            end
+        end
+        for i, __ in pairs(Requirement["Uncommon"]) do
+            if __["Type"] == itemType then
+                local IconData = queryData(__["Name"])
+                local Offset = Vector2.new(IconData["Value"][3], IconData["Value"][4])
+                local Size = Vector2.new(IconData["Value"][1], IconData["Value"][2])
+                CreateItem(
+                    "Gun",
+                    __["Name"],
+                    IconData["Name"],
+                    Size,
+                    Offset,
+                    getBackgroundColor(__["Rarity"]),
+                    false,
+                    ""
+                )
+            end
+        end
+        for i, __ in pairs(Requirement["Common"]) do
+            if __["Type"] == itemType then
+                local IconData = queryData(__["Name"])
+                local Offset = Vector2.new(IconData["Value"][3], IconData["Value"][4])
+                local Size = Vector2.new(IconData["Value"][1], IconData["Value"][2])
+                CreateItem(
+                    "Gun",
+                    __["Name"],
+                    IconData["Name"],
+                    Size,
+                    Offset,
+                    getBackgroundColor(__["Rarity"]),
+                    false,
+                    ""
+                )
+            end
+        end
+        ItemRange = ItemMax
+    end
+    SortItemGun("Gun")
+    SortItemWear("Wear")
+    function SortItemMaterial(itemType)
+        for i, __ in pairs(Requirement["Mythical"]) do
+            if __["Type"] == itemType then
+                local IconData = queryData(__["Name"])
+                local Offset = Vector2.new(IconData["Value"][3], IconData["Value"][4])
+                local Size = Vector2.new(IconData["Value"][1], IconData["Value"][2])
+                CreateItem(
+                    "Material",
+                    __["Name"],
+                    IconData["Name"],
+                    Size,
+                    Offset,
+                    getBackgroundColor(__["Rarity"]),
+                    true,
+                    "x" .. __["Count"]
+                )
+            end
+        end
+        for i, __ in pairs(Requirement["Legendary"]) do
+            if __["Type"] == itemType then
+                local IconData = queryData(__["Name"])
+                local Offset = Vector2.new(IconData["Value"][3], IconData["Value"][4])
+                local Size = Vector2.new(IconData["Value"][1], IconData["Value"][2])
+                CreateItem(
+                    "Material",
+                    __["Name"],
+                    IconData["Name"],
+                    Size,
+                    Offset,
+                    getBackgroundColor(__["Rarity"]),
+                    true,
+                    "x" .. __["Count"]
+                )
+            end
+        end
+        for i, __ in pairs(Requirement["Rare"]) do
+            if __["Type"] == itemType then
+                local IconData = queryData(__["Name"])
+                local Offset = Vector2.new(IconData["Value"][3], IconData["Value"][4])
+                local Size = Vector2.new(IconData["Value"][1], IconData["Value"][2])
+                CreateItem(
+                    "Material",
+                    __["Name"],
+                    IconData["Name"],
+                    Size,
+                    Offset,
+                    getBackgroundColor(__["Rarity"]),
+                    true,
+                    "x" .. __["Count"]
+                )
+            end
+        end
+        for i, __ in pairs(Requirement["Uncommon"]) do
+            if __["Type"] == itemType then
+                local IconData = queryData(__["Name"])
+                local Offset = Vector2.new(IconData["Value"][3], IconData["Value"][4])
+                local Size = Vector2.new(IconData["Value"][1], IconData["Value"][2])
+                CreateItem(
+                    "Material",
+                    __["Name"],
+                    IconData["Name"],
+                    Size,
+                    Offset,
+                    getBackgroundColor(__["Rarity"]),
+                    true,
+                    "x" .. __["Count"]
+                )
+            end
+        end
+        for i, __ in pairs(Requirement["Common"]) do
+            if __["Type"] == itemType then
+                local IconData = queryData(__["Name"])
+                local Offset = Vector2.new(IconData["Value"][3], IconData["Value"][4])
+                local Size = Vector2.new(IconData["Value"][1], IconData["Value"][2])
+                CreateItem(
+                    "Material",
+                    __["Name"],
+                    IconData["Name"],
+                    Size,
+                    Offset,
+                    getBackgroundColor(__["Rarity"]),
+                    true,
+                    "x" .. __["Count"]
+                )
+            end
+        end
+        ItemRange = ItemMax
+    end
+    SortItemMaterial("Material")
+    local MaleeY = getgenv().MobileMode and 0.1 or 0.0922693312
+    function CreateItemMalee(ImageId)
+        local ImageLabel = Instance.new("ImageLabel")
+        ImageLabel.Parent = CreateItemScreen
+        ImageLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+        ImageLabel.BackgroundTransparency = 1.000
+        ImageLabel.BorderColor3 = Color3.fromRGB(27, 42, 53)
+        ImageLabel.BorderSizePixel = 0
+        ImageLabel.Position = UDim2.new(getgenv().MobileMode and 0.9 or 0.915300548, 0, MaleeY, 0)
+        ImageLabel.Size = getgenv().MobileMode and UDim2.new(0, 60, 0, 60) or UDim2.new(0, 100, 0, 100)
+        ImageLabel.Image = ImageId
+        MaleeY = MaleeY + (getgenv().MobileMode and OffsetYToSacle(61) or OffsetYToSacle(102))
+    end
+    RequestGodhuman = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BuyGodhuman", true)
+    if RequestGodhuman == 1 then
+        table.insert(MaleeList, "http://www.roblox.com/asset/?id=10338473987")
+    end
+    RequestSuperhuman = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BuySuperhuman", true)
+    if RequestSuperhuman == 1 then
+        table.insert(MaleeList, "http://www.roblox.com/asset/?id=4831781711")
+    end
+    RequestSharkMan = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BuySharkmanKarate", true)
+    if RequestSharkMan == 1 then
+        table.insert(MaleeList, "http://www.roblox.com/asset/?id=6525157144")
+    end
+    RequestDeathStep = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BuyDeathStep", true)
+    if RequestDeathStep == 1 then
+        table.insert(MaleeList, "http://www.roblox.com/asset/?id=6085350468")
+    end
+    RequestElectricClaw = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BuyElectricClaw", true)
+    if RequestElectricClaw == 1 then
+        table.insert(MaleeList, "http://www.roblox.com/asset/?id=6866994470")
+    end
+    RequestDragonTalon = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BuyDragonTalon", true)
+    if RequestDragonTalon == 1 then
+        table.insert(MaleeList, "http://www.roblox.com/asset/?id=7831677967")
+    end
+    RequestSanguineArt = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BuySanguineArt", true)
+    if RequestSanguineArt == 1 then
+        table.insert(MaleeList, "http://www.roblox.com/asset/?id=135442068517596")
+    end
+    for i, v in pairs(MaleeList) do
+        CreateItemMalee(v)
+    end
+    for i, v in pairs(AwakeningToggler:GetChildren()) do
+        if v:IsA("Frame") or v:IsA("TextLabel") then
+            v.Visible = false
         end
     end
-    for i, __ in pairs(Requirement['Legendary']) do
-        if __['Type'] == itemType then
-            local IconData = queryData(__['Name'])
-            local Offset = Vector2.new(IconData['Value'][3], IconData['Value'][4])
-            local Size = Vector2.new(IconData['Value'][1], IconData['Value'][2])
-            CreateItemFruit(__['Type'], __['Name'], IconData['Name'], Size, Offset, getBackgroundColor(__['Rarity']), true, "x" .. __['Count'])
-        end
-    end
-    for i, __ in pairs(Requirement['Rare']) do
-        if __['Type'] == itemType then
-            local IconData = queryData(__['Name'])
-            local Offset = Vector2.new(IconData['Value'][3], IconData['Value'][4])
-            local Size = Vector2.new(IconData['Value'][1], IconData['Value'][2])
-            CreateItemFruit(__['Type'], __['Name'], IconData['Name'], Size, Offset, getBackgroundColor(__['Rarity']), true, "x" .. __['Count'])
-        end
-    end
-    for i, __ in pairs(Requirement['Uncommon']) do
-        if __['Type'] == itemType then
-            local IconData = queryData(__['Name'])
-            local Offset = Vector2.new(IconData['Value'][3], IconData['Value'][4])
-            local Size = Vector2.new(IconData['Value'][1], IconData['Value'][2])
-            CreateItemFruit(__['Type'], __['Name'], IconData['Name'], Size, Offset, getBackgroundColor(__['Rarity']), true, "x" .. __['Count'])
-        end
-    end
-    for i, __ in pairs(Requirement['Common']) do
-        if __['Type'] == itemType then
-            local IconData = queryData(__['Name'])
-            local Offset = Vector2.new(IconData['Value'][3], IconData['Value'][4])
-            local Size = Vector2.new(IconData['Value'][1], IconData['Value'][2])
-            CreateItemFruit(__['Type'], __['Name'], IconData['Name'], Size, Offset, getBackgroundColor(__['Rarity']), true, "x" .. __['Count'])
-        end
-    end
-    ItemRange = ItemMax
-end
-SortItemBloxFruit("Blox Fruit")
-function SortItemWear(itemType)
-    for i, __ in pairs(Requirement['Mythical']) do
-        if __['Type'] == itemType then
-            local IconData = queryData(__['Name'])
-            local Offset = Vector2.new(IconData['Value'][3], IconData['Value'][4])
-            local Size = Vector2.new(IconData['Value'][1], IconData['Value'][2])
-            CreateItem('Accessory', __['Name'], IconData['Name'], Size, Offset, getBackgroundColor(__['Rarity']), false, "")
-        end
-    end
-    for i, __ in pairs(Requirement['Legendary']) do
-        if __['Type'] == itemType then
-            local IconData = queryData(__['Name'])
-            local Offset = Vector2.new(IconData['Value'][3], IconData['Value'][4])
-            local Size = Vector2.new(IconData['Value'][1], IconData['Value'][2])
-            CreateItem('Accessory', __['Name'], IconData['Name'], Size, Offset, getBackgroundColor(__['Rarity']), false, "")
-        end
-    end
-    for i, __ in pairs(Requirement['Rare']) do
-        if __['Type'] == itemType then
-            local IconData = queryData(__['Name'])
-            local Offset = Vector2.new(IconData['Value'][3], IconData['Value'][4])
-            local Size = Vector2.new(IconData['Value'][1], IconData['Value'][2])
-            CreateItem('Accessory', __['Name'], IconData['Name'], Size, Offset, getBackgroundColor(__['Rarity']), false, "")
-        end
-    end
-    for i, __ in pairs(Requirement['Uncommon']) do
-        if __['Type'] == itemType then
-            local IconData = queryData(__['Name'])
-            local Offset = Vector2.new(IconData['Value'][3], IconData['Value'][4])
-            local Size = Vector2.new(IconData['Value'][1], IconData['Value'][2])
-            CreateItem('Accessory', __['Name'], IconData['Name'], Size, Offset, getBackgroundColor(__['Rarity']), false, "")
-        end
-    end
-    for i, __ in pairs(Requirement['Common']) do
-        if __['Type'] == itemType then
-            local IconData = queryData(__['Name'])
-            local Offset = Vector2.new(IconData['Value'][3], IconData['Value'][4])
-            local Size = Vector2.new(IconData['Value'][1], IconData['Value'][2])
-            CreateItem('Accessory', __['Name'], IconData['Name'], Size, Offset, getBackgroundColor(__['Rarity']), false, "")
-        end
-    end
-    ItemRange = ItemMax
-end
-function SortItemGun(itemType)
-    for i, __ in pairs(Requirement['Mythical']) do
-        if __['Type'] == itemType then
-            local IconData = queryData(__['Name'])
-            local Offset = Vector2.new(IconData['Value'][3], IconData['Value'][4])
-            local Size = Vector2.new(IconData['Value'][1], IconData['Value'][2])
-            CreateItem('Gun', __['Name'], IconData['Name'], Size, Offset, getBackgroundColor(__['Rarity']), false, "")
-        end
-    end
-    for i, __ in pairs(Requirement['Legendary']) do
-        if __['Type'] == itemType then
-            local IconData = queryData(__['Name'])
-            local Offset = Vector2.new(IconData['Value'][3], IconData['Value'][4])
-            local Size = Vector2.new(IconData['Value'][1], IconData['Value'][2])
-            CreateItem('Gun', __['Name'], IconData['Name'], Size, Offset, getBackgroundColor(__['Rarity']), false, "")
-        end
-    end
-    for i, __ in pairs(Requirement['Rare']) do
-        if __['Type'] == itemType then
-            local IconData = queryData(__['Name'])
-            local Offset = Vector2.new(IconData['Value'][3], IconData['Value'][4])
-            local Size = Vector2.new(IconData['Value'][1], IconData['Value'][2])
-            CreateItem('Gun', __['Name'], IconData['Name'], Size, Offset, getBackgroundColor(__['Rarity']), false, "")
-        end
-    end
-    for i, __ in pairs(Requirement['Uncommon']) do
-        if __['Type'] == itemType then
-            local IconData = queryData(__['Name'])
-            local Offset = Vector2.new(IconData['Value'][3], IconData['Value'][4])
-            local Size = Vector2.new(IconData['Value'][1], IconData['Value'][2])
-            CreateItem('Gun', __['Name'], IconData['Name'], Size, Offset, getBackgroundColor(__['Rarity']), false, "")
-        end
-    end
-    for i, __ in pairs(Requirement['Common']) do
-        if __['Type'] == itemType then
-            local IconData = queryData(__['Name'])
-            local Offset = Vector2.new(IconData['Value'][3], IconData['Value'][4])
-            local Size = Vector2.new(IconData['Value'][1], IconData['Value'][2])
-            CreateItem('Gun', __['Name'], IconData['Name'], Size, Offset, getBackgroundColor(__['Rarity']), false, "")
-        end
-    end
-    ItemRange = ItemMax
-end
-SortItemGun('Gun')
-SortItemWear('Wear')
-function SortItemMaterial(itemType)
-    for i, __ in pairs(Requirement['Mythical']) do
-        if __['Type'] == itemType then
-            local IconData = queryData(__['Name'])
-            local Offset = Vector2.new(IconData['Value'][3], IconData['Value'][4])
-            local Size = Vector2.new(IconData['Value'][1], IconData['Value'][2])
-            CreateItem('Material', __['Name'], IconData['Name'], Size, Offset, getBackgroundColor(__['Rarity']), true, "x" .. __['Count'])
-        end
-    end
-    for i, __ in pairs(Requirement['Legendary']) do
-        if __['Type'] == itemType then
-            local IconData = queryData(__['Name'])
-            local Offset = Vector2.new(IconData['Value'][3], IconData['Value'][4])
-            local Size = Vector2.new(IconData['Value'][1], IconData['Value'][2])
-            CreateItem('Material', __['Name'], IconData['Name'], Size, Offset, getBackgroundColor(__['Rarity']), true, "x" .. __['Count'])
-        end
-    end
-    for i, __ in pairs(Requirement['Rare']) do
-        if __['Type'] == itemType then
-            local IconData = queryData(__['Name'])
-            local Offset = Vector2.new(IconData['Value'][3], IconData['Value'][4])
-            local Size = Vector2.new(IconData['Value'][1], IconData['Value'][2])
-            CreateItem('Material', __['Name'], IconData['Name'], Size, Offset, getBackgroundColor(__['Rarity']), true, "x" .. __['Count'])
-        end
-    end
-    for i, __ in pairs(Requirement['Uncommon']) do
-        if __['Type'] == itemType then
-            local IconData = queryData(__['Name'])
-            local Offset = Vector2.new(IconData['Value'][3], IconData['Value'][4])
-            local Size = Vector2.new(IconData['Value'][1], IconData['Value'][2])
-            CreateItem('Material', __['Name'], IconData['Name'], Size, Offset, getBackgroundColor(__['Rarity']), true, "x" .. __['Count'])
-        end
-    end
-    for i, __ in pairs(Requirement['Common']) do
-        if __['Type'] == itemType then
-            local IconData = queryData(__['Name'])
-            local Offset = Vector2.new(IconData['Value'][3], IconData['Value'][4])
-            local Size = Vector2.new(IconData['Value'][1], IconData['Value'][2])
-            CreateItem('Material', __['Name'], IconData['Name'], Size, Offset, getBackgroundColor(__['Rarity']), true, "x" .. __['Count'])
-        end
-    end
-    ItemRange = ItemMax
-end
-SortItemMaterial('Material')
-local MaleeY = getgenv().MobileMode and 0.1 or 0.0922693312
-function CreateItemMalee(ImageId)
-    local ImageLabel = Instance.new("ImageLabel")
-    ImageLabel.Parent = CreateItemScreen
-    ImageLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    ImageLabel.BackgroundTransparency = 1.000
-    ImageLabel.BorderColor3 = Color3.fromRGB(27, 42, 53)
-    ImageLabel.BorderSizePixel = 0
-    ImageLabel.Position = UDim2.new(getgenv().MobileMode and 0.9 or 0.915300548, 0, MaleeY, 0)
-    ImageLabel.Size = getgenv().MobileMode and UDim2.new(0, 60, 0, 60) or UDim2.new(0, 100, 0, 100)
-    ImageLabel.Image = ImageId
-    MaleeY = MaleeY + (getgenv().MobileMode and OffsetYToSacle(61) or OffsetYToSacle(102))
-end
-RequestGodhuman = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BuyGodhuman", true)
-if RequestGodhuman == 1 then
-    table.insert(MaleeList, "http://www.roblox.com/asset/?id=10338473987")
-end
-RequestSuperhuman = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BuySuperhuman", true)
-if RequestSuperhuman == 1 then
-    table.insert(MaleeList, "http://www.roblox.com/asset/?id=4831781711")
-end
-RequestSharkMan = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BuySharkmanKarate", true)
-if RequestSharkMan == 1 then
-    table.insert(MaleeList, "http://www.roblox.com/asset/?id=6525157144")
-end
-RequestDeathStep = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BuyDeathStep", true)
-if RequestDeathStep == 1 then
-    table.insert(MaleeList, "http://www.roblox.com/asset/?id=6085350468")
-end
-RequestElectricClaw = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BuyElectricClaw", true)
-if RequestElectricClaw == 1 then
-    table.insert(MaleeList, "http://www.roblox.com/asset/?id=6866994470")
-end
-RequestDragonTalon = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BuyDragonTalon", true)
-if RequestDragonTalon == 1 then
-    table.insert(MaleeList, "http://www.roblox.com/asset/?id=7831677967")
-end
-RequestSanguineArt = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BuySanguineArt", true)
-if RequestSanguineArt == 1 then
-    table.insert(MaleeList, "http://www.roblox.com/asset/?id=135442068517596")
-end
-for i, v in pairs(MaleeList) do
-    CreateItemMalee(v)
-end
-for i, v in pairs(AwakeningToggler:GetChildren()) do
-    if v:IsA('Frame') or v:IsA('TextLabel') then
-        v.Visible = false
-    end
-end
 
-AwakeningToggler.Visible = true
-wait(4 * math.random(0.5, 2.5))
-local AwakeningTogglerMain = AwakeningToggler:Clone()
-AwakeningTogglerMain.Name = HttpService:GenerateGUID()
-AwakeningTogglerMain.Parent = CreateItemScreen
-AwakeningTogglerMain.Position = getgenv().MobileMode and UDim2.new(0.5, 0, 0.85, 0) or UDim2.new(0.5, 0, 0.8, 2)
-AwakeningTogglerMain.Size = getgenv().MobileMode and UDim2.new(0.8, 0, 0.2, 0) or UDim2.new(1, 0, 0.3, 0)
-for i, v in pairs(AwakeningTogglerMain:GetDescendants()) do
-    v.Name = HttpService:GenerateGUID()
-    if v:IsA('Frame') or v:IsA('TextLabel') then
-        v.Visible = true
-        if getgenv().MobileMode and v:IsA('TextLabel') then
-            v.TextSize = v.TextSize * 0.7
+    AwakeningToggler.Visible = true
+    wait(4 * math.random(0.5, 2.5))
+    local AwakeningTogglerMain = AwakeningToggler:Clone()
+    AwakeningTogglerMain.Name = HttpService:GenerateGUID()
+    AwakeningTogglerMain.Parent = CreateItemScreen
+    AwakeningTogglerMain.Position = getgenv().MobileMode and UDim2.new(0.5, 0, 0.85, 0) or UDim2.new(0.5, 0, 0.8, 2)
+    AwakeningTogglerMain.Size = getgenv().MobileMode and UDim2.new(0.8, 0, 0.2, 0) or UDim2.new(1, 0, 0.3, 0)
+    for i, v in pairs(AwakeningTogglerMain:GetDescendants()) do
+        v.Name = HttpService:GenerateGUID()
+        if v:IsA("Frame") or v:IsA("TextLabel") then
+            v.Visible = true
+            if getgenv().MobileMode and v:IsA("TextLabel") then
+                v.TextSize = v.TextSize * 0.7
+            end
         end
     end
-end
-AwakeningToggler.Visible = false
-for i, v in pairs(AwakeningToggler:GetChildren()) do
-    if v:IsA('Frame') or v:IsA('TextLabel') then
-        v.Visible = true
+    AwakeningToggler.Visible = false
+    for i, v in pairs(AwakeningToggler:GetChildren()) do
+        if v:IsA("Frame") or v:IsA("TextLabel") then
+            v.Visible = true
+        end
     end
-end
 end
 
 Dropdowns.KaitunCapDropdown =
@@ -3192,267 +4444,369 @@ Toggles.TogNPT:OnChanged(
     end
 )
 
-task.spawn(function()
-    local function MainProtector()
-        if not getgenv().NameProtect then return end
-        
-        local AllPlayers = {}
-        for _, Player in pairs(Players:GetPlayers()) do
-            table.insert(AllPlayers, Player.Name)
-            table.insert(AllPlayers, Player.DisplayName)
-        end
-        
-        local function IsPlayerName(Text)
-            for _, PlayerName in pairs(AllPlayers) do
-                if Text == PlayerName then return true end
+task.spawn(
+    function()
+        local function MainProtector()
+            if not getgenv().NameProtect then
+                return
             end
-            return false
-        end
-        
-        for _, Gui in pairs(CoreGui:GetDescendants()) do
-            if Gui:IsA("TextLabel") then
-                if IsPlayerName(Gui.Text) then
-                    if not ProtectedLabels[Gui] then
-                        ProtectedLabels[Gui] = Gui.Text
+
+            local AllPlayers = {}
+            for _, Player in pairs(Players:GetPlayers()) do
+                table.insert(AllPlayers, Player.Name)
+                table.insert(AllPlayers, Player.DisplayName)
+            end
+
+            local function IsPlayerName(Text)
+                for _, PlayerName in pairs(AllPlayers) do
+                    if Text == PlayerName then
+                        return true
                     end
-                    Gui.Text = PROTECTED_NAME
-                    
-                    if not MonitoredLabels[Gui] then
-                        MonitoredLabels[Gui] = true
-                        
-                        pcall(function()
-                            Gui:GetPropertyChangedSignal("Text"):Connect(function()
-                                if not getgenv().NameProtect then return end
-                                if Gui.Text ~= PROTECTED_NAME and (IsPlayerName(Gui.Text) or IsPlayerName(ProtectedLabels[Gui] or "")) then
-                                    Gui.Text = PROTECTED_NAME
+                end
+                return false
+            end
+
+            for _, Gui in pairs(CoreGui:GetDescendants()) do
+                if Gui:IsA("TextLabel") then
+                    if IsPlayerName(Gui.Text) then
+                        if not ProtectedLabels[Gui] then
+                            ProtectedLabels[Gui] = Gui.Text
+                        end
+                        Gui.Text = PROTECTED_NAME
+
+                        if not MonitoredLabels[Gui] then
+                            MonitoredLabels[Gui] = true
+
+                            pcall(
+                                function()
+                                    Gui:GetPropertyChangedSignal("Text"):Connect(
+                                        function()
+                                            if not getgenv().NameProtect then
+                                                return
+                                            end
+                                            if
+                                                Gui.Text ~= PROTECTED_NAME and
+                                                    (IsPlayerName(Gui.Text) or IsPlayerName(ProtectedLabels[Gui] or ""))
+                                             then
+                                                Gui.Text = PROTECTED_NAME
+                                            end
+                                        end
+                                    )
                                 end
-                            end)
-                        end)
-                        
-                        local Events = {"MouseButton1Click", "MouseButton1Down", "MouseButton1Up", 
-                                       "MouseButton2Click", "MouseButton2Down", "MouseButton2Up",
-                                       "MouseEnter", "MouseLeave", "InputBegan", "InputEnded",
-                                       "Activated", "TouchTap"}
-                        
-                        for _, EventName in pairs(Events) do
-                            pcall(function()
-                                if Gui[EventName] then
-                                    Gui[EventName]:Connect(function()
-                                        if not getgenv().NameProtect then return end
-                                        task.wait()
-                                        if IsPlayerName(ProtectedLabels[Gui] or "") or IsPlayerName(Gui.Text) then
+                            )
+
+                            local Events = {
+                                "MouseButton1Click",
+                                "MouseButton1Down",
+                                "MouseButton1Up",
+                                "MouseButton2Click",
+                                "MouseButton2Down",
+                                "MouseButton2Up",
+                                "MouseEnter",
+                                "MouseLeave",
+                                "InputBegan",
+                                "InputEnded",
+                                "Activated",
+                                "TouchTap"
+                            }
+
+                            for _, EventName in pairs(Events) do
+                                pcall(
+                                    function()
+                                        if Gui[EventName] then
+                                            Gui[EventName]:Connect(
+                                                function()
+                                                    if not getgenv().NameProtect then
+                                                        return
+                                                    end
+                                                    task.wait()
+                                                    if
+                                                        IsPlayerName(ProtectedLabels[Gui] or "") or
+                                                            IsPlayerName(Gui.Text)
+                                                     then
+                                                        Gui.Text = PROTECTED_NAME
+                                                    end
+                                                end
+                                            )
+                                        end
+                                    end
+                                )
+                            end
+
+                            local Connection
+                            Connection =
+                                RunService.Heartbeat:Connect(
+                                function()
+                                    if not getgenv().NameProtect then
+                                        if ProtectedLabels[Gui] then
+                                            Gui.Text = ProtectedLabels[Gui]
+                                        end
+                                        return
+                                    end
+
+                                    if not Gui.Parent then
+                                        Connection:Disconnect()
+                                        ProtectedLabels[Gui] = nil
+                                        MonitoredLabels[Gui] = nil
+                                        return
+                                    end
+
+                                    if
+                                        IsPlayerName(Gui.Text) or
+                                            (ProtectedLabels[Gui] and IsPlayerName(ProtectedLabels[Gui]))
+                                     then
+                                        if Gui.Text ~= PROTECTED_NAME then
                                             Gui.Text = PROTECTED_NAME
                                         end
-                                    end)
+                                    end
                                 end
-                            end)
+                            )
                         end
-                        
-                        local Connection
-                        Connection = RunService.Heartbeat:Connect(function()
-                            if not getgenv().NameProtect then
-                                if ProtectedLabels[Gui] then
-                                    Gui.Text = ProtectedLabels[Gui]
-                                end
-                                return
-                            end
-                            
-                            if not Gui.Parent then
-                                Connection:Disconnect()
-                                ProtectedLabels[Gui] = nil
-                                MonitoredLabels[Gui] = nil
-                                return
-                            end
-                            
-                            if IsPlayerName(Gui.Text) or (ProtectedLabels[Gui] and IsPlayerName(ProtectedLabels[Gui])) then
-                                if Gui.Text ~= PROTECTED_NAME then
-                                    Gui.Text = PROTECTED_NAME
-                                end
-                            end
-                        end)
                     end
                 end
             end
         end
-    end
-    
-    MainProtector()
-    
-    Players.PlayerAdded:Connect(function()
-        if not getgenv().NameProtect then return end
-        task.wait(0.5)
+
         MainProtector()
-    end)
-    
-    Players.PlayerRemoving:Connect(function()
-        if not getgenv().NameProtect then return end
-        MainProtector()
-    end)
-    
-    CoreGui.DescendantAdded:Connect(function(Object)
-        if not getgenv().NameProtect then return end
-        if Object:IsA("TextLabel") then
-            task.wait(0.1)
-            MainProtector()
-        end
-    end)
-    
-    while true do
-        task.wait(3)
-        if getgenv().NameProtect then
-            MainProtector()
+
+        Players.PlayerAdded:Connect(
+            function()
+                if not getgenv().NameProtect then
+                    return
+                end
+                task.wait(0.5)
+                MainProtector()
+            end
+        )
+
+        Players.PlayerRemoving:Connect(
+            function()
+                if not getgenv().NameProtect then
+                    return
+                end
+                MainProtector()
+            end
+        )
+
+        CoreGui.DescendantAdded:Connect(
+            function(Object)
+                if not getgenv().NameProtect then
+                    return
+                end
+                if Object:IsA("TextLabel") then
+                    task.wait(0.1)
+                    MainProtector()
+                end
+            end
+        )
+
+        while true do
+            task.wait(3)
+            if getgenv().NameProtect then
+                MainProtector()
+            end
         end
     end
-end)
+)
 
 local SettingFarm = Tabs.Setting:AddSection("Tab Settings Other")
 
-Tabs.Setting:AddButton({
+Tabs.Setting:AddButton(
+    {
         Title = "Stop Tween",
         Description = "Instant Stop Tween",
         Callback = function()
             StopTween()
         end
-    })
+    }
+)
 
-Tabs.Setting:AddButton({
-    Title = "FPS Boost",
-    Description = "Reduce Lag",
-    Callback = function()
-        Window:Dialog({
-            Title = "Boost You FPS",
-            Content = "Reduce Lag For Weak Device",
-            Buttons = {
+Tabs.Setting:AddButton(
+    {
+        Title = "FPS Boost",
+        Description = "Reduce Lag",
+        Callback = function()
+            Window:Dialog(
                 {
-                    Title = "Confirm",
-                    Callback = function()
-                        cailon()
-                    end
-                },
-                {
-                    Title = "Cancel",
-                    Callback = function()
-                        print("Cancelled.")
-                    end
+                    Title = "Boost You FPS",
+                    Content = "Reduce Lag For Weak Device",
+                    Buttons = {
+                        {
+                            Title = "Confirm",
+                            Callback = function()
+                                cailon()
+                            end
+                        },
+                        {
+                            Title = "Cancel",
+                            Callback = function()
+                                print("Cancelled.")
+                            end
+                        }
+                    }
                 }
-            }
-        })
+            )
+        end
+    }
+)
+
+Toggles.ToggleWhite = Tabs.Setting:AddToggle("ToggleWhite", {Title = "WhiteScreen", Default = false})
+Toggles.ToggleWhite:OnChanged(
+    function(Value)
+        getgenv().WhiteScreen = Value
+        if getgenv().WhiteScreen then
+            game:GetService("RunService"):Set3dRenderingEnabled(false)
+        else
+            game:GetService("RunService"):Set3dRenderingEnabled(true)
+        end
     end
-})
+)
 
-Toggles.ToggleWhite = Tabs.Setting:AddToggle("ToggleWhite", {Title = "WhiteScreen", Default = false })
-    Toggles.ToggleWhite:OnChanged(function(Value)
-       getgenv().WhiteScreen = Value
-       if getgenv().WhiteScreen then
-        game:GetService("RunService"):Set3dRenderingEnabled(false)
-    else
-        game:GetService("RunService"):Set3dRenderingEnabled(true)
-       end
-end)
-
-Sliders.FPSAmount = Tabs.Setting:AddSlider("FPSAmount", {
-    Title = "FPS Slider",
-    Description = "FPS Lock Slider",
-    Default = 120,
-    Min = 1,
-    Max = 240,
-    Rounding = 0,
-    Callback = function(Value)
+Sliders.FPSAmount =
+    Tabs.Setting:AddSlider(
+    "FPSAmount",
+    {
+        Title = "FPS Slider",
+        Description = "FPS Lock Slider",
+        Default = 120,
+        Min = 1,
+        Max = 240,
+        Rounding = 0,
+        Callback = function(Value)
+            getgenv().FPSAmount = math.floor(Value)
+        end
+    }
+)
+Sliders.FPSAmount:OnChanged(
+    function(Value)
         getgenv().FPSAmount = math.floor(Value)
     end
-}) 
-Sliders.FPSAmount:OnChanged(function(Value)
-    getgenv().FPSAmount = math.floor(Value)
-end)
-        
-Toggles.ToggleFPS = Tabs.Setting:AddToggle("ToggleFPS", {Title = "Lock FPS Cap", Default = true })
-Toggles.ToggleFPS:OnChanged(function(Value)
-    getgenv().FPSLock = Value
-end)
+)
 
-Toggles.VersionT = Tabs.Setting:AddToggle("VersionT", {
-    Title = "Disable Game Version",
-    Default = true
-})
-Toggles.VersionT:OnChanged(function(Value)
-    getgenv().DeleteVersion = Value
-end)
+Toggles.ToggleFPS = Tabs.Setting:AddToggle("ToggleFPS", {Title = "Lock FPS Cap", Default = true})
+Toggles.ToggleFPS:OnChanged(
+    function(Value)
+        getgenv().FPSLock = Value
+    end
+)
 
-Toggles.ToggleNotify = Tabs.Setting:AddToggle("ToggleNotify", {
-    Title = "Disable Notification",
-    Default = false
-})
-Toggles.ToggleNotify:OnChanged(function(Value)
-    getgenv().DisableNotification = Value
-end)
+Toggles.VersionT =
+    Tabs.Setting:AddToggle(
+    "VersionT",
+    {
+        Title = "Disable Game Version",
+        Default = true
+    }
+)
+Toggles.VersionT:OnChanged(
+    function(Value)
+        getgenv().DeleteVersion = Value
+    end
+)
 
-Toggles.ToggleEffect = Tabs.Setting:AddToggle("ToggleEffect", {Title = "Remove Effect", Default = true })
-Toggles.ToggleEffect:OnChanged(function(Value)
-    getgenv().RemoveEffect = Value
-end)
+Toggles.ToggleNotify =
+    Tabs.Setting:AddToggle(
+    "ToggleNotify",
+    {
+        Title = "Disable Notification",
+        Default = false
+    }
+)
+Toggles.ToggleNotify:OnChanged(
+    function(Value)
+        getgenv().DisableNotification = Value
+    end
+)
 
-Toggles.ToggleRejoin = Tabs.Setting:AddToggle("ToggleRejoin", {
-    Title = "Auto Rejoin",
-    Default = true
-})
-Toggles.ToggleRejoin:OnChanged(function(Value)
-    getgenv().AutoRejoin = Value
-end)
+Toggles.ToggleEffect = Tabs.Setting:AddToggle("ToggleEffect", {Title = "Remove Effect", Default = true})
+Toggles.ToggleEffect:OnChanged(
+    function(Value)
+        getgenv().RemoveEffect = Value
+    end
+)
+
+Toggles.ToggleRejoin =
+    Tabs.Setting:AddToggle(
+    "ToggleRejoin",
+    {
+        Title = "Auto Rejoin",
+        Default = true
+    }
+)
+Toggles.ToggleRejoin:OnChanged(
+    function(Value)
+        getgenv().AutoRejoin = Value
+    end
+)
 
 local SettingFarm = Tabs.Setting:AddSection("Tab Settings Farm")
 
 local PLR = Players.LocalPlayer
 local Character = PLR.Character or PLR.CharacterAdded:Wait()
 
-Toggles.ToggleBD = Tabs.Setting:AddToggle("ToggleBD", {
-    Title = "Body Velocity",
-    Default = false
-})
+Toggles.ToggleBD =
+    Tabs.Setting:AddToggle(
+    "ToggleBD",
+    {
+        Title = "Body Velocity",
+        Default = false
+    }
+)
 
-Toggles.ToggleBD:OnChanged(function(Value)
-    getgenv().BodyVelocity = Value
+Toggles.ToggleBD:OnChanged(
+    function(Value)
+        getgenv().BodyVelocity = Value
 
-    if Value then
-        if not BodyVelocityInstance then
-            BodyVelocityInstance = Instance.new("BodyVelocity")
-            BodyVelocityInstance.MaxForce = Vector3.new(math.huge, math.huge, math.huge)
-            BodyVelocityInstance.Velocity = Vector3.new(0, 0, 0)
-            BodyVelocityInstance.Parent = Character:WaitForChild("HumanoidRootPart")
-        end
-    else
-        if BodyVelocityInstance then
-            BodyVelocityInstance:Destroy()
-            BodyVelocityInstance = nil
+        if Value then
+            if not BodyVelocityInstance then
+                BodyVelocityInstance = Instance.new("BodyVelocity")
+                BodyVelocityInstance.MaxForce = Vector3.new(math.huge, math.huge, math.huge)
+                BodyVelocityInstance.Velocity = Vector3.new(0, 0, 0)
+                BodyVelocityInstance.Parent = Character:WaitForChild("HumanoidRootPart")
+            end
+        else
+            if BodyVelocityInstance then
+                BodyVelocityInstance:Destroy()
+                BodyVelocityInstance = nil
+            end
         end
     end
-end)
+)
 
-Toggles.ToggleNoClip = Tabs.Setting:AddToggle("ToggleNoClip", {
-    Title = "NoClip",
-    Default = false
-})
+Toggles.ToggleNoClip =
+    Tabs.Setting:AddToggle(
+    "ToggleNoClip",
+    {
+        Title = "NoClip",
+        Default = false
+    }
+)
 
-Toggles.ToggleNoClip:OnChanged(function(Value)
-    getgenv().NoClip = Value
+Toggles.ToggleNoClip:OnChanged(
+    function(Value)
+        getgenv().NoClip = Value
 
-    if Value then
-        NoClipConnection = RunService.Stepped:Connect(function()
-            if PLR.Character then
-                for _, Part in pairs(PLR.Character:GetDescendants()) do
-                    if Part:IsA("BasePart") then
-                        Part.CanCollide = false
+        if Value then
+            NoClipConnection =
+                RunService.Stepped:Connect(
+                function()
+                    if PLR.Character then
+                        for _, Part in pairs(PLR.Character:GetDescendants()) do
+                            if Part:IsA("BasePart") then
+                                Part.CanCollide = false
+                            end
+                        end
                     end
                 end
+            )
+        else
+            if NoClipConnection then
+                NoClipConnection:Disconnect()
+                NoClipConnection = nil
             end
-        end)
-    else
-        if NoClipConnection then
-            NoClipConnection:Disconnect()
-            NoClipConnection = nil
         end
     end
-end)
-
+)
 
 Toggles.TogglePos =
     Tabs.Setting:AddToggle(
@@ -3506,54 +4860,76 @@ Toggles.ToggleAttackMob:OnChanged(
 local sts = Tabs.Setting:AddSection("Tab Settings Stats")
 getgenv().SelectedStats = {}
 
-Dropdowns.StatDropdown = Tabs.Setting:AddDropdown("MultiDropdown", {
-    Title = "Stats To Add",
-    Description = "Select multiple stats to auto assign",
-    Values = {"Melee", "Defense", "Gun", "Sword", "Demon Fruit", "Smart Stats"},
-    Multi = true,
-    Default = {},
-})
+Dropdowns.StatDropdown =
+    Tabs.Setting:AddDropdown(
+    "MultiDropdown",
+    {
+        Title = "Stats To Add",
+        Description = "Select multiple stats to auto assign",
+        Values = {"Melee", "Defense", "Gun", "Sword", "Demon Fruit", "Smart Stats"},
+        Multi = true,
+        Default = {}
+    }
+)
 
-Dropdowns.StatDropdown:OnChanged(function(Value)
-    getgenv().SelectedStats = Value
-end)
+Dropdowns.StatDropdown:OnChanged(
+    function(Value)
+        getgenv().SelectedStats = Value
+    end
+)
 
-Sliders.PointSlider = Tabs.Setting:AddSlider("PointSlider", {
-    Title = "Points per assign",
-    Description = "Amount of points to assign each tick",
-    Default = 1,
-    Min = 1,
-    Max = 200,
-    Rounding = 0,
-})
+Sliders.PointSlider =
+    Tabs.Setting:AddSlider(
+    "PointSlider",
+    {
+        Title = "Points per assign",
+        Description = "Amount of points to assign each tick",
+        Default = 1,
+        Min = 1,
+        Max = 200,
+        Rounding = 0
+    }
+)
 
-Sliders.PointSlider:OnChanged(function(Value)
-    getgenv().AmountStats = Value
-end)
+Sliders.PointSlider:OnChanged(
+    function(Value)
+        getgenv().AmountStats = Value
+    end
+)
 
-Toggles.AutoStatToggle = Tabs.Setting:AddToggle("AutoStatToggle", {
-    Title = "Auto Stats",
-    Default = false,
-})
-Toggles.AutoStatToggle:OnChanged(function()
-    getgenv().AutoStats = Toggles.AutoStatToggle.Value
-end)
+Toggles.AutoStatToggle =
+    Tabs.Setting:AddToggle(
+    "AutoStatToggle",
+    {
+        Title = "Auto Stats",
+        Default = false
+    }
+)
+Toggles.AutoStatToggle:OnChanged(
+    function()
+        getgenv().AutoStats = Toggles.AutoStatToggle.Value
+    end
+)
 
 local ST = Tabs.Setting:AddSection("Tab Settings Tween")
 
-Sliders.TweenSlider = Tabs.Setting:AddSlider("Tween Speed", {
-    Title = "Speed Tween",
-    Description = "Adjust Tween Speed",
-    Default = 300,
-    Min = 100,
-    Max = 350,
-    Rounding = 0,
-    Callback = function(Value)
-        if TWEENSPEED ~= Value then
-            TWEENSPEED = Value
+Sliders.TweenSlider =
+    Tabs.Setting:AddSlider(
+    "Tween Speed",
+    {
+        Title = "Speed Tween",
+        Description = "Adjust Tween Speed",
+        Default = 300,
+        Min = 100,
+        Max = 350,
+        Rounding = 0,
+        Callback = function(Value)
+            if TWEENSPEED ~= Value then
+                TWEENSPEED = Value
+            end
         end
-    end
-})
+    }
+)
 
 Toggles.EntranceTP = Tabs.Setting:AddToggle("EntranceTP", {Title = "Entrance Tp", Default = true})
 Toggles.EntranceTP:OnChanged(
@@ -3576,89 +4952,108 @@ Toggles.ToggleBypass:OnChanged(
     end
 )
 
-Toggles.ToggleHealth = Tabs.Setting:AddToggle("ToggleHealth", {Title = "Anti Low Health", Default = false })
-Toggles.ToggleHealth:OnChanged(function(Value)
-    getgenv().AntiLowHealth = Value
-end)
-
-Sliders.HealthSlider = Tabs.Setting:AddSlider("HealthSlider", {
-    Title = "Low Health Threshold (%)",
-    Description = "Adjust low health threshold percentage",
-    Default = 35,
-    Min = 0,
-    Max = 100,
-    Rounding = 0,
-    Callback = function(Value)
-        if getgenv().LowHealthPer ~= Value then
-            getgenv().LowHealthPer = Value
-        end
+Toggles.ToggleHealth = Tabs.Setting:AddToggle("ToggleHealth", {Title = "Anti Low Health", Default = false})
+Toggles.ToggleHealth:OnChanged(
+    function(Value)
+        getgenv().AntiLowHealth = Value
     end
-})
+)
 
-Sliders.NotLowHealthSlider = Tabs.Setting:AddSlider("NotLowHealthSlider", {
-    Title = "Not Low Health Threshold (%)",
-    Description = "Adjust not low health threshold percentage",
-    Default = 70,
-    Min = 0,
-    Max = 100,
-    Rounding = 0,
-    Callback = function(Value)
-        if getgenv().NotLowHealthPer ~= Value then
-            getgenv().NotLowHealthPer = Value
+Sliders.HealthSlider =
+    Tabs.Setting:AddSlider(
+    "HealthSlider",
+    {
+        Title = "Low Health Threshold (%)",
+        Description = "Adjust low health threshold percentage",
+        Default = 35,
+        Min = 0,
+        Max = 100,
+        Rounding = 0,
+        Callback = function(Value)
+            if getgenv().LowHealthPer ~= Value then
+                getgenv().LowHealthPer = Value
+            end
         end
+    }
+)
+
+Sliders.NotLowHealthSlider =
+    Tabs.Setting:AddSlider(
+    "NotLowHealthSlider",
+    {
+        Title = "Not Low Health Threshold (%)",
+        Description = "Adjust not low health threshold percentage",
+        Default = 70,
+        Min = 0,
+        Max = 100,
+        Rounding = 0,
+        Callback = function(Value)
+            if getgenv().NotLowHealthPer ~= Value then
+                getgenv().NotLowHealthPer = Value
+            end
+        end
+    }
+)
+
+Dropdowns.SelectWeapon =
+    Tabs.Main:AddDropdown(
+    "SelectWeapon",
+    {
+        Title = "Select Weapon",
+        Values = {"Melee", "Sword", "Blox Fruit", "Gun"},
+        Multi = false,
+        Default = 1
+    }
+)
+Dropdowns.SelectWeapon:OnChanged(
+    function(Value)
+        getgenv().WeaponSelect = Value
     end
-})
+)
 
-
-Dropdowns.SelectWeapon = Tabs.Main:AddDropdown("SelectWeapon", {
-    Title = "Select Weapon",
-    Values = {'Melee', 'Sword', 'Blox Fruit', 'Gun'},
-    Multi = false,
-    Default = 1,
-})
-Dropdowns.SelectWeapon:OnChanged(function(Value)
-    getgenv().WeaponSelect = Value
-end)
-    
-    task.spawn(function()
+task.spawn(
+    function()
         while wait() do
-            pcall(function()
-                if getgenv().WeaponSelect == "Melee" then
-                    for i ,v in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
-                        if v.ToolTip == "Melee" then
-                            if game.Players.LocalPlayer.Backpack:FindFirstChild(tostring(v.Name)) then
-                                getgenv().WeaponChoose = v.Name
+            pcall(
+                function()
+                    if getgenv().WeaponSelect == "Melee" then
+                        for i, v in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
+                            if v.ToolTip == "Melee" then
+                                if game.Players.LocalPlayer.Backpack:FindFirstChild(tostring(v.Name)) then
+                                    getgenv().WeaponChoose = v.Name
+                                end
                             end
                         end
-                    end
-                elseif getgenv().WeaponSelect == "Sword" then
-                    for i ,v in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
-                        if v.ToolTip == "Sword" then
-                            if game.Players.LocalPlayer.Backpack:FindFirstChild(tostring(v.Name)) then
-                                getgenv().WeaponChoose = v.Name
+                    elseif getgenv().WeaponSelect == "Sword" then
+                        for i, v in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
+                            if v.ToolTip == "Sword" then
+                                if game.Players.LocalPlayer.Backpack:FindFirstChild(tostring(v.Name)) then
+                                    getgenv().WeaponChoose = v.Name
+                                end
                             end
                         end
-                    end
-                elseif getgenv().WeaponSelect == "Blox Fruit" then
-                    for i ,v in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
-                        if v.ToolTip == "Blox Fruit" then
-                            if game.Players.LocalPlayer.Backpack:FindFirstChild(tostring(v.Name)) then
-                                getgenv().WeaponChoose = v.Name
+                    elseif getgenv().WeaponSelect == "Blox Fruit" then
+                        for i, v in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
+                            if v.ToolTip == "Blox Fruit" then
+                                if game.Players.LocalPlayer.Backpack:FindFirstChild(tostring(v.Name)) then
+                                    getgenv().WeaponChoose = v.Name
+                                end
                             end
                         end
-                    end
-                else
-                    for i ,v in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
-                        if v.ToolTip == "Gun" then
-                            if game.Players.LocalPlayer.Backpack:FindFirstChild(tostring(v.Name)) then
-                                getgenv().WeaponChoose = v.Name
+                    else
+                        for i, v in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
+                            if v.ToolTip == "Gun" then
+                                if game.Players.LocalPlayer.Backpack:FindFirstChild(tostring(v.Name)) then
+                                    getgenv().WeaponChoose = v.Name
+                                end
                             end
                         end
                     end
                 end
-            end)
+            )
         end
-    end)
+    end
+)
 
 Sliders.SliderMobAura =
     Tabs.Main:AddSlider(
@@ -3688,64 +5083,98 @@ Toggles.ToggleFarmLevel:OnChanged(
     end
 )
 
-task.spawn(function()
-    while task.wait() do
+task.spawn(
+    function()
+        while task.wait() do
             if getgenv().FF then
-                pcall(function()
-                if game.Players.LocalPlayer.Data.Level.Value >= 10 then
-                    game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("requestEntrance",Vector3.new(-7894.6176757813, 5547.1416015625, -380.29119873047))
-                        for i,v in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
-                            if v.Name == "Shanda" then
-                                if v:FindFirstChild("Humanoid") and v:FindFirstChild("HumanoidRootPart") and v.Humanoid.Health > 0 then
-                                    repeat task.wait()
-                                        SH(v)
-                                    until not getgenv().FF or not v.Parent or v.Humanoid.Health <= 0
-                                    Tween(CFrame.new(-7678.48974609375, 5566.40380859375, -497.2156066894531))
-                                    _B = false
-                                end
-                            end
-                        end           
-                    end
-                end)
-            end
-        end
-    end)
-    
-task.spawn(function()
-    while task.wait() do
-            if getgenv().FFF then
-                pcall(function()
-                    CheckQuest()
-                    local QuestTitle = game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Container.QuestTitle.Title.Text
-                    if not string.find(QuestTitle, NameMon) then
-                        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("AbandonQuest")
-                    end
-                    if game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Visible == false then
-						Tween(CFrameQuest)
-					if (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - CFrameQuest.Position).Magnitude <= 5 then
-						game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("StartQuest",NameQuest,LevelQuest)
-                        end
-                    elseif game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Visible == true then
-                        if game:GetService("Workspace").Enemies:FindFirstChild(Mon) then
-                            for i,v in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
-                                if v:FindFirstChild("HumanoidRootPart") and v:FindFirstChild("Humanoid") and v.Humanoid.Health > 0 then
-                                    if v.Name == Mon then
-                                        if string.find(game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Container.QuestTitle.Title.Text, NameMon) then
-                                            repeat task.wait()
-                                              SH(v)
-                                            until not getgenv().FFF or v.Humanoid.Health <= 0 or not v.Parent or game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Visible == false
-                                        end
+                pcall(
+                    function()
+                        if game.Players.LocalPlayer.Data.Level.Value >= 10 then
+                            game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(
+                                "requestEntrance",
+                                Vector3.new(-7894.6176757813, 5547.1416015625, -380.29119873047)
+                            )
+                            for i, v in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
+                                if v.Name == "Shanda" then
+                                    if
+                                        v:FindFirstChild("Humanoid") and v:FindFirstChild("HumanoidRootPart") and
+                                            v.Humanoid.Health > 0
+                                     then
+                                        repeat
+                                            task.wait()
+                                            SH(v)
+                                        until not getgenv().FF or not v.Parent or v.Humanoid.Health <= 0
+                                        Tween(CFrame.new(-7678.48974609375, 5566.40380859375, -497.2156066894531))
+                                        _B = false
                                     end
                                 end
                             end
-                        else
-                            Tween(CFrameMon)
                         end
                     end
-                end)
+                )
             end
         end
-    end)
+    end
+)
+
+task.spawn(
+    function()
+        while task.wait() do
+            if getgenv().FFF then
+                pcall(
+                    function()
+                        CheckQuest()
+                        local QuestTitle =
+                            game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Container.QuestTitle.Title.Text
+                        if not string.find(QuestTitle, NameMon) then
+                            game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("AbandonQuest")
+                        end
+                        if game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Visible == false then
+                            Tween(CFrameQuest)
+                            if
+                                (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - CFrameQuest.Position).Magnitude <=
+                                    5
+                             then
+                                game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(
+                                    "StartQuest",
+                                    NameQuest,
+                                    LevelQuest
+                                )
+                            end
+                        elseif game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Visible == true then
+                            if game:GetService("Workspace").Enemies:FindFirstChild(Mon) then
+                                for i, v in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
+                                    if
+                                        v:FindFirstChild("HumanoidRootPart") and v:FindFirstChild("Humanoid") and
+                                            v.Humanoid.Health > 0
+                                     then
+                                        if v.Name == Mon then
+                                            if
+                                                string.find(
+                                                    game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Container.QuestTitle.Title.Text,
+                                                    NameMon
+                                                )
+                                             then
+                                                repeat
+                                                    task.wait()
+                                                    SH(v)
+                                                until not getgenv().FFF or v.Humanoid.Health <= 0 or not v.Parent or
+                                                    game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Visible ==
+                                                        false
+                                            end
+                                        end
+                                    end
+                                end
+                            else
+                                Tween(CFrameMon)
+                            end
+                        end
+                    end
+                )
+            end
+        end
+    end
+)
 
 Toggles.ToggleFarmNearest = Tabs.Main:AddToggle("ToggleFarmNearest", {Title = "Farm Mob Aura", Default = false})
 Toggles.ToggleFarmNearest:OnChanged(
@@ -3762,19 +5191,28 @@ Toggles.ToggleFarmBone:OnChanged(
 )
 
 function NearestFarm()
-    if not getgenv().FarmNearest then return false end
+    if not getgenv().FarmNearest then
+        return false
+    end
     enemies = Workspace.Enemies:GetChildren()
-    table.sort(enemies, function(a, b)
-        return a.Name < b.Name
-    end)
+    table.sort(
+        enemies,
+        function(a, b)
+            return a.Name < b.Name
+        end
+    )
     for _, V in ipairs(enemies) do
         if not getgenv().FarmNearest then
             StopTween()
             return false
         end
         if V:FindFirstChild("Humanoid") and V.Humanoid.Health > 0 and V:FindFirstChild("HumanoidRootPart") then
-            if (Players.LocalPlayer.Character.HumanoidRootPart.Position - V.HumanoidRootPart.Position).Magnitude <= (tonumber(getgenv().NearestMob) or 400) then
-                repeat task.wait()
+            if
+                (Players.LocalPlayer.Character.HumanoidRootPart.Position - V.HumanoidRootPart.Position).Magnitude <=
+                    (tonumber(getgenv().NearestMob) or 400)
+             then
+                repeat
+                    task.wait()
                     if not getgenv().FarmNearest then
                         StopTween()
                         _B = false
@@ -3790,11 +5228,27 @@ function NearestFarm()
 end
 
 function BoneFarm()
-    if not getgenv().FarmBone then return false end
+    if not getgenv().FarmBone then
+        return false
+    end
     List = {"Posessed Mummy", "Demonic Soul", "Reborn Skeleton", "Living Zombie"}
     Found = false
     bQuest = game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Container.QuestTitle.Title.Text
-    bQuestCFrame = CFrame.new(-9513.84277, 172.419067, 6077.3623, 0.109214641, 2.34422384e-08, 0.994018137, -4.35502905e-08, 0.99999994, -2.98091472e-08, -0.994018137, -2.17544258e-08, 0.109214656)
+    bQuestCFrame =
+        CFrame.new(
+        -9513.84277,
+        172.419067,
+        6077.3623,
+        0.109214641,
+        2.34422384e-08,
+        0.994018137,
+        -4.35502905e-08,
+        0.99999994,
+        -2.98091472e-08,
+        -0.994018137,
+        -2.17544258e-08,
+        0.109214656
+    )
 
     if not string.find(bQuest, "Posessed Mummy") then
         game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("AbandonQuest")
@@ -3802,51 +5256,59 @@ function BoneFarm()
     if game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Visible == false then
         Tween(bQuestCFrame)
         if (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - bQuestCFrame.Position).Magnitude <= 5 then
-            game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("StartQuest","HauntedQuest2",2)
+            game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("StartQuest", "HauntedQuest2", 2)
             task.wait(1)
         end
     elseif game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Visible == true then
-    for _, targetName in ipairs(List) do
-        if not getgenv().FarmBone then
-            Tween(Players.LocalPlayer.Character.HumanoidRootPart.CFrame)
-            return false
-        end
-        for _, V in pairs(Workspace.Enemies:GetChildren()) do
+        for _, targetName in ipairs(List) do
             if not getgenv().FarmBone then
                 Tween(Players.LocalPlayer.Character.HumanoidRootPart.CFrame)
                 return false
             end
-            if V.Name == targetName and V:FindFirstChild("Humanoid") and V.Humanoid.Health > 0 and V:FindFirstChild("HumanoidRootPart") then
-                repeat task.wait()
-                    if not getgenv().FarmBone then
-                        Tween(Players.LocalPlayer.Character.HumanoidRootPart.CFrame)
-                        return false
-                    end
-                    SH(V)
-                until not V.Parent or V.Humanoid.Health <= 0
-                Found = true
-                return true
+            for _, V in pairs(Workspace.Enemies:GetChildren()) do
+                if not getgenv().FarmBone then
+                    Tween(Players.LocalPlayer.Character.HumanoidRootPart.CFrame)
+                    return false
+                end
+                if
+                    V.Name == targetName and V:FindFirstChild("Humanoid") and V.Humanoid.Health > 0 and
+                        V:FindFirstChild("HumanoidRootPart")
+                 then
+                    repeat
+                        task.wait()
+                        if not getgenv().FarmBone then
+                            Tween(Players.LocalPlayer.Character.HumanoidRootPart.CFrame)
+                            return false
+                        end
+                        SH(V)
+                    until not V.Parent or V.Humanoid.Health <= 0
+                    Found = true
+                    return true
+                end
             end
-        end
-        for _, V in pairs(game:GetService("ReplicatedStorage"):GetChildren()) do
-            if not getgenv().FarmBone then
-                Tween(Players.LocalPlayer.Character.HumanoidRootPart.CFrame)
-                return false
-            end
-            if V.Name == targetName and V:FindFirstChild("Humanoid") and V.Humanoid.Health > 0 and V:FindFirstChild("HumanoidRootPart") then
-                repeat task.wait()
-                    if not getgenv().FarmBone then
-                        Tween(Players.LocalPlayer.Character.HumanoidRootPart.CFrame)
-                        return false
-                    end
-                    SH(V)
-                until not V.Parent or V.Humanoid.Health <= 0
-                Found = true
-                return true
+            for _, V in pairs(game:GetService("ReplicatedStorage"):GetChildren()) do
+                if not getgenv().FarmBone then
+                    Tween(Players.LocalPlayer.Character.HumanoidRootPart.CFrame)
+                    return false
+                end
+                if
+                    V.Name == targetName and V:FindFirstChild("Humanoid") and V.Humanoid.Health > 0 and
+                        V:FindFirstChild("HumanoidRootPart")
+                 then
+                    repeat
+                        task.wait()
+                        if not getgenv().FarmBone then
+                            Tween(Players.LocalPlayer.Character.HumanoidRootPart.CFrame)
+                            return false
+                        end
+                        SH(V)
+                    until not V.Parent or V.Humanoid.Health <= 0
+                    Found = true
+                    return true
+                end
             end
         end
     end
-end
     if not Found then
         Tween(CFrame.new(-9466.72949, 171.162918, 6132.01514))
     end
@@ -3857,9 +5319,39 @@ end
 local BF = Tabs.Main:AddSection("Tab Boss Farm")
 
 TableBoss = {
-    "The Gorilla King", "Bobby", "Yeti", "Mob Leader", "Vice Admiral", "Warden", "Chief Warden", "Swan", "Magma Admiral", "Fishman Lord", "Wysper", "Thunder God", "Cyborg", "Saber Expert",
-    "Diamond", "Jeremy", "Fajita", "Don Swan", "Smoke Admiral", "Cursed Captain", "Darkbeard", "Order", "Awakened Ice Admiral", "Tide Keeper",
-    "Stone", "Island Empress", "Kilo Admiral", "Captain Elephant", "Beautiful Pirate", "rip_indra True Form", "Longma", "Soul Reaper", "Cake Queen"
+    "The Gorilla King",
+    "Bobby",
+    "Yeti",
+    "Mob Leader",
+    "Vice Admiral",
+    "Warden",
+    "Chief Warden",
+    "Swan",
+    "Magma Admiral",
+    "Fishman Lord",
+    "Wysper",
+    "Thunder God",
+    "Cyborg",
+    "Saber Expert",
+    "Diamond",
+    "Jeremy",
+    "Fajita",
+    "Don Swan",
+    "Smoke Admiral",
+    "Cursed Captain",
+    "Darkbeard",
+    "Order",
+    "Awakened Ice Admiral",
+    "Tide Keeper",
+    "Stone",
+    "Island Empress",
+    "Kilo Admiral",
+    "Captain Elephant",
+    "Beautiful Pirate",
+    "rip_indra True Form",
+    "Longma",
+    "Soul Reaper",
+    "Cake Queen"
 }
 
 Boss = {}
@@ -3896,7 +5388,7 @@ Tabs.Main:AddButton(
         Title = "Refresh Boss",
         Description = "Refresh the list of bosses spawn in the server",
         Callback = function()
-             NewBossList = {}
+            NewBossList = {}
 
             for _, v in pairs(TableBoss) do
                 table.insert(NewBossList, v)
@@ -3924,11 +5416,17 @@ Toggles.ToggleBossFarm:OnChanged(
 )
 
 function BossFarm()
-    if not getgenv().BossFarm then return false end
+    if not getgenv().BossFarm then
+        return false
+    end
     if game:GetService("Workspace").Enemies:FindFirstChild(getgenv().SelectBoss) then
         for _, v in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
-            if v.Name == getgenv().SelectBoss and v:FindFirstChild("Humanoid") and v:FindFirstChild("HumanoidRootPart") and v.Humanoid.Health > 0 then
-                repeat wait()
+            if
+                v.Name == getgenv().SelectBoss and v:FindFirstChild("Humanoid") and v:FindFirstChild("HumanoidRootPart") and
+                    v.Humanoid.Health > 0
+             then
+                repeat
+                    wait()
                     SH(v)
                 until not getgenv().BossFarm or not v.Parent or v.Humanoid.Health <= 0
                 return true
@@ -3981,7 +5479,8 @@ BorderStroke.Transparency = 0.5
 
 BorderGradient = Instance.new("UIGradient")
 BorderGradient.Parent = BorderStroke
-BorderGradient.Color = ColorSequence.new{
+BorderGradient.Color =
+    ColorSequence.new {
     ColorSequenceKeypoint.new(0, Color3.fromRGB(120, 140, 255)),
     ColorSequenceKeypoint.new(0.5, Color3.fromRGB(200, 120, 255)),
     ColorSequenceKeypoint.new(1, Color3.fromRGB(120, 140, 255))
@@ -4044,17 +5543,17 @@ function createStatCard(name, icon, color, layoutOrder)
     Card.BackgroundTransparency = 0.92
     Card.BorderSizePixel = 0
     Card.LayoutOrder = layoutOrder
-    
+
     local CardCorner = Instance.new("UICorner")
     CardCorner.CornerRadius = UDim.new(0, 10)
     CardCorner.Parent = Card
-    
+
     local CardStroke = Instance.new("UIStroke")
     CardStroke.Parent = Card
     CardStroke.Color = color
     CardStroke.Thickness = 1
     CardStroke.Transparency = 0.7
-    
+
     local IconLabel = Instance.new("TextLabel")
     IconLabel.Parent = Card
     IconLabel.Size = UDim2.new(0, 30, 1, 0)
@@ -4064,7 +5563,7 @@ function createStatCard(name, icon, color, layoutOrder)
     IconLabel.TextColor3 = color
     IconLabel.TextSize = 16
     IconLabel.Font = Enum.Font.GothamBold
-    
+
     local NameLabel = Instance.new("TextLabel")
     NameLabel.Parent = Card
     NameLabel.Size = UDim2.new(0.4, 0, 1, 0)
@@ -4075,7 +5574,7 @@ function createStatCard(name, icon, color, layoutOrder)
     NameLabel.TextSize = 13
     NameLabel.Font = Enum.Font.Gotham
     NameLabel.TextXAlignment = Enum.TextXAlignment.Left
-    
+
     local ValueLabel = Instance.new("TextLabel")
     ValueLabel.Name = "Value"
     ValueLabel.Parent = Card
@@ -4087,7 +5586,7 @@ function createStatCard(name, icon, color, layoutOrder)
     ValueLabel.TextSize = 14
     ValueLabel.Font = Enum.Font.GothamBold
     ValueLabel.TextXAlignment = Enum.TextXAlignment.Right
-    
+
     return Card, ValueLabel
 end
 
@@ -4121,85 +5620,126 @@ DiscordStroke.Transparency = 0.5
 TweenService = game:GetService("TweenService")
 UserInputService = game:GetService("UserInputService")
 
-spawn(function()
-    while ScreenGui.Parent do
-        TweenService:Create(BorderGradient, TweenInfo.new(3, Enum.EasingStyle.Linear), {Rotation = 360}):Play()
-        wait(3)
-        BorderGradient.Rotation = 0
+spawn(
+    function()
+        while ScreenGui.Parent do
+            TweenService:Create(BorderGradient, TweenInfo.new(3, Enum.EasingStyle.Linear), {Rotation = 360}):Play()
+            wait(3)
+            BorderGradient.Rotation = 0
+        end
     end
-end)
+)
 
-MinimizeBtn.MouseEnter:Connect(function()
-    TweenService:Create(MinimizeBtn, TweenInfo.new(0.15), {BackgroundTransparency = 0.7}):Play()
-end)
+MinimizeBtn.MouseEnter:Connect(
+    function()
+        TweenService:Create(MinimizeBtn, TweenInfo.new(0.15), {BackgroundTransparency = 0.7}):Play()
+    end
+)
 
-MinimizeBtn.MouseLeave:Connect(function()
-    TweenService:Create(MinimizeBtn, TweenInfo.new(0.15), {BackgroundTransparency = 0.9}):Play()
-end)
+MinimizeBtn.MouseLeave:Connect(
+    function()
+        TweenService:Create(MinimizeBtn, TweenInfo.new(0.15), {BackgroundTransparency = 0.9}):Play()
+    end
+)
 
-DiscordBtn.MouseEnter:Connect(function()
-    TweenService:Create(DiscordBtn, TweenInfo.new(0.2), {BackgroundTransparency = 0, Size = UDim2.new(1, -28, 0, 40)}):Play()
-    TweenService:Create(DiscordStroke, TweenInfo.new(0.2), {Transparency = 0.2}):Play()
-end)
+DiscordBtn.MouseEnter:Connect(
+    function()
+        TweenService:Create(
+            DiscordBtn,
+            TweenInfo.new(0.2),
+            {BackgroundTransparency = 0, Size = UDim2.new(1, -28, 0, 40)}
+        ):Play()
+        TweenService:Create(DiscordStroke, TweenInfo.new(0.2), {Transparency = 0.2}):Play()
+    end
+)
 
-DiscordBtn.MouseLeave:Connect(function()
-    TweenService:Create(DiscordBtn, TweenInfo.new(0.2), {BackgroundTransparency = 0.2, Size = UDim2.new(1, -30, 0, 38)}):Play()
-    TweenService:Create(DiscordStroke, TweenInfo.new(0.2), {Transparency = 0.5}):Play()
-end)
+DiscordBtn.MouseLeave:Connect(
+    function()
+        TweenService:Create(
+            DiscordBtn,
+            TweenInfo.new(0.2),
+            {BackgroundTransparency = 0.2, Size = UDim2.new(1, -30, 0, 38)}
+        ):Play()
+        TweenService:Create(DiscordStroke, TweenInfo.new(0.2), {Transparency = 0.5}):Play()
+    end
+)
 
-DiscordBtn.MouseButton1Click:Connect(function()
-    if W then setclipboard(W) end
-    DiscordBtn.Text = "✓ Copied!"
-    TweenService:Create(DiscordBtn, TweenInfo.new(0.15), {BackgroundColor3 = Color3.fromRGB(0, 255, 127)}):Play()
-    wait(1.5)
-    DiscordBtn.Text = "🌐 Join Discord"
-    TweenService:Create(DiscordBtn, TweenInfo.new(0.15), {BackgroundColor3 = Color3.fromRGB(88, 101, 242)}):Play()
-end)
+DiscordBtn.MouseButton1Click:Connect(
+    function()
+        if W then
+            setclipboard(W)
+        end
+        DiscordBtn.Text = "✓ Copied!"
+        TweenService:Create(DiscordBtn, TweenInfo.new(0.15), {BackgroundColor3 = Color3.fromRGB(0, 255, 127)}):Play()
+        wait(1.5)
+        DiscordBtn.Text = "🌐 Join Discord"
+        TweenService:Create(DiscordBtn, TweenInfo.new(0.15), {BackgroundColor3 = Color3.fromRGB(88, 101, 242)}):Play()
+    end
+)
 
 isMinimized = false
-MinimizeBtn.MouseButton1Click:Connect(function()
-    isMinimized = not isMinimized
-    if isMinimized then
-        StatsContainer.Visible = false
-        DiscordBtn.Visible = false
-        TweenService:Create(MainFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quad), {Size = UDim2.new(0, 320, 0, 50)}):Play()
-        MinimizeBtn.Text = "+"
-    else
-        TweenService:Create(MainFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quad), {Size = UDim2.new(0, 320, 0, 220)}):Play()
-        MinimizeBtn.Text = "−"
-        wait(0.15)
-        StatsContainer.Visible = true
-        DiscordBtn.Visible = true
+MinimizeBtn.MouseButton1Click:Connect(
+    function()
+        isMinimized = not isMinimized
+        if isMinimized then
+            StatsContainer.Visible = false
+            DiscordBtn.Visible = false
+            TweenService:Create(
+                MainFrame,
+                TweenInfo.new(0.25, Enum.EasingStyle.Quad),
+                {Size = UDim2.new(0, 320, 0, 50)}
+            ):Play()
+            MinimizeBtn.Text = "+"
+        else
+            TweenService:Create(
+                MainFrame,
+                TweenInfo.new(0.25, Enum.EasingStyle.Quad),
+                {Size = UDim2.new(0, 320, 0, 220)}
+            ):Play()
+            MinimizeBtn.Text = "−"
+            wait(0.15)
+            StatsContainer.Visible = true
+            DiscordBtn.Visible = true
+        end
     end
-end)
+)
 
 local dragging, dragInput, dragStart, startPos
 
-Header.InputBegan:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-        dragging = true
-        dragStart = input.Position
-        startPos = MainFrame.Position
-        input.Changed:Connect(function()
-            if input.UserInputState == Enum.UserInputState.End then
-                dragging = false
-            end
-        end)
+Header.InputBegan:Connect(
+    function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+            dragging = true
+            dragStart = input.Position
+            startPos = MainFrame.Position
+            input.Changed:Connect(
+                function()
+                    if input.UserInputState == Enum.UserInputState.End then
+                        dragging = false
+                    end
+                end
+            )
+        end
     end
-end)
+)
 
-Header.InputChanged:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
-        dragInput = input
+Header.InputChanged:Connect(
+    function(input)
+        if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+            dragInput = input
+        end
     end
-end)
+)
 
-UserInputService.InputChanged:Connect(function(input)
-    if input == dragInput and dragging then
-        local delta = input.Position - dragStart
-        MainFrame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+UserInputService.InputChanged:Connect(
+    function(input)
+        if input == dragInput and dragging then
+            local delta = input.Position - dragStart
+            MainFrame.Position =
+                UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+        end
     end
-end)
+)
 
 function formatNumber(num)
     if num >= 1000000000 then
@@ -4227,16 +5767,21 @@ end
 function loadSavedData()
     filePath = "Romis Hub/ChestCollect_INFO.json"
     if isfile and isfile(filePath) then
-        local success, data = pcall(function()
-            return game:GetService("HttpService"):JSONDecode(readfile(filePath))
-        end)
+        local success, data =
+            pcall(
+            function()
+                return game:GetService("HttpService"):JSONDecode(readfile(filePath))
+            end
+        )
         return success and data or nil
     end
     return nil
 end
 
 function saveStats(timeElapsed, beliEarned, initialBeli, sessionStartTime)
-    if not writefile then return end
+    if not writefile then
+        return
+    end
     data = {
         TimeElapsed = timeElapsed,
         BeliEarned = beliEarned,
@@ -4247,26 +5792,30 @@ function saveStats(timeElapsed, beliEarned, initialBeli, sessionStartTime)
     if not isfolder("Romis Hub") then
         makefolder("Romis Hub")
     end
-    pcall(function()
-        writefile("Romis Hub/ChestCollect_INFO.json", game:GetService("HttpService"):JSONEncode(data))
-    end)
+    pcall(
+        function()
+            writefile("Romis Hub/ChestCollect_INFO.json", game:GetService("HttpService"):JSONEncode(data))
+        end
+    )
 end
 
-spawn(function()
-    while ScreenGui.Parent do
-        totalTime = totalTimeElapsed + (os.time() - sessionStartTime)
-        TimeValue.Text = formatTime(totalTime)
-        
-        CurrentBeli = game.Players.LocalPlayer.Data.Beli.Value
-        CurrentValue.Text = formatNumber(CurrentBeli)
-        
-        beliEarned = CurrentBeli - initialBeli
-        EarnedValue.Text = "+" .. formatNumber(beliEarned)
-        
-        saveStats(totalTime, beliEarned, initialBeli, sessionStartTime)
-        wait(1)
+spawn(
+    function()
+        while ScreenGui.Parent do
+            totalTime = totalTimeElapsed + (os.time() - sessionStartTime)
+            TimeValue.Text = formatTime(totalTime)
+
+            CurrentBeli = game.Players.LocalPlayer.Data.Beli.Value
+            CurrentValue.Text = formatNumber(CurrentBeli)
+
+            beliEarned = CurrentBeli - initialBeli
+            EarnedValue.Text = "+" .. formatNumber(beliEarned)
+
+            saveStats(totalTime, beliEarned, initialBeli, sessionStartTime)
+            wait(1)
+        end
     end
-end)
+)
 
 savedData = loadSavedData()
 sessionStartTime = os.time()
@@ -4284,48 +5833,46 @@ else
     totalTimeElapsed = 0
     initialBeli = game.Players.LocalPlayer.Data.Beli.Value
     getgenv().InitialBeli = initialBeli
-    print("- Initial Beli:", formatNumber(initialBeli))
 end
 
-
- a0 = {}
- a1 = ""
- a2 = os.date("!*t").hour
- a3 = false
- a4 =
+a0 = {}
+a1 = ""
+a2 = os.date("!*t").hour
+a3 = false
+a4 =
     pcall(
     function()
-        a0 = game:GetService("HttpService"):JSONDecode(readfile("ChestCollect.RomisHub"))
+        a0 = game:GetService("HttpService"):JSONDecode(readfile("ChestCollect_data.json"))
     end
 )
 if not a4 then
     table.insert(a0, a2)
-    writefile("ChestCollect.RomisHub", game:GetService("HttpService"):JSONEncode(a0))
+    writefile("ChestCollect_data.json", game:GetService("HttpService"):JSONEncode(a0))
 end
 
 function SendWebhook()
     if getgenv().EnableWebhook and getgenv().WebhookChest ~= "" then
-         CurrentBeli = game:GetService("Players").LocalPlayer.Data.Beli.Value
-         beliEarned = CurrentBeli - getgenv().LastBeli
+        CurrentBeli = game:GetService("Players").LocalPlayer.Data.Beli.Value
+        beliEarned = CurrentBeli - getgenv().LastBeli
         getgenv().LastBeli = CurrentBeli
-         LockBeli = getgenv().BeliLimit
-         StatusMessage = "Server hopped successfully"
-         PingMessage = ""
+        LockBeli = getgenv().BeliLimit
+        StatusMessage = "Server hopped successfully"
+        PingMessage = ""
 
         if CurrentBeli >= LockBeli then
             StatusMessage = "Congratulations! You've reached your Beli goal! Keep shining!"
-             pingUserID = getgenv().PingChest
+            pingUserID = getgenv().PingChest
             if pingUserID and pingUserID ~= "" then
                 PingMessage = "<@" .. pingUserID .. "> "
             end
         end
 
-         universeId = nil
-         success, response =
+        universeId = nil
+        success, response =
             pcall(
             function()
-                 ApiUrl = "https://apis.roblox.com/universes/v1/places/" .. game.PlaceId .. "/universe"
-                 result = http_request({Url = ApiUrl, Method = "GET"})
+                ApiUrl = "https://apis.roblox.com/universes/v1/places/" .. game.PlaceId .. "/universe"
+                result = http_request({Url = ApiUrl, Method = "GET"})
                 if result.Success then
                     return game:GetService("HttpService"):JSONDecode(result.Body).universeId
                 end
@@ -4469,7 +6016,7 @@ function TPReturner()
                         ab =
                             pcall(
                             function()
-                                delfile("ChestCollect.RomisHub")
+                                delfile("ChestCollect_data.json")
                                 a0 = {}
                                 table.insert(a0, a2)
                             end
@@ -4483,7 +6030,7 @@ function TPReturner()
                 wait()
                 pcall(
                     function()
-                        writefile("ChestCollect.RomisHub", game:GetService("HttpService"):JSONEncode(a0))
+                        writefile("ChestCollect_data.json", game:GetService("HttpService"):JSONEncode(a0))
                         SendWebhook()
                         wait()
                         game:GetService("TeleportService"):TeleportToPlaceInstance(r, a6, game.Players.LocalPlayer)
@@ -4494,6 +6041,7 @@ function TPReturner()
         end
     end
 end
+
 function Teleport()
     while wait() do
         pcall(
@@ -4521,37 +6069,38 @@ getgenv().FoundStop =
     game.ReplicatedStorage:FindFirstChild("Dough King [Lv. 9999] [Raid Boss]") or
     game.Workspace.Enemies:FindFirstChild("Dough King [Lv. 9999] [Raid Boss]")
 
-task.spawn(function()
-    while true do
-        repeat task.wait(1) until
-            getgenv().StartFarmChest
-            and getgenv().ResetAntiDetect
-            and not getgenv().FoundStop
-            and game.Players.LocalPlayer.Character
-            and game.Players.LocalPlayer.Character:FindFirstChild("Humanoid")
-            and game.Players.LocalPlayer.Character.Humanoid.Health > 0
-        task.wait(getgenv().ResetTime or 3)
-        if getgenv().StartFarmChest
-            and getgenv().ResetAntiDetect
-            and not getgenv().FoundStop
-            and game.Players.LocalPlayer.Character
-            and game.Players.LocalPlayer.Character:FindFirstChild("Humanoid")
-            and game.Players.LocalPlayer.Character.Humanoid.Health > 0 then
-            game.Players.LocalPlayer.Character.Humanoid.Health = 0
+task.spawn(
+    function()
+        while true do
+            repeat
+                task.wait(1)
+            until getgenv().StartFarmChest and getgenv().ResetAntiDetect and not getgenv().FoundStop and
+                game.Players.LocalPlayer.Character and
+                game.Players.LocalPlayer.Character:FindFirstChild("Humanoid") and
+                game.Players.LocalPlayer.Character.Humanoid.Health > 0
+            task.wait(getgenv().ResetTime or 3)
+            if
+                getgenv().StartFarmChest and getgenv().ResetAntiDetect and not getgenv().FoundStop and
+                    game.Players.LocalPlayer.Character and
+                    game.Players.LocalPlayer.Character:FindFirstChild("Humanoid") and
+                    game.Players.LocalPlayer.Character.Humanoid.Health > 0
+             then
+                game.Players.LocalPlayer.Character.Humanoid.Health = 0
+            end
         end
     end
-end)
+)
 
 function StartFarmChest()
     if not getgenv().StartFarmChest then
         return false
     end
-    
+
     local character = LocalPlayer.Character
     if not character or not character:FindFirstChild("HumanoidRootPart") then
         return false
     end
-    
+
     local crewTag = character:FindFirstChild("CrewBBG", true)
     if crewTag then
         crewTag:Destroy()
@@ -4561,73 +6110,83 @@ function StartFarmChest()
     if not humanoid or humanoid.Health <= 0 then
         return false
     end
-    
+
     local position = character.HumanoidRootPart.Position
     local chests = CollectionService:GetTagged("_ChestTagged")
     local distance, nearest = math.huge, nil
-    
+
     for _, chest in ipairs(chests) do
         if chest and not chest:GetAttribute("IsDisabled") then
-             chestPos = chest:GetPivot().Position
+            chestPos = chest:GetPivot().Position
             local magnitude = (chestPos - position).Magnitude
             if magnitude < distance then
                 distance, nearest = magnitude, chest
             end
         end
     end
-    
+
     if getgenv().SniperLegendaryItem then
         if getgenv().FoundStop then
             if getgenv().ResetAntiDetect then
                 getgenv().ResetAntiDetect = false
             end
-            Fluent:Notify({
-                Title = "Romis Hub",
-                Content = "Found legendary item! Stopping farm.",
-                Duration = 3
-            })
+            Fluent:Notify(
+                {
+                    Title = "Romis Hub",
+                    Content = "Found legendary item! Stopping farm.",
+                    Duration = 3
+                }
+            )
             return true
         end
     end
-    
+
     if nearest then
         chestPosition = nearest:GetPivot().Position
         getgenv().ResetAntiDetect = true
-        
-        local success = pcall(function()
-            character:PivotTo(CFrame.new(chestPosition))
-            task.wait(0.1)
-            
-            local rootPart = nearest:FindFirstChild("RootPart")
-            if rootPart and character:FindFirstChild("HumanoidRootPart") then
-                firetouchinterest(character.HumanoidRootPart, rootPart, 0)
+
+        local success =
+            pcall(
+            function()
+                character:PivotTo(CFrame.new(chestPosition))
                 task.wait(0.1)
-                firetouchinterest(character.HumanoidRootPart, rootPart, 1)
+
+                local rootPart = nearest:FindFirstChild("RootPart")
+                if rootPart and character:FindFirstChild("HumanoidRootPart") then
+                    firetouchinterest(character.HumanoidRootPart, rootPart, 0)
+                    task.wait(0.1)
+                    firetouchinterest(character.HumanoidRootPart, rootPart, 1)
+                end
             end
-        end)
-        
+        )
+
         if not success then
             warn("Failed to teleport to chest")
         end
-        
+
         return success
     else
         if getgenv().ResetAntiDetect then
             getgenv().ResetAntiDetect = false
         end
-        
-        Fluent:Notify({
-            Title = "Romis Hub",
-            Content = "No chests found, preparing to server hop...",
-            Duration = 2
-        })
-        
+
+        Fluent:Notify(
+            {
+                Title = "Romis Hub",
+                Content = "No chests found, preparing to server hop...",
+                Duration = 2
+            }
+        )
+
         task.wait(2)
-        
-        local success = pcall(function()
-            Teleport()
-        end)
-        
+
+        local success =
+            pcall(
+            function()
+                Teleport()
+            end
+        )
+
         return success
     end
 end
@@ -4738,17 +6297,22 @@ Sliders.ResetTimeSlider =
     }
 )
 
-Toggles.TogglePanel = Tabs.Main:AddToggle("TogglePanel", {
-    Title = "Show Status Panel",
-    Default = false
-})
-Toggles.TogglePanel:OnChanged(function(Value)
-    getgenv().ShowPanel = Value
-    if ScreenGui then
-        Gui(Value and getgenv().StartFarmChest)
+Toggles.TogglePanel =
+    Tabs.Main:AddToggle(
+    "TogglePanel",
+    {
+        Title = "Show Status Panel",
+        Default = false
+    }
+)
+Toggles.TogglePanel:OnChanged(
+    function(Value)
+        getgenv().ShowPanel = Value
+        if ScreenGui then
+            Gui(Value and getgenv().StartFarmChest)
+        end
     end
-end)
-
+)
 
 Toggles.ToggleSniperLegendaryItem =
     Tabs.Main:AddToggle(
@@ -4834,10 +6398,12 @@ Toggles.ToggleEliteMob:OnChanged(
     end
 )
 
-Toggles.ToggleFruitCollect = Tabs.SF:AddToggle("ToggleFruitCollect", {Title = "Auto Collect Fruit", Default = false })
-Toggles.ToggleFruitCollect:OnChanged(function(Value)
-    getgenv().FruitCollect = Value
-end)
+Toggles.ToggleFruitCollect = Tabs.SF:AddToggle("ToggleFruitCollect", {Title = "Auto Collect Fruit", Default = false})
+Toggles.ToggleFruitCollect:OnChanged(
+    function(Value)
+        getgenv().FruitCollect = Value
+    end
+)
 
 local ItemSec = Tabs.SF:AddSection("Tab Item")
 
@@ -4920,13 +6486,17 @@ local ItemsConfig = {
 
 function CheckSword(swordName)
     if swordName == "Koko" then
-        if game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Koko") or 
-           game:GetService("Players").LocalPlayer.Character:FindFirstChild("Koko") then
+        if
+            game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Koko") or
+                game:GetService("Players").LocalPlayer.Character:FindFirstChild("Koko")
+         then
             return true
         end
     elseif swordName == "Yama" then
-        if game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Yama") or 
-           game:GetService("Players").LocalPlayer.Character:FindFirstChild("Yama") then
+        if
+            game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Yama") or
+                game:GetService("Players").LocalPlayer.Character:FindFirstChild("Yama")
+         then
             return true
         end
     end
@@ -4937,61 +6507,65 @@ function FarmItems()
     if not getgenv().StartGetItem or not getgenv().ItemsFarmSelect then
         return false
     end
-    
+
     local itemConfig = ItemsConfig[getgenv().ItemsFarmSelect]
     if not itemConfig then
         return false
     end
-    
+
     if game.Players.LocalPlayer.Data.Level.Value < itemConfig.Level then
         return false
     end
-    
+
     if getgenv().ItemsFarmSelect == "Saber" and itemConfig.HasComplexQuest then
         return AutoSaberQuest()
     end
-    
+
     if getgenv().ItemsFarmSelect == "Koko" and itemConfig.HasComplexQuest then
         return AutoKokoQuest()
     end
-    
+
     if getgenv().ItemsFarmSelect == "Yama" and itemConfig.HasComplexQuest then
         return AutoYamaQuest()
     end
-    
+
     if itemConfig.NoBossFarm then
         return false
     end
-    
-    local success = pcall(function()
-        local enemyName = itemConfig.Enemy
-        
-        if game:GetService("Workspace").Enemies:FindFirstChild(enemyName) then
-            for _, v in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
-                if v.Name == enemyName and v:FindFirstChild("Humanoid") and 
-                   v:FindFirstChild("HumanoidRootPart") and v.Humanoid.Health > 0 then
-                    
-                    repeat
-                        task.wait()
-                        
-                        if ShouldInterrupt("FarmItems") then
-                            return false
-                        end
-                        SH(v)
-                    until not getgenv().StartGetItem or not v.Parent or v.Humanoid.Health <= 0
-                    
-                    return true
+
+    local success =
+        pcall(
+        function()
+            local enemyName = itemConfig.Enemy
+
+            if game:GetService("Workspace").Enemies:FindFirstChild(enemyName) then
+                for _, v in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
+                    if
+                        v.Name == enemyName and v:FindFirstChild("Humanoid") and v:FindFirstChild("HumanoidRootPart") and
+                            v.Humanoid.Health > 0
+                     then
+                        repeat
+                            task.wait()
+
+                            if ShouldInterrupt("FarmItems") then
+                                return false
+                            end
+                            SH(v)
+                        until not getgenv().StartGetItem or not v.Parent or v.Humanoid.Health <= 0
+
+                        return true
+                    end
                 end
+            elseif game:GetService("ReplicatedStorage"):FindFirstChild(enemyName) then
+                local boss = game:GetService("ReplicatedStorage"):FindFirstChild(enemyName)
+                if boss and boss:FindFirstChild("HumanoidRootPart") then
+                    Tween(boss.HumanoidRootPart.CFrame * CFrame.new(5, 10, 2))
+                end
+                return true
             end
-        elseif game:GetService("ReplicatedStorage"):FindFirstChild(enemyName) then
-            local boss = game:GetService("ReplicatedStorage"):FindFirstChild(enemyName)
-            if boss and boss:FindFirstChild("HumanoidRootPart") then
-                Tween(boss.HumanoidRootPart.CFrame * CFrame.new(5, 10, 2))
-            end
-            return true
         end
-    end)
-    
+    )
+
     return success
 end
 
@@ -4999,62 +6573,78 @@ function AutoKokoQuest()
     if CheckSword("Koko") then
         return false
     end
-    
-    pcall(function()
-        if not game:GetService("Players").LocalPlayer.Character:FindFirstChild("Microchip") and 
-           not game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Microchip") and
-           not game:GetService("Workspace").Enemies:FindFirstChild("Order") and 
-           not game:GetService("ReplicatedStorage"):FindFirstChild("Order") then
-            
-            wait(0.3)
-            game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BlackbeardReward", "Microchip", "1")
-            game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BlackbeardReward", "Microchip", "2")
-            return true
-        end
-        
-        if not game:GetService("Workspace").Enemies:FindFirstChild("Order") and 
-           not game:GetService("ReplicatedStorage"):FindFirstChild("Order") then
-            
-            if game:GetService("Players").LocalPlayer.Character:FindFirstChild("Microchip") or 
-               game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Microchip") then
-                
-                Tween(CFrame.new(-6217.2021484375, 28.047645568848, -5053.1357421875))
-                
-                wait(0.5)
-                if game:GetService("Workspace").Map.CircleIsland.RaidSummon.Button.Main:FindFirstChild("ClickDetector") then
-                    fireclickdetector(game:GetService("Workspace").Map.CircleIsland.RaidSummon.Button.Main.ClickDetector)
-                end
+
+    pcall(
+        function()
+            if
+                not game:GetService("Players").LocalPlayer.Character:FindFirstChild("Microchip") and
+                    not game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Microchip") and
+                    not game:GetService("Workspace").Enemies:FindFirstChild("Order") and
+                    not game:GetService("ReplicatedStorage"):FindFirstChild("Order")
+             then
+                wait(0.3)
+                game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BlackbeardReward", "Microchip", "1")
+                game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BlackbeardReward", "Microchip", "2")
                 return true
             end
-        end
-        
-        if game:GetService("ReplicatedStorage"):FindFirstChild("Order") or 
-           game:GetService("Workspace").Enemies:FindFirstChild("Order") then
-            
-            if game:GetService("Workspace").Enemies:FindFirstChild("Order") then
-                for i, v in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
-                    if v.Name == "Order" then
-                        if v:FindFirstChild("Humanoid") and v:FindFirstChild("HumanoidRootPart") and v.Humanoid.Health > 0 then
-                            repeat
-                                task.wait()
-                                
-                                if ShouldInterrupt("FarmItems") then
-                                    return false
-                                end
-                                SH(v)
-                            until not v.Parent or v.Humanoid.Health <= 0 or not getgenv().StartGetItem or CheckSword("Koko") == true
-                            
-                            return true
+
+            if
+                not game:GetService("Workspace").Enemies:FindFirstChild("Order") and
+                    not game:GetService("ReplicatedStorage"):FindFirstChild("Order")
+             then
+                if
+                    game:GetService("Players").LocalPlayer.Character:FindFirstChild("Microchip") or
+                        game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Microchip")
+                 then
+                    Tween(CFrame.new(-6217.2021484375, 28.047645568848, -5053.1357421875))
+
+                    wait(0.5)
+                    if
+                        game:GetService("Workspace").Map.CircleIsland.RaidSummon.Button.Main:FindFirstChild(
+                            "ClickDetector"
+                        )
+                     then
+                        fireclickdetector(
+                            game:GetService("Workspace").Map.CircleIsland.RaidSummon.Button.Main.ClickDetector
+                        )
+                    end
+                    return true
+                end
+            end
+
+            if
+                game:GetService("ReplicatedStorage"):FindFirstChild("Order") or
+                    game:GetService("Workspace").Enemies:FindFirstChild("Order")
+             then
+                if game:GetService("Workspace").Enemies:FindFirstChild("Order") then
+                    for i, v in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
+                        if v.Name == "Order" then
+                            if
+                                v:FindFirstChild("Humanoid") and v:FindFirstChild("HumanoidRootPart") and
+                                    v.Humanoid.Health > 0
+                             then
+                                repeat
+                                    task.wait()
+
+                                    if ShouldInterrupt("FarmItems") then
+                                        return false
+                                    end
+                                    SH(v)
+                                until not v.Parent or v.Humanoid.Health <= 0 or not getgenv().StartGetItem or
+                                    CheckSword("Koko") == true
+
+                                return true
+                            end
                         end
                     end
+                elseif game:GetService("ReplicatedStorage"):FindFirstChild("Order") then
+                    Tween(CFrame.new(-6217.2021484375, 28.047645568848, -5053.1357421875))
+                    return true
                 end
-            elseif game:GetService("ReplicatedStorage"):FindFirstChild("Order") then
-                Tween(CFrame.new(-6217.2021484375, 28.047645568848, -5053.1357421875))
-                return true
             end
         end
-    end)
-    
+    )
+
     return true
 end
 
@@ -5062,96 +6652,168 @@ function AutoSaberQuest()
     if game.Players.LocalPlayer.Data.Level.Value < 200 then
         return false
     end
-    
-    pcall(function()
-        if game:GetService("Workspace").Map.Jungle.Final.Part.Transparency == 0 then
-            if game:GetService("Workspace").Map.Jungle.QuestPlates.Door.Transparency ~= 0 then
-                if game:GetService("Workspace").Map.Desert.Burn.Part.Transparency ~= 0 then
-                    if game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("ProQuestProgress", "SickMan") == 0 then
-                        if game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("ProQuestProgress", "RichSon") ~= "RichSon" then
-                            if game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("ProQuestProgress", "RichSon") == 0 then
-                                if game:GetService("Workspace").Enemies:FindFirstChild("Mob Leader") or 
-                                   game:GetService("ReplicatedStorage"):FindFirstChild("Mob Leader") then
-                                    Tween(CFrame.new(-2967.59521, -4.91089821, 5328.70703))
-                                    
-                                    for _, v in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
-                                        if v.Name == "Mob Leader" then
-                                            if v:FindFirstChild("Humanoid") and v:FindFirstChild("HumanoidRootPart") and v.Humanoid.Health > 0 then
-                                                repeat
-                                                    task.wait()
-                                                    if ShouldInterrupt("FarmItems") then return false end
-                                                    SH(v)
-                                                until v.Humanoid.Health <= 0 or not getgenv().StartGetItem
-                                            end
-                                            
-                                            if game:GetService("ReplicatedStorage"):FindFirstChild("Mob Leader [Lv. 120] [Boss]") then
-                                                Tween(game:GetService("ReplicatedStorage"):FindFirstChild("Mob Leader [Lv. 120] [Boss]").HumanoidRootPart.CFrame * CFrame.new(0, 30, 0))
+
+    pcall(
+        function()
+            if game:GetService("Workspace").Map.Jungle.Final.Part.Transparency == 0 then
+                if game:GetService("Workspace").Map.Jungle.QuestPlates.Door.Transparency ~= 0 then
+                    if game:GetService("Workspace").Map.Desert.Burn.Part.Transparency ~= 0 then
+                        if
+                            game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(
+                                "ProQuestProgress",
+                                "SickMan"
+                            ) == 0
+                         then
+                            if
+                                game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(
+                                    "ProQuestProgress",
+                                    "RichSon"
+                                ) ~= "RichSon"
+                             then
+                                if
+                                    game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(
+                                        "ProQuestProgress",
+                                        "RichSon"
+                                    ) == 0
+                                 then
+                                    if
+                                        game:GetService("Workspace").Enemies:FindFirstChild("Mob Leader") or
+                                            game:GetService("ReplicatedStorage"):FindFirstChild("Mob Leader")
+                                     then
+                                        Tween(CFrame.new(-2967.59521, -4.91089821, 5328.70703))
+
+                                        for _, v in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
+                                            if v.Name == "Mob Leader" then
+                                                if
+                                                    v:FindFirstChild("Humanoid") and
+                                                        v:FindFirstChild("HumanoidRootPart") and
+                                                        v.Humanoid.Health > 0
+                                                 then
+                                                    repeat
+                                                        task.wait()
+                                                        if ShouldInterrupt("FarmItems") then
+                                                            return false
+                                                        end
+                                                        SH(v)
+                                                    until v.Humanoid.Health <= 0 or not getgenv().StartGetItem
+                                                end
+
+                                                if
+                                                    game:GetService("ReplicatedStorage"):FindFirstChild(
+                                                        "Mob Leader [Lv. 120] [Boss]"
+                                                    )
+                                                 then
+                                                    Tween(
+                                                        game:GetService("ReplicatedStorage"):FindFirstChild(
+                                                            "Mob Leader [Lv. 120] [Boss]"
+                                                        ).HumanoidRootPart.CFrame * CFrame.new(0, 30, 0)
+                                                    )
+                                                end
                                             end
                                         end
                                     end
+                                elseif
+                                    game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(
+                                        "ProQuestProgress",
+                                        "RichSon"
+                                    ) == 1
+                                 then
+                                    game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(
+                                        "ProQuestProgress",
+                                        "RichSon"
+                                    )
+                                    wait(0.5)
+                                    EquipWeapon("Relic")
+                                    wait(0.5)
+                                    Tween(CFrame.new(-1404.91504, 29.9773273, 3.80598116))
                                 end
-                            elseif game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("ProQuestProgress", "RichSon") == 1 then
-                                game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("ProQuestProgress", "RichSon")
-                                wait(0.5)
-                                EquipWeapon("Relic")
-                                wait(0.5)
-                                Tween(CFrame.new(-1404.91504, 29.9773273, 3.80598116))
+                            else
+                                game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(
+                                    "ProQuestProgress",
+                                    "RichSon"
+                                )
                             end
                         else
-                            game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("ProQuestProgress", "RichSon")
+                            game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(
+                                "ProQuestProgress",
+                                "GetCup"
+                            )
+                            wait(0.5)
+                            EquipWeapon("Cup")
+                            wait(0.5)
+                            game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(
+                                "ProQuestProgress",
+                                "FillCup",
+                                game:GetService("Players").LocalPlayer.Character.Cup
+                            )
+                            wait(0)
+                            game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(
+                                "ProQuestProgress",
+                                "SickMan"
+                            )
                         end
+                    elseif
+                        game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Torch") or
+                            game.Players.LocalPlayer.Character:FindFirstChild("Torch")
+                     then
+                        EquipWeapon("Torch")
+                        Tween(CFrame.new(1114.61475, 5.04679728, 4350.22803))
                     else
-                        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("ProQuestProgress", "GetCup")
-                        wait(0.5)
-                        EquipWeapon("Cup")
-                        wait(0.5)
-                        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("ProQuestProgress", "FillCup", game:GetService("Players").LocalPlayer.Character.Cup)
-                        wait(0)
-                        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("ProQuestProgress", "SickMan")
+                        Tween(CFrame.new(-1610.00757, 11.5049858, 164.001587))
                     end
-                elseif game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Torch") or 
-                       game.Players.LocalPlayer.Character:FindFirstChild("Torch") then
-                    EquipWeapon("Torch")
-                    Tween(CFrame.new(1114.61475, 5.04679728, 4350.22803))
+                elseif
+                    (CFrame.new(-1612.55884, 36.9774132, 148.719543).Position -
+                        game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude <= 100
+                 then
+                    Tween(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame)
+                    wait(1)
+                    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame =
+                        game:GetService("Workspace").Map.Jungle.QuestPlates.Plate1.Button.CFrame
+                    wait(1)
+                    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame =
+                        game:GetService("Workspace").Map.Jungle.QuestPlates.Plate2.Button.CFrame
+                    wait(1)
+                    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame =
+                        game:GetService("Workspace").Map.Jungle.QuestPlates.Plate3.Button.CFrame
+                    wait(1)
+                    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame =
+                        game:GetService("Workspace").Map.Jungle.QuestPlates.Plate4.Button.CFrame
+                    wait(1)
+                    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame =
+                        game:GetService("Workspace").Map.Jungle.QuestPlates.Plate5.Button.CFrame
+                    wait(1)
                 else
-                    Tween(CFrame.new(-1610.00757, 11.5049858, 164.001587))
+                    Tween(CFrame.new(-1612.55884, 36.9774132, 148.719543))
                 end
-            elseif (CFrame.new(-1612.55884, 36.9774132, 148.719543).Position - 
-                    game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude <= 100 then
-                Tween(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame)
-                wait(1)
-                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game:GetService("Workspace").Map.Jungle.QuestPlates.Plate1.Button.CFrame
-                wait(1)
-                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game:GetService("Workspace").Map.Jungle.QuestPlates.Plate2.Button.CFrame
-                wait(1)
-                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game:GetService("Workspace").Map.Jungle.QuestPlates.Plate3.Button.CFrame
-                wait(1)
-                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game:GetService("Workspace").Map.Jungle.QuestPlates.Plate4.Button.CFrame
-                wait(1)
-                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game:GetService("Workspace").Map.Jungle.QuestPlates.Plate5.Button.CFrame
-                wait(1)
-            else
-                Tween(CFrame.new(-1612.55884, 36.9774132, 148.719543))
-            end
-        elseif game:GetService("Workspace").Enemies:FindFirstChild("Saber Expert") or 
-               game:GetService("ReplicatedStorage"):FindFirstChild("Saber Expert") then
-            for _, v in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
-                if v:FindFirstChild("Humanoid") and v:FindFirstChild("HumanoidRootPart") and 
-                   v.Humanoid.Health > 0 and v.Name == "Saber Expert" then
-                    repeat
-                        task.wait()
-                        if ShouldInterrupt("FarmItems") then return false end
-                        SH(v)
-                    until v.Humanoid.Health <= 0 or not getgenv().StartGetItem
-                    
-                    if v.Humanoid.Health <= 0 then
-                        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("ProQuestProgress", "PlaceRelic")
+            elseif
+                game:GetService("Workspace").Enemies:FindFirstChild("Saber Expert") or
+                    game:GetService("ReplicatedStorage"):FindFirstChild("Saber Expert")
+             then
+                for _, v in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
+                    if
+                        v:FindFirstChild("Humanoid") and v:FindFirstChild("HumanoidRootPart") and v.Humanoid.Health > 0 and
+                            v.Name == "Saber Expert"
+                     then
+                        repeat
+                            task.wait()
+                            if ShouldInterrupt("FarmItems") then
+                                return false
+                            end
+                            SH(v)
+                        until v.Humanoid.Health <= 0 or not getgenv().StartGetItem
+
+                        if v.Humanoid.Health <= 0 then
+                            game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(
+                                "ProQuestProgress",
+                                "PlaceRelic"
+                            )
+                        end
                     end
                 end
             end
         end
-    end)
-    
+    )
+
     return true
 end
 
@@ -5159,49 +6821,76 @@ function AutoYamaQuest()
     if CheckSword("Yama") then
         return false
     end
-    
-    pcall(function()
-        if game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("EliteHunter", "Progress") >= 30 then
-            repeat
-                wait()
-                fireclickdetector(game:GetService("Workspace").Map.Waterfall.SealedKatana.Handle.ClickDetector)
-            until game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Yama") or 
-                  game:GetService("Players").LocalPlayer.Character:FindFirstChild("Yama") or 
-                  not getgenv().StartGetItem
-            return true
+
+    pcall(
+        function()
+            if game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("EliteHunter", "Progress") >= 30 then
+                repeat
+                    wait()
+                    fireclickdetector(game:GetService("Workspace").Map.Waterfall.SealedKatana.Handle.ClickDetector)
+                until game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Yama") or
+                    game:GetService("Players").LocalPlayer.Character:FindFirstChild("Yama") or
+                    not getgenv().StartGetItem
+                return true
+            end
         end
-    end)
-    
+    )
+
     return false
 end
 
-Dropdowns.SelectItemsFarm = Tabs.SF:AddDropdown("SelectItemsFarm", {
-    Title = "Select Items",
-    Values = {
-        "Saber", "Pole", "Flail", "SawSword", "WardensSword", 
-        "Trident", "AcidumRifle", "Rengoku", "Koko", "TrueTripleKatana", 
-        "BuddySword", "Canvander", "Yama", "DarkDagger"
-    },
-    Multi = false,
-    Default = 1,
-})
+Dropdowns.SelectItemsFarm =
+    Tabs.SF:AddDropdown(
+    "SelectItemsFarm",
+    {
+        Title = "Select Items",
+        Values = {
+            "Saber",
+            "Pole",
+            "Flail",
+            "SawSword",
+            "WardensSword",
+            "Trident",
+            "AcidumRifle",
+            "Rengoku",
+            "Koko",
+            "TrueTripleKatana",
+            "BuddySword",
+            "Canvander",
+            "Yama",
+            "DarkDagger"
+        },
+        Multi = false,
+        Default = 1
+    }
+)
 
-Dropdowns.SelectItemsFarm:OnChanged(function(Value)
-    getgenv().ItemsFarmSelect = Value
-    local itemConfig = ItemsConfig[Value]
-    if itemConfig then
-        getgenv().EnemiesName = itemConfig.Enemy
+Dropdowns.SelectItemsFarm:OnChanged(
+    function(Value)
+        getgenv().ItemsFarmSelect = Value
+        local itemConfig = ItemsConfig[Value]
+        if itemConfig then
+            getgenv().EnemiesName = itemConfig.Enemy
+        end
     end
-end)
+)
 
-Toggles.ToggleFarmItems = Tabs.SF:AddToggle("StartGetItem", {
-    Title = "Auto Farm Items",
-    Default = false
-})
+Toggles.ToggleFarmItems =
+    Tabs.SF:AddToggle(
+    "StartGetItem",
+    {
+        Title = "Auto Farm Items",
+        Default = false
+    }
+)
 
-Toggles.ToggleFarmItems:OnChanged(function(Value)
-    getgenv().StartGetItem = Value
-end)
+Toggles.ToggleFarmItems:OnChanged(
+    function(Value)
+        getgenv().StartGetItem = Value
+    end
+)
+
+-- Tab Game Event --
 
 local GameEventSecction = Tabs.E:AddSection("Tab PvP")
 
@@ -5249,7 +6938,7 @@ Toggles.ToggleTeleport:OnChanged(
             function()
                 if getgenv().TeleportSelectPlayer then
                     repeat
-                     TargetPlayer = game:GetService("Players"):FindFirstChild(getgenv().SelectPlayer)
+                        TargetPlayer = game:GetService("Players"):FindFirstChild(getgenv().SelectPlayer)
                         if
                             TargetPlayer and TargetPlayer.Character and
                                 TargetPlayer.Character:FindFirstChild("HumanoidRootPart")
@@ -5280,10 +6969,10 @@ function KillPlayerNear()
     end
     ptarget = nil
     for _, v in pairs(game:GetService("Workspace").Characters:GetChildren()) do
-        if v.Name == getgenv().SelectPlayer and 
-           v:FindFirstChild("Humanoid") and 
-           v:FindFirstChild("HumanoidRootPart") and 
-           v.Humanoid.Health > 0 then
+        if
+            v.Name == getgenv().SelectPlayer and v:FindFirstChild("Humanoid") and v:FindFirstChild("HumanoidRootPart") and
+                v.Humanoid.Health > 0
+         then
             ptarget = v
             break
         end
@@ -5296,27 +6985,31 @@ function KillPlayerNear()
         if ShouldInterrupt("KillPlayerNear") then
             return false
         end
-        if not ptarget or not ptarget.Parent or 
-           not ptarget:FindFirstChild("HumanoidRootPart") or 
-           not ptarget:FindFirstChild("Humanoid") then
+        if
+            not ptarget or not ptarget.Parent or not ptarget:FindFirstChild("HumanoidRootPart") or
+                not ptarget:FindFirstChild("Humanoid")
+         then
             return false
         end
         if not game.Players:FindFirstChild(getgenv().SelectPlayer) then
             return false
         end
-        if (ptarget.HumanoidRootPart.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude > 300 then
+        if
+            (ptarget.HumanoidRootPart.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude >
+                300
+         then
             Tween(ptarget.HumanoidRootPart.CFrame * CFrame.new(0, 5, 0))
-        elseif (ptarget.HumanoidRootPart.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude <= 300 then
+        elseif
+            (ptarget.HumanoidRootPart.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude <=
+                300
+         then
             EnbalePvP()
             SH(ptarget)
         end
-        
-    until not getgenv().KillPlayerNear or 
-          not game.Players:FindFirstChild(getgenv().SelectPlayer) or
-          not ptarget.Parent or
-          not ptarget:FindFirstChild("Humanoid") or
-          ptarget.Humanoid.Health <= 0
-    
+    until not getgenv().KillPlayerNear or not game.Players:FindFirstChild(getgenv().SelectPlayer) or not ptarget.Parent or
+        not ptarget:FindFirstChild("Humanoid") or
+        ptarget.Humanoid.Health <= 0
+
     return true
 end
 
@@ -5335,15 +7028,512 @@ Toggles.SpectateToggle:OnChanged(
     end
 )
 
-Toggles.ToggleTu = Tabs.E:AddToggle("ToggleTu", {Title = "Auto Enable PVP", Default = false })
+Toggles.ToggleTu = Tabs.E:AddToggle("ToggleTu", {Title = "Auto Enable PVP", Default = false})
 Toggles.ToggleTu:OnChanged(
     function(Value)
         getgenv().AutoEnblePvP = Value
     end
 )
 
+local GameEventSecctionRace = Tabs.E:AddSection("Tab Race")
+
+Tabs.E:AddButton(
+    {
+        Title = "Reroll Race",
+        Description = "Reroll player current race",
+        Callback = function()
+            Window:Dialog(
+                {
+                    Title = "Reroll Race",
+                    Content = "Instant reroll player current race",
+                    Buttons = {
+                        {
+                            Title = "Confirm",
+                            Callback = function()
+                                game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(
+                                    "BlackbeardReward",
+                                    "Reroll",
+                                    "1"
+                                )
+                                game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(
+                                    "BlackbeardReward",
+                                    "Reroll",
+                                    "2"
+                                )
+                            end
+                        },
+                        {
+                            Title = "Cancel",
+                            Callback = function()
+                                print("Cancelled.")
+                            end
+                        }
+                    }
+                }
+            )
+        end
+    }
+)
+
+Tabs.E:AddButton(
+    {
+        Title = "Change Ghoul Race",
+        Description = "Change player current race to Ghoul",
+        Callback = function()
+            Window:Dialog(
+                {
+                    Title = "Change Ghoul Race",
+                    Content = "Instant change player current race to ghoul",
+                    Buttons = {
+                        {
+                            Title = "Confirm",
+                            Callback = function()
+                                local args = {
+                                    [1] = "Ectoplasm",
+                                    [2] = "BuyCheck",
+                                    [3] = 4
+                                }
+                                game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
+                                local args = {
+                                    [1] = "Ectoplasm",
+                                    [2] = "Change",
+                                    [3] = 4
+                                }
+                                game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
+                            end
+                        },
+                        {
+                            Title = "Cancel",
+                            Callback = function()
+                                print("Cancelled.")
+                            end
+                        }
+                    }
+                }
+            )
+        end
+    }
+)
+
+Tabs.E:AddButton(
+    {
+        Title = "Change Cyborg Race",
+        Description = "Change player current race to Cyborg",
+        Callback = function()
+            Window:Dialog(
+                {
+                    Title = "Change Cyborg Race",
+                    Content = "Instant Change player current race to Cyborg",
+                    Buttons = {
+                        {
+                            Title = "Confirm",
+                            Callback = function()
+                                local args = {
+                                    [1] = "Ectoplasm",
+                                    [2] = "BuyCheck",
+                                    [3] = 4
+                                }
+                                game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
+                                local args = {
+                                    [1] = "Ectoplasm",
+                                    [2] = "Change",
+                                    [3] = 4
+                                }
+                                game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
+                            end
+                        },
+                        {
+                            Title = "Cancel",
+                            Callback = function()
+                                print("Cancelled.")
+                            end
+                        }
+                    }
+                }
+            )
+        end
+    }
+)
+
+Tabs.E:AddButton(
+    {
+        Title = "Remove Fog",
+        Description = "See the map easier.",
+        Callback = function()
+            RemoveFog()
+        end
+    }
+)
+
+Tabs.E:AddButton(
+    {
+        Title = "Reset Character",
+        Description = "instant reset character",
+        Callback = function()
+            Window:Dialog(
+                {
+                    Title = "Reset Character",
+                    Content = "instant reset",
+                    Buttons = {
+                        {
+                            Title = "Confirm",
+                            Callback = function()
+                                game.Players.LocalPlayer.Character.Humanoid.Health = 0
+                            end
+                        },
+                        {
+                            Title = "Cancel",
+                            Callback = function()
+                                print("Cancelled.")
+                            end
+                        }
+                    }
+                }
+            )
+        end
+    }
+)
+
+function GetHighestPoint()
+    if not game.workspace.Map:FindFirstChild("MysticIsland") then
+        return nil
+    end
+    for r, v in pairs(game:GetService("Workspace").Map.MysticIsland:GetDescendants()) do
+        if v:IsA("MeshPart") then
+            if v.MeshId == "rbxassetid://6745037796" then
+                return v
+            end
+        end
+    end
+end
+
+function TweenHighestPoint()
+    HighestPoint = GetHighestPoint()
+    if HighestPoint then
+        Tween(HighestPoint.CFrame * CFrame.new(0, 211.88, 0))
+    end
+end
+
+function TPIAdvancedDealer()
+    repeat
+        wait()
+    until game:GetService("Workspace").Map:FindFirstChild("MysticIsland")
+    if game:GetService("Workspace").Map:FindFirstChild("MysticIsland") then
+        AllNPCS = getnilinstances()
+        for a, b in pairs(game:GetService("Workspace").NPCs:GetChildren()) do
+            table.insert(AllNPCS, b)
+        end
+        for a, b in pairs(AllNPCS) do
+            if b.Name == "Advanced Fruit Dealer" then
+                Tween(b.HumanoidRootPart.CFrame)
+            end
+        end
+    end
+end
+
+Tabs.E:AddButton(
+    {
+        Title = "TP To Advanced Fruit Dealer",
+        Description = "instant TP to Advanced Fruit Dealer",
+        Callback = function()
+            TPIAdvancedDealer()
+        end
+    }
+)
+
+Tabs.E:AddButton(
+    {
+        Title = "TP To Highest Mirage",
+        Description = "instant TP to highest point Mirage Island",
+        Callback = function()
+            TweenHighestPoint()
+        end
+    }
+)
+
+Tabs.E:AddButton(
+    {
+        Title = "TP Player Race Door",
+        Description = "Instant Tp player current race door",
+        Callback = function()
+            Game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame =
+                CFrame.new(28286.35546875, 14895.3017578125, 102.62469482421875)
+            wait(0.1)
+            Game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame =
+                CFrame.new(28286.35546875, 14895.3017578125, 102.62469482421875)
+            wait(0.1)
+            Game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame =
+                CFrame.new(28286.35546875, 14895.3017578125, 102.62469482421875)
+            wait(0.1)
+            Game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame =
+                CFrame.new(28286.35546875, 14895.3017578125, 102.62469482421875)
+            wait(0.5)
+            if game:GetService("Players").LocalPlayer.Data.Race.Value == "Human" then
+                Tween(CFrame.new(29221.822265625, 14890.9755859375, -205.99114990234375))
+            elseif game:GetService("Players").LocalPlayer.Data.Race.Value == "Skypiea" then
+                Tween(CFrame.new(28960.158203125, 14919.6240234375, 235.03948974609375))
+            elseif game:GetService("Players").LocalPlayer.Data.Race.Value == "Fishman" then
+                Tween(CFrame.new(28231.17578125, 14890.9755859375, -211.64173889160156))
+            elseif game:GetService("Players").LocalPlayer.Data.Race.Value == "Cyborg" then
+                Tween(CFrame.new(28502.681640625, 14895.9755859375, -423.7279357910156))
+            elseif game:GetService("Players").LocalPlayer.Data.Race.Value == "Ghoul" then
+                Tween(CFrame.new(28674.244140625, 14890.6767578125, 445.4310607910156))
+            elseif game:GetService("Players").LocalPlayer.Data.Race.Value == "Mink" then
+                Tween(CFrame.new(29012.341796875, 14890.9755859375, -380.1492614746094))
+            end
+        end
+    }
+)
+
+Toggles.ToggleUpV2 = Tabs.E:AddToggle("ToggleUpV2", {Title = "Auto V2 Race Quest", Default = false})
+Toggles.ToggleUpV2:OnChanged(
+    function(Value)
+        getgenv().AutoRaceV2Quest = Value
+    end
+)
+
+function AutoRaceV2Quest()
+    if not getgenv().AutoRaceV2Quest then
+        return false
+    end
+
+    if game.Players.LocalPlayer.Data.Race:FindFirstChild("Evolved") then
+        return false
+    end
+
+    local AlchemistStatus = game.ReplicatedStorage.Remotes.CommF_:InvokeServer("Alchemist", "1")
+
+    if AlchemistStatus == 0 then
+        if
+            not game.Players.LocalPlayer.Backpack:FindFirstChild("Flower 1") and
+                not game.Players.LocalPlayer.Character:FindFirstChild("Flower 1")
+         then
+            if
+                (game.Players.LocalPlayer.Character.HumanoidRootPart.Position -
+                    CFrame.new(-2775.2002, 72.9661407, -3569.91821).Position).Magnitude > 1500
+             then
+                Tween(CFrame.new(-2775.2002, 72.9661407, -3569.91821))
+                return true
+            end
+        end
+
+        if
+            (CFrame.new(-2777.6001, 72.9661407, -3571.42285).Position -
+                game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude <= 3
+         then
+            task.wait(1.3)
+            game.ReplicatedStorage.Remotes.CommF_:InvokeServer("Alchemist", "2")
+            return true
+        end
+    elseif AlchemistStatus == 1 then
+        if
+            not game.Players.LocalPlayer.Backpack:FindFirstChild("Flower 1") and
+                not game.Players.LocalPlayer.Character:FindFirstChild("Flower 1")
+         then
+            if workspace.Flower1.Transparency ~= 1 then
+                Fluent:Notify(
+                    {
+                        Title = "Notification",
+                        Content = "Collecting Flower 1",
+                        SubContent = "Hi",
+                        Duration = 1
+                    }
+                )
+                if
+                    (workspace.Flower1.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude >
+                        300
+                 then
+                    Tween(workspace.Flower1.CFrame)
+                else
+                    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.Flower1.CFrame
+                    task.wait(1)
+                end
+                return true
+            elseif game.Lighting.ClockTime > 3 and game.Lighting.ClockTime < 16 then
+                if getgenv().HopRace then
+                    Fluent:Notify(
+                        {
+                            Title = "Notification",
+                            Content = "Hopping for Night!",
+                            SubContent = "Hi",
+                            Duration = 5
+                        }
+                    )
+                    Teleport()
+                    return true
+                else
+                    Fluent:Notify(
+                        {
+                            Title = "Notification",
+                            Content = "Waiting for Night!",
+                            SubContent = "Hi",
+                            Duration = 25
+                        }
+                    )
+                    Tween(CFrame.new(-380.47927856445, 77.220390319824, 255.82550048828))
+                    return true
+                end
+            end
+        end
+
+        if
+            not game.Players.LocalPlayer.Backpack:FindFirstChild("Flower 2") and
+                not game.Players.LocalPlayer.Character:FindFirstChild("Flower 2")
+         then
+            if workspace.Flower2.Transparency ~= 1 then
+                Fluent:Notify(
+                    {
+                        Title = "Notification",
+                        Content = "Collecting Flower 2",
+                        SubContent = "Hi",
+                        Duration = 1
+                    }
+                )
+                if
+                    (workspace.Flower2.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude >
+                        300
+                 then
+                    Tween(workspace.Flower2.CFrame)
+                else
+                    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.Flower2.CFrame
+                    task.wait(1)
+                end
+                return true
+            end
+        end
+
+        if
+            not game.Players.LocalPlayer.Backpack:FindFirstChild("Flower 3") and
+                not game.Players.LocalPlayer.Character:FindFirstChild("Flower 3")
+         then
+            if game:GetService("Workspace").Enemies:FindFirstChild("Zombie") then
+                for _, v in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
+                    if
+                        v.Name == "Zombie" and v:FindFirstChild("Humanoid") and v:FindFirstChild("HumanoidRootPart") and
+                            v.Humanoid.Health > 0
+                     then
+                        repeat
+                            task.wait()
+                            if ShouldInterrupt("AutoRaceV2Quest") then
+                                return false
+                            end
+                            SH(v)
+                        until game.Players.LocalPlayer.Backpack:FindFirstChild("Flower 3") or not v.Parent or
+                            v.Humanoid.Health <= 0 or
+                            not getgenv().AutoRaceV2Quest
+                        return true
+                    end
+                end
+            else
+                Tween(CFrame.new(-5685.9233398438, 48.480125427246, -853.23724365234))
+                return true
+            end
+        end
+    elseif AlchemistStatus == 2 then
+        if
+            (CFrame.new(-2777.6001, 72.9661407, -3571.42285).Position -
+                game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude > 3
+         then
+            Tween(CFrame.new(-2777.6001, 72.9661407, -3571.42285))
+            return true
+        else
+            game.ReplicatedStorage.Remotes.CommF_:InvokeServer("Alchemist", "3")
+            return true
+        end
+    end
+
+    return false
+end
+
+Toggles.ToggleLockMoon = Tabs.E:AddToggle("ToggleLockMoon", {Title = "Lock Cam To Moon", Default = false})
+Toggles.ToggleLockMoon:OnChanged(
+    function(Value)
+        getgenv().LockCamToMoon = Value
+    end
+)
+
+Toggles.ToggleChooseGear = Tabs.E:AddToggle("ToggleChooseGear", {Title = "Auto Choose Gear", Default = false})
+Toggles.ToggleChooseGear:OnChanged(
+    function(Value)
+        getgenv().AutoChooseGear = Value
+    end
+)
+
+Toggles.ToggleBuyGear = Tabs.E:AddToggle("ToggleBuyGear", {Title = "Auto Buy Gear", Default = false})
+Toggles.ToggleBuyGear:OnChanged(
+    function(Value)
+        getgenv().AutoBuyGear = Value
+    end
+)
+
+Toggles.ToggleKillAfterTrial = Tabs.E:AddToggle("ToggleKillAfterTrial", {Title = "Kill After Trial", Default = false})
+Toggles.ToggleKillAfterTrial:OnChanged(
+    function(Value)
+        getgenv().KillAfterTrial = Value
+    end
+)
+
+function KillAfterTrial()
+    pcall(
+        function()
+            if not getgenv().KillAfterTrial then
+                return false
+            end
+
+            for _, v in pairs(game:GetService("Players"):GetPlayers()) do
+                if v.Name ~= game.Players.LocalPlayer.Name and v.Character then
+                    if
+                        v.Character:FindFirstChild("HumanoidRootPart") and
+                            game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") and
+                            v.Character:FindFirstChild("Humanoid")
+                     then
+                        if
+                            (v.Character.HumanoidRootPart.Position -
+                                game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude <= 100 and
+                                v.Character.Humanoid.Health > 0
+                         then
+                            repeat
+                                task.wait()
+                                if v.Character:FindFirstChild("HumanoidRootPart") then
+                                    Tween(v.Character.HumanoidRootPart.CFrame * RandomCFrame)
+                                end
+                                if
+                                    game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") and
+                                        v.Character:FindFirstChild("HumanoidRootPart")
+                                 then
+                                    if
+                                        (game.Players.LocalPlayer.Character.HumanoidRootPart.Position -
+                                            v.Character.HumanoidRootPart.Position).Magnitude <= 50
+                                     then
+                                        if not game.Players.LocalPlayer.Character:FindFirstChild("HasBuso") then
+                                            game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("Buso")
+                                        end
+                                        UseAllWeapon()
+                                    end
+                                end
+
+                                if ShouldInterrupt("KillAfterTrial") then
+                                    return false
+                                end
+                            until not getgenv().KillAfterTrial or not v.Character.Parent or
+                                not v.Character:FindFirstChild("Humanoid") or
+                                v.Character.Humanoid.Health <= 0
+
+                            return true
+                        end
+                    end
+                end
+            end
+            return false
+        end
+    )
+end
+
+-- Tab Raid --
+
 local Raid = Tabs.R:AddSection("Tab Raid")
-    Tabs.R:AddButton({
+Tabs.R:AddButton(
+    {
         Title = "Teleport To Raid Lab",
         Description = "",
         Callback = function()
@@ -5359,7 +7549,8 @@ local Raid = Tabs.R:AddSection("Tab Raid")
                 end
             end
         end
-    })
+    }
+)
 
 getgenv().BuyChipSelect = selectraids or ""
 Raidslist = {}
@@ -5382,14 +7573,20 @@ function ChichChip()
 end
 
 function GoRaid()
-    local success1 = pcall(function()
-        fireclickdetector(Workspace.Map.CircleIsland.RaidSummon2.Button.Main.ClickDetector)
-    end)
-    local success2 = pcall(function()
-        local Cd = game.Workspace.Map["Boat Castle"].RaidSummon2.Button.Main.ClickDetector
-        Cd.MaxActivationDistance = math.huge
-        fireclickdetector(Cd)
-    end)
+    local success1 =
+        pcall(
+        function()
+            fireclickdetector(Workspace.Map.CircleIsland.RaidSummon2.Button.Main.ClickDetector)
+        end
+    )
+    local success2 =
+        pcall(
+        function()
+            local Cd = game.Workspace.Map["Boat Castle"].RaidSummon2.Button.Main.ClickDetector
+            Cd.MaxActivationDistance = math.huge
+            fireclickdetector(Cd)
+        end
+    )
 end
 
 local function Us()
@@ -5398,7 +7595,7 @@ local function Us()
     local PriceU = tonumber(getgenv().PriceLimit) or 1000000
 
     local getFruitsResult = game.ReplicatedStorage:WaitForChild("Remotes").CommF_:InvokeServer("GetFruits")
-    
+
     if type(getFruitsResult) == "table" then
         for i, v in pairs(getFruitsResult) do
             if v and type(v.Price) == "number" and v.Price <= PriceU and v.Name then
@@ -5410,8 +7607,9 @@ local function Us()
         return
     end
 
-    local getInventoryFruitsResult = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("getInventoryFruits")
-    
+    local getInventoryFruitsResult =
+        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("getInventoryFruits")
+
     if type(getInventoryFruitsResult) == "table" then
         for i, v in pairs(getInventoryFruitsResult) do
             if type(v) == "table" and v.Name then
@@ -5430,14 +7628,17 @@ local function Us()
 
     for _, fruitName in pairs(FruitPrice) do
         if FruitStoreSet[fruitName] then
-            local success, err = pcall(function()
-                local args = {
-                    [1] = "LoadFruit",
-                    [2] = tostring(fruitName)
-                }
-                game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
-            end)
-            
+            local success, err =
+                pcall(
+                function()
+                    local args = {
+                        [1] = "LoadFruit",
+                        [2] = tostring(fruitName)
+                    }
+                    game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
+                end
+            )
+
             if not success then
                 warn("Lỗi khi load fruit:", fruitName, err)
             end
@@ -5445,15 +7646,21 @@ local function Us()
     end
 end
 
-Dropdowns.DropdownRaid = Tabs.R:AddDropdown("DropdownRaid", {
-    Title = "Select Raid Map Chip",
-    Values = Raidslist,
-    Multi = false,
-    Default = 1,
-})
-Dropdowns.DropdownRaid:OnChanged(function(Value)
-    getgenv().BuyChipSelect = Value
-end)
+Dropdowns.DropdownRaid =
+    Tabs.R:AddDropdown(
+    "DropdownRaid",
+    {
+        Title = "Select Raid Map Chip",
+        Values = Raidslist,
+        Multi = false,
+        Default = 1
+    }
+)
+Dropdowns.DropdownRaid:OnChanged(
+    function(Value)
+        getgenv().BuyChipSelect = Value
+    end
+)
 
 Toggles.ToggleChipPlayer = Tabs.R:AddToggle("ToggleChipPlayer", {Title = "Auto Buy Chip Player Fruit", Default = false})
 Toggles.ToggleChipPlayer:OnChanged(
@@ -5465,51 +7672,98 @@ Toggles.ToggleChipPlayer:OnChanged(
 task.spawn(
     function()
         while task.wait() do
-        if getgenv().AutoBuyChipPlayer then
-            pcall(function()
-                if game:GetService("Players").LocalPlayer.Character:FindFirstChild("Flame-Flame") or game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Flame-Flame") then
-                    getgenv().BuyChipSelect = "Flame"
-                elseif game:GetService("Players").LocalPlayer.Character:FindFirstChild("Ice-Ice") or game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Ice-Ice") then
-                    getgenv().BuyChipSelect = "Ice"
-                elseif game:GetService("Players").LocalPlayer.Character:FindFirstChild("Quake-Quake") or game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Quake-Quake") then
-                    getgenv().BuyChipSelect = "Quake"
-                elseif game:GetService("Players").LocalPlayer.Character:FindFirstChild("Light-Light") or game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Light-Light") then
-                    getgenv().BuyChipSelect = "Light"
-                elseif game:GetService("Players").LocalPlayer.Character:FindFirstChild("Dark-Dark") or game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Dark-Dark") then
-                    getgenv().BuyChipSelect = "Dark"
-                elseif game:GetService("Players").LocalPlayer.Character:FindFirstChild("String-String") or game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("String-String") then
-                    getgenv().BuyChipSelect = "String"
-                elseif game:GetService("Players").LocalPlayer.Character:FindFirstChild("Rumble-Rumble") or game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Rumble-Rumble") then
-                    getgenv().BuyChipSelect = "Rumble"
-                elseif game:GetService("Players").LocalPlayer.Character:FindFirstChild("Magma-Magma") or game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Magma-Magma") then
-                    getgenv().BuyChipSelect = "Magma"
-                elseif game:GetService("Players").LocalPlayer.Character:FindFirstChild("Human-Human: Buddha Fruit") or game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Human-Human: Buddha Fruit") then
-                    getgenv().BuyChipSelect = "Human: Buddha"
-                    elseif game:GetService("Players").LocalPlayer.Character:FindFirstChild("Leopard-Leopard") or game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Leopard-Leopard") then
-                    getgenv().BuyChipSelect = "Dark"
-                    elseif game:GetService("Players").LocalPlayer.Character:FindFirstChild("Kitsune-Kitsune") or game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Kitsune-Kitsune") then
-                    getgenv().BuyChipSelect = "Dark"
-                elseif game:GetService("Players").LocalPlayer.Character:FindFirstChild("Sand-Sand") or game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Sand-Sand") then
-                    getgenv().BuyChipSelect = "Sand"
-                elseif game:GetService("Players").LocalPlayer.Character:FindFirstChild("Bird-Bird: Phoenix") or game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Bird-Bird: Phoenix") then
-                if getgenv().IngoreSpecialChip then
-                getgenv().BuyChipSelect = "Dark"
-                else
-                    getgenv().BuyChipSelect = "Bird: Phoenix"
+            if getgenv().AutoBuyChipPlayer then
+                pcall(
+                    function()
+                        if
+                            game:GetService("Players").LocalPlayer.Character:FindFirstChild("Flame-Flame") or
+                                game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Flame-Flame")
+                         then
+                            getgenv().BuyChipSelect = "Flame"
+                        elseif
+                            game:GetService("Players").LocalPlayer.Character:FindFirstChild("Ice-Ice") or
+                                game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Ice-Ice")
+                         then
+                            getgenv().BuyChipSelect = "Ice"
+                        elseif
+                            game:GetService("Players").LocalPlayer.Character:FindFirstChild("Quake-Quake") or
+                                game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Quake-Quake")
+                         then
+                            getgenv().BuyChipSelect = "Quake"
+                        elseif
+                            game:GetService("Players").LocalPlayer.Character:FindFirstChild("Light-Light") or
+                                game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Light-Light")
+                         then
+                            getgenv().BuyChipSelect = "Light"
+                        elseif
+                            game:GetService("Players").LocalPlayer.Character:FindFirstChild("Dark-Dark") or
+                                game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Dark-Dark")
+                         then
+                            getgenv().BuyChipSelect = "Dark"
+                        elseif
+                            game:GetService("Players").LocalPlayer.Character:FindFirstChild("String-String") or
+                                game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("String-String")
+                         then
+                            getgenv().BuyChipSelect = "String"
+                        elseif
+                            game:GetService("Players").LocalPlayer.Character:FindFirstChild("Rumble-Rumble") or
+                                game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Rumble-Rumble")
+                         then
+                            getgenv().BuyChipSelect = "Rumble"
+                        elseif
+                            game:GetService("Players").LocalPlayer.Character:FindFirstChild("Magma-Magma") or
+                                game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Magma-Magma")
+                         then
+                            getgenv().BuyChipSelect = "Magma"
+                        elseif
+                            game:GetService("Players").LocalPlayer.Character:FindFirstChild("Human-Human: Buddha Fruit") or
+                                game:GetService("Players").LocalPlayer.Backpack:FindFirstChild(
+                                    "Human-Human: Buddha Fruit"
+                                )
+                         then
+                            getgenv().BuyChipSelect = "Human: Buddha"
+                        elseif
+                            game:GetService("Players").LocalPlayer.Character:FindFirstChild("Leopard-Leopard") or
+                                game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Leopard-Leopard")
+                         then
+                            getgenv().BuyChipSelect = "Dark"
+                        elseif
+                            game:GetService("Players").LocalPlayer.Character:FindFirstChild("Kitsune-Kitsune") or
+                                game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Kitsune-Kitsune")
+                         then
+                            getgenv().BuyChipSelect = "Dark"
+                        elseif
+                            game:GetService("Players").LocalPlayer.Character:FindFirstChild("Sand-Sand") or
+                                game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Sand-Sand")
+                         then
+                            getgenv().BuyChipSelect = "Sand"
+                        elseif
+                            game:GetService("Players").LocalPlayer.Character:FindFirstChild("Bird-Bird: Phoenix") or
+                                game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Bird-Bird: Phoenix")
+                         then
+                            if getgenv().IngoreSpecialChip then
+                                getgenv().BuyChipSelect = "Dark"
+                            else
+                                getgenv().BuyChipSelect = "Bird: Phoenix"
+                            end
+                        elseif
+                            game:GetService("Players").LocalPlayer.Character:FindFirstChild("Dough") or
+                                game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Dough")
+                         then
+                            if getgenv().IngoreSpecialChip then
+                                getgenv().BuyChipSelect = "Ice"
+                            else
+                                getgenv().BuyChipSelect = "Dough"
+                            end
+                        else
+                            getgenv().BuyChipSelect = "Ice"
+                        end
                     end
-                elseif game:GetService("Players").LocalPlayer.Character:FindFirstChild("Dough") or game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Dough") then
-                if getgenv().IngoreSpecialChip then
-                getgenv().BuyChipSelect = "Ice"
-                else
-                    getgenv().BuyChipSelect = "Dough"
-                    end
-                else
-                    getgenv().BuyChipSelect = "Ice"
-                end
-            end)
+                )
+            end
         end
     end
-end)
+)
 
 Toggles.ToggleChipPlayerSp = Tabs.R:AddToggle("ToggleChipPlayerSp", {Title = "Ingore Special Chip", Default = true})
 Toggles.ToggleChipPlayerSp:OnChanged(
@@ -5525,20 +7779,23 @@ Toggles.ToggleRaiid:OnChanged(
     end
 )
 
-Sliders.FruitPriceSlider = Tabs.R:AddSlider("FruitPriceSlider", {
-    Title = "Fruit Price Limit",
-    Description = "slider",
-    Default = 1000000,
-    Min = 200000,
-    Max = 9000000,
-    Rounding = 1,
-    Callback = function(Value)
-        getgenv().PriceLimit = math.floor(Value)
-    end
-})
+Sliders.FruitPriceSlider =
+    Tabs.R:AddSlider(
+    "FruitPriceSlider",
+    {
+        Title = "Fruit Price Limit",
+        Description = "slider",
+        Default = 1000000,
+        Min = 200000,
+        Max = 9000000,
+        Rounding = 1,
+        Callback = function(Value)
+            getgenv().PriceLimit = math.floor(Value)
+        end
+    }
+)
 
-Toggles.ToggleGetFruit =
-    Tabs.R:AddToggle("ToggleGetFruit", {Title = "Auto Unstore Fruit", Default = false})
+Toggles.ToggleGetFruit = Tabs.R:AddToggle("ToggleGetFruit", {Title = "Auto Unstore Fruit", Default = false})
 Toggles.ToggleGetFruit:OnChanged(
     function(Value)
         getgenv().Raid_AutoUnStore = Value
@@ -5552,9 +7809,9 @@ Toggles.ToggleAwake:OnChanged(
     end
 )
 
- Vi = {}
- Ic = 5
- Ti = false
+Vi = {}
+Ic = 5
+Ti = false
 function AutoRaid()
     if not getgenv().AutoRaid then
         return false
@@ -5677,7 +7934,7 @@ function AutoRaid()
             GoRaid()
         end
     end
-end 
+end
 
 Tabs.R:AddButton(
     {
@@ -5702,13 +7959,16 @@ local FS = Tabs.R:AddSection("Tab Fruit")
 
 function GetFruitList()
     local fruits = {}
-    local success, result = pcall(function()
-        local data = game.ReplicatedStorage.Remotes.CommF_:InvokeServer("GetFruits")
-        for _, v in pairs(data) do
-            table.insert(fruits, v.Name)
+    local success, result =
+        pcall(
+        function()
+            local data = game.ReplicatedStorage.Remotes.CommF_:InvokeServer("GetFruits")
+            for _, v in pairs(data) do
+                table.insert(fruits, v.Name)
+            end
         end
-    end)
-    
+    )
+
     if success and #fruits > 0 then
         return fruits
     else
@@ -5756,31 +8016,45 @@ IslandNames = {}
 for _, Location in pairs(LocationFolder:GetChildren()) do
     table.insert(IslandNames, Location.Name)
 end
-Dropdowns.TravelDropdown = Tabs.T:AddDropdown("TravelDropdown", {
-    Title = "Select Island",
-    Values = IslandNames,
-    Multi = false,
-    Default = 1,
-})
+Dropdowns.TravelDropdown =
+    Tabs.T:AddDropdown(
+    "TravelDropdown",
+    {
+        Title = "Select Island",
+        Values = IslandNames,
+        Multi = false,
+        Default = 1
+    }
+)
 
 getgenv().SelectedIsland = IslandNames[1]
 
-Dropdowns.TravelDropdown:OnChanged(function(Value)
-    getgenv().SelectedIsland = Value
-end)
+Dropdowns.TravelDropdown:OnChanged(
+    function(Value)
+        getgenv().SelectedIsland = Value
+    end
+)
 
-Toggles.TravelToggle = Tabs.T:AddToggle("TravelToggle", {
-    Title = "Tween To Island",
-    Default = false,
-})
-Toggles.TravelToggle:OnChanged(function(Value)
-    getgenv().TweenIsland = Value
-end)
+Toggles.TravelToggle =
+    Tabs.T:AddToggle(
+    "TravelToggle",
+    {
+        Title = "Tween To Island",
+        Default = false
+    }
+)
+Toggles.TravelToggle:OnChanged(
+    function(Value)
+        getgenv().TweenIsland = Value
+    end
+)
 
 function IslandTP()
-    if not getgenv().TweenIsland then return false end
+    if not getgenv().TweenIsland then
+        return false
+    end
     local IslandPart = LocationFolder:FindFirstChild(getgenv().SelectedIsland)
-        if IslandPart and IslandPart:IsA("BasePart") then
+    if IslandPart and IslandPart:IsA("BasePart") then
         Tween(IslandPart.CFrame)
     end
 end
@@ -5797,7 +8071,7 @@ end
 function CloneAllNPCs()
     CreateClonedFolder()
     ClonedFolder:ClearAllChildren()
-    
+
     local ReplicatedNpcs = game:GetService("ReplicatedStorage"):FindFirstChild("NPCs")
     if ReplicatedNpcs then
         for _, Npc in pairs(ReplicatedNpcs:GetChildren()) do
@@ -5808,7 +8082,7 @@ function CloneAllNPCs()
             end
         end
     end
-    
+
     local WorkspaceNpcs = game:GetService("Workspace"):FindFirstChild("NPCs")
     if WorkspaceNpcs then
         for _, Npc in pairs(WorkspaceNpcs:GetChildren()) do
@@ -5822,7 +8096,7 @@ function CloneAllNPCs()
 end
 function GetNpcNames()
     CreateClonedFolder()
-     Names = {}
+    Names = {}
     for _, Npc in pairs(ClonedFolder:GetChildren()) do
         if Npc:IsA("Model") and Npc:FindFirstChild("HumanoidRootPart") then
             table.insert(Names, Npc.Name)
@@ -5832,7 +8106,9 @@ function GetNpcNames()
 end
 
 function TweenToNPc()
-    if not getgenv().TweenToNpc then return end
+    if not getgenv().TweenToNpc then
+        return
+    end
     CreateClonedFolder()
     local Npc = ClonedFolder:FindFirstChild(getgenv().SelectedNpc)
     if Npc and Npc:FindFirstChild("HumanoidRootPart") then
@@ -5840,41 +8116,56 @@ function TweenToNPc()
     end
 end
 
-Dropdowns.SelectNpcDropdown = Tabs.T:AddDropdown("SelectNpcDropdown", {
-    Title = "Select NPC",
-    Values = {},
-    Multi = false,
-    Default = "",
-})
+Dropdowns.SelectNpcDropdown =
+    Tabs.T:AddDropdown(
+    "SelectNpcDropdown",
+    {
+        Title = "Select NPC",
+        Values = {},
+        Multi = false,
+        Default = ""
+    }
+)
 
-Dropdowns.SelectNpcDropdown:OnChanged(function(Value)
-    getgenv().SelectedNpc = Value
-end)
+Dropdowns.SelectNpcDropdown:OnChanged(
+    function(Value)
+        getgenv().SelectedNpc = Value
+    end
+)
 
-local RefreshNPCsButton = Tabs.T:AddButton({
-    Title = "Refresh NPCs",
-    Description = "Manually update NPC list",
-    Callback = function()
-        CloneAllNPCs()
-        local Names = GetNpcNames()
-        if #Names > 0 then
-            SelectNpcDropdown:SetValues(Names)
-            if not getgenv().SelectedNpc or not table.find(Names, getgenv().SelectedNpc) then
-                getgenv().SelectedNpc = Names[1]
-                SelectNpcDropdown:SetValue(Names[1])
+local RefreshNPCsButton =
+    Tabs.T:AddButton(
+    {
+        Title = "Refresh NPCs",
+        Description = "Manually update NPC list",
+        Callback = function()
+            CloneAllNPCs()
+            local Names = GetNpcNames()
+            if #Names > 0 then
+                SelectNpcDropdown:SetValues(Names)
+                if not getgenv().SelectedNpc or not table.find(Names, getgenv().SelectedNpc) then
+                    getgenv().SelectedNpc = Names[1]
+                    SelectNpcDropdown:SetValue(Names[1])
+                end
             end
         end
+    }
+)
+
+Toggles.TravelToNpcToggle =
+    Tabs.T:AddToggle(
+    "TravelToNpcToggle",
+    {
+        Title = "Tween To NPC",
+        Default = false
+    }
+)
+
+Toggles.TravelToNpcToggle:OnChanged(
+    function(Value)
+        getgenv().TweenToNpc = Value
     end
-})
-
-Toggles.TravelToNpcToggle = Tabs.T:AddToggle("TravelToNpcToggle", {
-    Title = "Tween To NPC",
-    Default = false,
-})
-
-Toggles.TravelToNpcToggle:OnChanged(function(Value)
-    getgenv().TweenToNpc = Value
-end)
+)
 
 local trr = Tabs.T:AddSection("Tab ESP")
 
@@ -5885,7 +8176,7 @@ local function CreateESP(Parent, Name, Text, Color)
     Gui.Size = UDim2.new(0, 200, 0, 50)
     Gui.StudsOffset = Vector3.new(0, 3, 0)
     Gui.Name = Name
-    
+
     local Lbl = Instance.new("TextLabel")
     Lbl.Parent = Gui
     Lbl.BackgroundTransparency = 1
@@ -5896,397 +8187,742 @@ local function CreateESP(Parent, Name, Text, Color)
     Lbl.TextStrokeTransparency = 0
     Lbl.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
     Lbl.Text = Text
-    
+
     return Gui, Lbl
 end
 
 local TogglePlayerEsp = Tabs.T:AddToggle("TogglePlayerEsp", {Title = "ESP Player", Default = false})
-TogglePlayerEsp:OnChanged(function(Val)
-    getgenv().EspPlayer = Val
-    for _, P in pairs(game.Players:GetPlayers()) do
-        if P ~= game.Players.LocalPlayer and P.Character then
-            local Hrp = P.Character:FindFirstChild("HumanoidRootPart")
-            if Hrp then
-                if Val and not Hrp:FindFirstChild("PlayerESP") then
-                    local G, L = CreateESP(Hrp, "PlayerESP", "", Color3.fromRGB(255, 255, 255))
-                    if G and L then
-                        task.spawn(function()
-                            while G and G.Parent and getgenv().EspPlayer do
-                                pcall(function()
-                                    if Hrp and game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
-                                        local D = math.floor((game.Players.LocalPlayer.Character.HumanoidRootPart.Position - Hrp.Position).Magnitude)
-                                        L.Text = P.Name .. "\n[" .. D .. "m]"
+TogglePlayerEsp:OnChanged(
+    function(Val)
+        getgenv().EspPlayer = Val
+        for _, P in pairs(game.Players:GetPlayers()) do
+            if P ~= game.Players.LocalPlayer and P.Character then
+                local Hrp = P.Character:FindFirstChild("HumanoidRootPart")
+                if Hrp then
+                    if Val and not Hrp:FindFirstChild("PlayerESP") then
+                        local G, L = CreateESP(Hrp, "PlayerESP", "", Color3.fromRGB(255, 255, 255))
+                        if G and L then
+                            task.spawn(
+                                function()
+                                    while G and G.Parent and getgenv().EspPlayer do
+                                        pcall(
+                                            function()
+                                                if
+                                                    Hrp and game.Players.LocalPlayer.Character and
+                                                        game.Players.LocalPlayer.Character:FindFirstChild(
+                                                            "HumanoidRootPart"
+                                                        )
+                                                 then
+                                                    local D =
+                                                        math.floor(
+                                                        (game.Players.LocalPlayer.Character.HumanoidRootPart.Position -
+                                                            Hrp.Position).Magnitude
+                                                    )
+                                                    L.Text = P.Name .. "\n[" .. D .. "m]"
+                                                end
+                                            end
+                                        )
+                                        task.wait(0.5)
                                     end
-                                end)
-                                task.wait(0.5)
-                            end
-                        end)
+                                end
+                            )
+                        end
+                    elseif not Val and Hrp:FindFirstChild("PlayerESP") then
+                        Hrp.PlayerESP:Destroy()
                     end
-                elseif not Val and Hrp:FindFirstChild("PlayerESP") then
-                    Hrp.PlayerESP:Destroy()
                 end
             end
         end
     end
-end)
+)
 
 Toggles.ToggleIslandEsp = Tabs.T:AddToggle("ToggleIslandEsp", {Title = "ESP Island", Default = false})
-Toggles.ToggleIslandEsp:OnChanged(function(Val)
-    getgenv().EspIsland = Val
-    for _, Loc in pairs(workspace._WorldOrigin.Locations:GetChildren()) do
-        if Loc.Name ~= "Sea" then
-            if Val and not Loc:FindFirstChild("IslandESP") then
-                local G, L = CreateESP(Loc, "IslandESP", "", Color3.fromRGB(255, 255, 255))
-                if G and L then
-                    task.spawn(function()
-                        while G and G.Parent and getgenv().EspIsland do
-                            pcall(function()
-                                if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
-                                    local D = math.floor((game.Players.LocalPlayer.Character.HumanoidRootPart.Position - Loc.Position).Magnitude)
-                                    L.Text = Loc.Name .. "\n[" .. D .. "m]"
-                                end
-                            end)
-                            task.wait(0.5)
-                        end
-                    end)
-                end
-            elseif not Val and Loc:FindFirstChild("IslandESP") then
-                Loc.IslandESP:Destroy()
-            end
-        end
-    end
-end)
-
-Toggles.ToggleNpcEsp = Tabs.T:AddToggle("ToggleNpcEsp", {Title = "ESP NPC", Default = false})
-Toggles.ToggleNpcEsp:OnChanged(function(Val)
-    getgenv().EspNpc = Val
-    
-    local function ProcessNPC(Npc)
-        local Hrp = Npc:FindFirstChild("HumanoidRootPart")
-        if Hrp then
-            if Val and not Hrp:FindFirstChild("NpcESP") then
-                local G, L = CreateESP(Hrp, "NpcESP", "", Color3.fromRGB(0, 255, 0))
-                if G and L then
-                    task.spawn(function()
-                        while G and G.Parent and getgenv().EspNpc do
-                            pcall(function()
-                                if Hrp and game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
-                                    local D = math.floor((game.Players.LocalPlayer.Character.HumanoidRootPart.Position - Hrp.Position).Magnitude)
-                                    L.Text = Npc.Name .. "\n[" .. D .. "m]"
-                                end
-                            end)
-                            task.wait(0.5)
-                        end
-                    end)
-                end
-            elseif not Val and Hrp:FindFirstChild("NpcESP") then
-                Hrp.NpcESP:Destroy()
-            end
-        end
-    end
-    
-     WsNpc = workspace:FindFirstChild("NPCs")
-    if WsNpc then
-        for _, N in pairs(WsNpc:GetChildren()) do
-            ProcessNPC(N)
-        end
-    end
-    
-     Cloned = workspace:FindFirstChild("__ClonedNPCs") or Instance.new("Folder", workspace)
-    Cloned.Name = "__ClonedNPCs"
-    if Val then
-        Cloned:ClearAllChildren()
-        local RepNpc = game.ReplicatedStorage:FindFirstChild("NPCs")
-        if RepNpc then
-            for _, N in pairs(RepNpc:GetChildren()) do
-                if N:IsA("Model") and N:FindFirstChild("HumanoidRootPart") then
-                    local C = N:Clone()
-                    C:SetPrimaryPartCFrame(N.HumanoidRootPart.CFrame)
-                    C.Parent = Cloned
-                    ProcessNPC(C)
-                end
-            end
-        end
-    else
-        Cloned:ClearAllChildren()
-    end
-end)
-
-Toggles.ToggleRealFruitEsp = Tabs.T:AddToggle("ToggleRealFruitEsp", {Title = "ESP Real Fruit", Default = false})
-Toggles.ToggleRealFruitEsp:OnChanged(function(Val)
-    getgenv().EspRealFruit = Val
-    if _G.World3 then
-         Spawners = {
-            {workspace.AppleSpawner, "Apple", Color3.fromRGB(255, 0, 0)},
-            {workspace.PineappleSpawner, "Pineapple", Color3.fromRGB(255, 255, 0)},
-            {workspace.BananaSpawner, "Banana", Color3.fromRGB(255, 255, 0)}
-        }
-        
-        for _, Data in pairs(Spawners) do
-            for _, Fruit in pairs(Data[1]:GetChildren()) do
-                if Fruit:IsA("Tool") then
-                    if Val and not Fruit:FindFirstChild("RealFruitESP") then
-                        local G, L = CreateESP(Fruit, "RealFruitESP", "", Data[3])
-                        if G and L then
-                            task.spawn(function()
-                                while G and G.Parent and getgenv().EspRealFruit do
-                                    pcall(function()
-                                        local H = Fruit:FindFirstChild("Handle")
-                                        if H and game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
-                                            local D = math.floor((game.Players.LocalPlayer.Character.HumanoidRootPart.Position - H.Position).Magnitude)
-                                            L.Text = Data[2] .. "\n[" .. D .. "m]"
+Toggles.ToggleIslandEsp:OnChanged(
+    function(Val)
+        getgenv().EspIsland = Val
+        for _, Loc in pairs(workspace._WorldOrigin.Locations:GetChildren()) do
+            if Loc.Name ~= "Sea" then
+                if Val and not Loc:FindFirstChild("IslandESP") then
+                    local G, L = CreateESP(Loc, "IslandESP", "", Color3.fromRGB(255, 255, 255))
+                    if G and L then
+                        task.spawn(
+                            function()
+                                while G and G.Parent and getgenv().EspIsland do
+                                    pcall(
+                                        function()
+                                            if
+                                                game.Players.LocalPlayer.Character and
+                                                    game.Players.LocalPlayer.Character:FindFirstChild(
+                                                        "HumanoidRootPart"
+                                                    )
+                                             then
+                                                local D =
+                                                    math.floor(
+                                                    (game.Players.LocalPlayer.Character.HumanoidRootPart.Position -
+                                                        Loc.Position).Magnitude
+                                                )
+                                                L.Text = Loc.Name .. "\n[" .. D .. "m]"
+                                            end
                                         end
-                                    end)
+                                    )
                                     task.wait(0.5)
                                 end
-                            end)
+                            end
+                        )
+                    end
+                elseif not Val and Loc:FindFirstChild("IslandESP") then
+                    Loc.IslandESP:Destroy()
+                end
+            end
+        end
+    end
+)
+
+Toggles.ToggleNpcEsp = Tabs.T:AddToggle("ToggleNpcEsp", {Title = "ESP NPC", Default = false})
+Toggles.ToggleNpcEsp:OnChanged(
+    function(Val)
+        getgenv().EspNpc = Val
+
+        local function ProcessNPC(Npc)
+            local Hrp = Npc:FindFirstChild("HumanoidRootPart")
+            if Hrp then
+                if Val and not Hrp:FindFirstChild("NpcESP") then
+                    local G, L = CreateESP(Hrp, "NpcESP", "", Color3.fromRGB(0, 255, 0))
+                    if G and L then
+                        task.spawn(
+                            function()
+                                while G and G.Parent and getgenv().EspNpc do
+                                    pcall(
+                                        function()
+                                            if
+                                                Hrp and game.Players.LocalPlayer.Character and
+                                                    game.Players.LocalPlayer.Character:FindFirstChild(
+                                                        "HumanoidRootPart"
+                                                    )
+                                             then
+                                                local D =
+                                                    math.floor(
+                                                    (game.Players.LocalPlayer.Character.HumanoidRootPart.Position -
+                                                        Hrp.Position).Magnitude
+                                                )
+                                                L.Text = Npc.Name .. "\n[" .. D .. "m]"
+                                            end
+                                        end
+                                    )
+                                    task.wait(0.5)
+                                end
+                            end
+                        )
+                    end
+                elseif not Val and Hrp:FindFirstChild("NpcESP") then
+                    Hrp.NpcESP:Destroy()
+                end
+            end
+        end
+
+        WsNpc = workspace:FindFirstChild("NPCs")
+        if WsNpc then
+            for _, N in pairs(WsNpc:GetChildren()) do
+                ProcessNPC(N)
+            end
+        end
+
+        Cloned = workspace:FindFirstChild("__ClonedNPCs") or Instance.new("Folder", workspace)
+        Cloned.Name = "__ClonedNPCs"
+        if Val then
+            Cloned:ClearAllChildren()
+            local RepNpc = game.ReplicatedStorage:FindFirstChild("NPCs")
+            if RepNpc then
+                for _, N in pairs(RepNpc:GetChildren()) do
+                    if N:IsA("Model") and N:FindFirstChild("HumanoidRootPart") then
+                        local C = N:Clone()
+                        C:SetPrimaryPartCFrame(N.HumanoidRootPart.CFrame)
+                        C.Parent = Cloned
+                        ProcessNPC(C)
+                    end
+                end
+            end
+        else
+            Cloned:ClearAllChildren()
+        end
+    end
+)
+
+Toggles.ToggleRealFruitEsp = Tabs.T:AddToggle("ToggleRealFruitEsp", {Title = "ESP Real Fruit", Default = false})
+Toggles.ToggleRealFruitEsp:OnChanged(
+    function(Val)
+        getgenv().EspRealFruit = Val
+        if _G.World3 then
+            Spawners = {
+                {workspace.AppleSpawner, "Apple", Color3.fromRGB(255, 0, 0)},
+                {workspace.PineappleSpawner, "Pineapple", Color3.fromRGB(255, 255, 0)},
+                {workspace.BananaSpawner, "Banana", Color3.fromRGB(255, 255, 0)}
+            }
+
+            for _, Data in pairs(Spawners) do
+                for _, Fruit in pairs(Data[1]:GetChildren()) do
+                    if Fruit:IsA("Tool") then
+                        if Val and not Fruit:FindFirstChild("RealFruitESP") then
+                            local G, L = CreateESP(Fruit, "RealFruitESP", "", Data[3])
+                            if G and L then
+                                task.spawn(
+                                    function()
+                                        while G and G.Parent and getgenv().EspRealFruit do
+                                            pcall(
+                                                function()
+                                                    local H = Fruit:FindFirstChild("Handle")
+                                                    if
+                                                        H and game.Players.LocalPlayer.Character and
+                                                            game.Players.LocalPlayer.Character:FindFirstChild(
+                                                                "HumanoidRootPart"
+                                                            )
+                                                     then
+                                                        local D =
+                                                            math.floor(
+                                                            (game.Players.LocalPlayer.Character.HumanoidRootPart.Position -
+                                                                H.Position).Magnitude
+                                                        )
+                                                        L.Text = Data[2] .. "\n[" .. D .. "m]"
+                                                    end
+                                                end
+                                            )
+                                            task.wait(0.5)
+                                        end
+                                    end
+                                )
+                            end
+                        elseif not Val and Fruit:FindFirstChild("RealFruitESP") then
+                            Fruit.RealFruitESP:Destroy()
                         end
-                    elseif not Val and Fruit:FindFirstChild("RealFruitESP") then
-                        Fruit.RealFruitESP:Destroy()
                     end
                 end
             end
         end
     end
-end)
+)
 
 Toggles.ToggleFruitEsp = Tabs.T:AddToggle("ToggleFruitEsp", {Title = "ESP Fruit Physical", Default = false})
-Toggles.ToggleFruitEsp:OnChanged(function(Val)
-    getgenv().EspFruit = Val
-    for _, Fruit in pairs(workspace:GetChildren()) do
-        if string.find(Fruit.Name, "Fruit") then
-            if Val and not Fruit:FindFirstChild("FruitESP") then
-                local G, L = CreateESP(Fruit, "FruitESP", "", Color3.fromRGB(255, 0, 255))
-                if G and L then
-                    task.spawn(function()
-                        while G and G.Parent and getgenv().EspFruit do
-                            pcall(function()
-                                local H = Fruit:FindFirstChild("Handle")
-                                if H and game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
-                                    local D = math.floor((game.Players.LocalPlayer.Character.HumanoidRootPart.Position - H.Position).Magnitude)
-                                    L.Text = Fruit.Name .. "\n[" .. D .. "m]"
+Toggles.ToggleFruitEsp:OnChanged(
+    function(Val)
+        getgenv().EspFruit = Val
+        for _, Fruit in pairs(workspace:GetChildren()) do
+            if string.find(Fruit.Name, "Fruit") then
+                if Val and not Fruit:FindFirstChild("FruitESP") then
+                    local G, L = CreateESP(Fruit, "FruitESP", "", Color3.fromRGB(255, 0, 255))
+                    if G and L then
+                        task.spawn(
+                            function()
+                                while G and G.Parent and getgenv().EspFruit do
+                                    pcall(
+                                        function()
+                                            local H = Fruit:FindFirstChild("Handle")
+                                            if
+                                                H and game.Players.LocalPlayer.Character and
+                                                    game.Players.LocalPlayer.Character:FindFirstChild(
+                                                        "HumanoidRootPart"
+                                                    )
+                                             then
+                                                local D =
+                                                    math.floor(
+                                                    (game.Players.LocalPlayer.Character.HumanoidRootPart.Position -
+                                                        H.Position).Magnitude
+                                                )
+                                                L.Text = Fruit.Name .. "\n[" .. D .. "m]"
+                                            end
+                                        end
+                                    )
+                                    task.wait(0.5)
                                 end
-                            end)
-                            task.wait(0.5)
-                        end
-                    end)
+                            end
+                        )
+                    end
+                elseif not Val and Fruit:FindFirstChild("FruitESP") then
+                    Fruit.FruitESP:Destroy()
                 end
-            elseif not Val and Fruit:FindFirstChild("FruitESP") then
-                Fruit.FruitESP:Destroy()
             end
         end
     end
-end)
+)
 
 Toggles.ToggleChestEsp = Tabs.T:AddToggle("ToggleChestEsp", {Title = "ESP Chest", Default = false})
-Toggles.ToggleChestEsp:OnChanged(function(Val)
-    getgenv().EspChest = Val
-    local Chests = {"Chest1", "Chest2", "Chest3"}
-    
-    for _, Obj in pairs(workspace:GetDescendants()) do
-        if Obj:IsA("BasePart") and table.find(Chests, Obj.Name) then
-            if Val and not Obj:FindFirstChild("ChestESP") then
-                pcall(function()
-                    local G, L = CreateESP(Obj, "ChestESP", "", Color3.fromRGB(255, 215, 0))
-                    if G and L then
-                        task.spawn(function()
-                            while G and G.Parent and getgenv().EspChest do
-                                pcall(function()
-                                    if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
-                                        local D = math.floor((game.Players.LocalPlayer.Character.HumanoidRootPart.Position - Obj.Position).Magnitude)
-                                        L.Text = Obj.Name .. "\n[" .. D .. "m]"
+Toggles.ToggleChestEsp:OnChanged(
+    function(Val)
+        getgenv().EspChest = Val
+        local Chests = {"Chest1", "Chest2", "Chest3"}
+
+        for _, Obj in pairs(workspace:GetDescendants()) do
+            if Obj:IsA("BasePart") and table.find(Chests, Obj.Name) then
+                if Val and not Obj:FindFirstChild("ChestESP") then
+                    pcall(
+                        function()
+                            local G, L = CreateESP(Obj, "ChestESP", "", Color3.fromRGB(255, 215, 0))
+                            if G and L then
+                                task.spawn(
+                                    function()
+                                        while G and G.Parent and getgenv().EspChest do
+                                            pcall(
+                                                function()
+                                                    if
+                                                        game.Players.LocalPlayer.Character and
+                                                            game.Players.LocalPlayer.Character:FindFirstChild(
+                                                                "HumanoidRootPart"
+                                                            )
+                                                     then
+                                                        local D =
+                                                            math.floor(
+                                                            (game.Players.LocalPlayer.Character.HumanoidRootPart.Position -
+                                                                Obj.Position).Magnitude
+                                                        )
+                                                        L.Text = Obj.Name .. "\n[" .. D .. "m]"
+                                                    end
+                                                end
+                                            )
+                                            task.wait(0.5)
+                                        end
                                     end
-                                end)
-                                task.wait(0.5)
+                                )
                             end
-                        end)
-                    end
-                end)
-            elseif not Val and Obj:FindFirstChild("ChestESP") then
-                Obj.ChestESP:Destroy()
+                        end
+                    )
+                elseif not Val and Obj:FindFirstChild("ChestESP") then
+                    Obj.ChestESP:Destroy()
+                end
             end
         end
     end
-end)
+)
 
 Toggles.ToggleFlowerEsp = Tabs.T:AddToggle("ToggleFlowerEsp", {Title = "ESP Flower", Default = false})
-Toggles.ToggleFlowerEsp:OnChanged(function(Val)
-    getgenv().EspFlower = Val
-    for _, Flower in pairs(workspace:GetChildren()) do
-        if Flower.Name == "Flower1" or Flower.Name == "Flower2" then
-            if Val and not Flower:FindFirstChild("FlowerESP") then
-                local G, L = CreateESP(Flower, "FlowerESP", "", Color3.fromRGB(255, 192, 203))
-                if G and L then
-                    task.spawn(function()
-                        while G and G.Parent and getgenv().EspFlower do
-                            pcall(function()
-                                local S = Flower:FindFirstChild("Stem")
-                                if S and game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
-                                    local D = math.floor((game.Players.LocalPlayer.Character.HumanoidRootPart.Position - S.Position).Magnitude)
-                                    L.Text = Flower.Name .. "\n[" .. D .. "m]"
+Toggles.ToggleFlowerEsp:OnChanged(
+    function(Val)
+        getgenv().EspFlower = Val
+        for _, Flower in pairs(workspace:GetChildren()) do
+            if Flower.Name == "Flower1" or Flower.Name == "Flower2" then
+                if Val and not Flower:FindFirstChild("FlowerESP") then
+                    local G, L = CreateESP(Flower, "FlowerESP", "", Color3.fromRGB(255, 192, 203))
+                    if G and L then
+                        task.spawn(
+                            function()
+                                while G and G.Parent and getgenv().EspFlower do
+                                    pcall(
+                                        function()
+                                            local S = Flower:FindFirstChild("Stem")
+                                            if
+                                                S and game.Players.LocalPlayer.Character and
+                                                    game.Players.LocalPlayer.Character:FindFirstChild(
+                                                        "HumanoidRootPart"
+                                                    )
+                                             then
+                                                local D =
+                                                    math.floor(
+                                                    (game.Players.LocalPlayer.Character.HumanoidRootPart.Position -
+                                                        S.Position).Magnitude
+                                                )
+                                                L.Text = Flower.Name .. "\n[" .. D .. "m]"
+                                            end
+                                        end
+                                    )
+                                    task.wait(0.5)
                                 end
-                            end)
-                            task.wait(0.5)
-                        end
-                    end)
-                end
-            elseif not Val and Flower:FindFirstChild("FlowerESP") then
-                Flower.FlowerESP:Destroy()
-            end
-        end
-    end
-end)
-
-
-Toggles.ToggleLegendarySwordEsp = Tabs.T:AddToggle("ToggleLegendarySwordEsp", {Title = "ESP Legendary Sword Dealer", Default = false})
-Toggles.ToggleLegendarySwordEsp:OnChanged(function(Val)
-    getgenv().EspLegendarySword = Val
-    for _, Npc in pairs(workspace.NPCs:GetChildren()) do
-        if Npc.Name == "Legendary Sword Dealer" then
-            local P = Npc:FindFirstChild("HumanoidRootPart") or Npc.PrimaryPart
-            if P then
-                if Val and not P:FindFirstChild("LegendarySwordESP") then
-                    local G, L = CreateESP(P, "LegendarySwordESP", "", Color3.fromRGB(255, 0, 0))
-                    if G and L then
-                        task.spawn(function()
-                            while G and G.Parent and getgenv().EspLegendarySword do
-                                pcall(function()
-                                    local Cp = Npc:FindFirstChild("HumanoidRootPart") or Npc.PrimaryPart
-                                    if Cp and game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
-                                        local D = math.floor((game.Players.LocalPlayer.Character.HumanoidRootPart.Position - Cp.Position).Magnitude)
-                                        L.Text = "Legendary Sword Dealer\n[" .. D .. "m]"
-                                    end
-                                end)
-                                task.wait(0.5)
                             end
-                        end)
+                        )
                     end
-                elseif not Val and P:FindFirstChild("LegendarySwordESP") then
-                    P.LegendarySwordESP:Destroy()
+                elseif not Val and Flower:FindFirstChild("FlowerESP") then
+                    Flower.FlowerESP:Destroy()
                 end
             end
         end
     end
-end)
+)
 
-Toggles.ToggleMasterEnhancementEsp = Tabs.T:AddToggle("ToggleMasterEnhancementEsp", {Title = "ESP Master of Enhancement", Default = false})
-Toggles.ToggleMasterEnhancementEsp:OnChanged(function(Val)
-    getgenv().EspMasterEnhancement = Val
-    for _, Npc in pairs(workspace.NPCs:GetChildren()) do
-        if Npc.Name == "Master of Enhancement" then
-            local P = Npc:FindFirstChild("HumanoidRootPart") or Npc.PrimaryPart
-            if P then
-                if Val and not P:FindFirstChild("MasterEnhancementESP") then
-                    local G, L = CreateESP(P, "MasterEnhancementESP", "", Color3.fromRGB(0, 255, 255))
-                    if G and L then
-                        task.spawn(function()
-                            while G and G.Parent and getgenv().EspMasterEnhancement do
-                                pcall(function()
-                                    local Cp = Npc:FindFirstChild("HumanoidRootPart") or Npc.PrimaryPart
-                                    if Cp and game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
-                                        local D = math.floor((game.Players.LocalPlayer.Character.HumanoidRootPart.Position - Cp.Position).Magnitude)
-                                        L.Text = "Master of Enhancement\n[" .. D .. "m]"
+Toggles.ToggleLegendarySwordEsp =
+    Tabs.T:AddToggle("ToggleLegendarySwordEsp", {Title = "ESP Legendary Sword Dealer", Default = false})
+Toggles.ToggleLegendarySwordEsp:OnChanged(
+    function(Val)
+        getgenv().EspLegendarySword = Val
+        for _, Npc in pairs(workspace.NPCs:GetChildren()) do
+            if Npc.Name == "Legendary Sword Dealer" then
+                local P = Npc:FindFirstChild("HumanoidRootPart") or Npc.PrimaryPart
+                if P then
+                    if Val and not P:FindFirstChild("LegendarySwordESP") then
+                        local G, L = CreateESP(P, "LegendarySwordESP", "", Color3.fromRGB(255, 0, 0))
+                        if G and L then
+                            task.spawn(
+                                function()
+                                    while G and G.Parent and getgenv().EspLegendarySword do
+                                        pcall(
+                                            function()
+                                                local Cp = Npc:FindFirstChild("HumanoidRootPart") or Npc.PrimaryPart
+                                                if
+                                                    Cp and game.Players.LocalPlayer.Character and
+                                                        game.Players.LocalPlayer.Character:FindFirstChild(
+                                                            "HumanoidRootPart"
+                                                        )
+                                                 then
+                                                    local D =
+                                                        math.floor(
+                                                        (game.Players.LocalPlayer.Character.HumanoidRootPart.Position -
+                                                            Cp.Position).Magnitude
+                                                    )
+                                                    L.Text = "Legendary Sword Dealer\n[" .. D .. "m]"
+                                                end
+                                            end
+                                        )
+                                        task.wait(0.5)
                                     end
-                                end)
-                                task.wait(0.5)
-                            end
-                        end)
-                    end
-                elseif not Val and P:FindFirstChild("MasterEnhancementESP") then
-                    P.MasterEnhancementESP:Destroy()
-                end
-            end
-        end
-    end
-end)
-
-Toggles.ToggleMirageIslandEsp = Tabs.T:AddToggle("ToggleMirageIslandEsp", {Title = "ESP Mirage Island", Default = false})
-Toggles.ToggleMirageIslandEsp:OnChanged(function(Val)
-    getgenv().EspMirageIsland = Val
-    for _, Loc in pairs(workspace._WorldOrigin.Locations:GetChildren()) do
-        if Loc.Name == "Mirage Island" then
-            if Val and not Loc:FindFirstChild("MirageIslandESP") then
-                local G, L = CreateESP(Loc, "MirageIslandESP", "", Color3.fromRGB(0, 191, 255))
-                if G and L then
-                    task.spawn(function()
-                        while G and G.Parent and getgenv().EspMirageIsland do
-                            pcall(function()
-                                if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
-                                    local D = math.floor((game.Players.LocalPlayer.Character.HumanoidRootPart.Position - Loc.Position).Magnitude)
-                                    L.Text = "Mirage Island\n[" .. D .. "m]"
                                 end
-                            end)
-                            task.wait(0.5)
+                            )
                         end
-                    end)
-                end
-            elseif not Val and Loc:FindFirstChild("MirageIslandESP") then
-                Loc.MirageIslandESP:Destroy()
-            end
-        end
-    end
-end)
-
-Toggles.ToggleAdvancedFruitEsp = Tabs.T:AddToggle("ToggleAdvancedFruitEsp", {Title = "ESP Advanced Fruit Dealer", Default = false})
-Toggles.ToggleAdvancedFruitEsp:OnChanged(function(Val)
-    getgenv().EspAdvancedFruit = Val
-    for _, Npc in pairs(workspace.NPCs:GetChildren()) do
-        if Npc.Name == "Advanced Fruit Dealer" then
-            local P = Npc:FindFirstChild("HumanoidRootPart") or Npc.PrimaryPart
-            if P then
-                if Val and not P:FindFirstChild("AdvancedFruitESP") then
-                    local G, L = CreateESP(P, "AdvancedFruitESP", "", Color3.fromRGB(128, 0, 128))
-                    if G and L then
-                        task.spawn(function()
-                            while G and G.Parent and getgenv().EspAdvancedFruit do
-                                pcall(function()
-                                    local Cp = Npc:FindFirstChild("HumanoidRootPart") or Npc.PrimaryPart
-                                    if Cp and game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
-                                        local D = math.floor((game.Players.LocalPlayer.Character.HumanoidRootPart.Position - Cp.Position).Magnitude)
-                                        L.Text = "Advanced Fruit Dealer\n[" .. D .. "m]"
-                                    end
-                                end)
-                                task.wait(0.5)
-                            end
-                        end)
+                    elseif not Val and P:FindFirstChild("LegendarySwordESP") then
+                        P.LegendarySwordESP:Destroy()
                     end
-                elseif not Val and P:FindFirstChild("AdvancedFruitESP") then
-                    P.AdvancedFruitESP:Destroy()
                 end
             end
         end
     end
-end)
+)
+
+Toggles.ToggleMasterEnhancementEsp =
+    Tabs.T:AddToggle("ToggleMasterEnhancementEsp", {Title = "ESP Master of Enhancement", Default = false})
+Toggles.ToggleMasterEnhancementEsp:OnChanged(
+    function(Val)
+        getgenv().EspMasterEnhancement = Val
+        for _, Npc in pairs(workspace.NPCs:GetChildren()) do
+            if Npc.Name == "Master of Enhancement" then
+                local P = Npc:FindFirstChild("HumanoidRootPart") or Npc.PrimaryPart
+                if P then
+                    if Val and not P:FindFirstChild("MasterEnhancementESP") then
+                        local G, L = CreateESP(P, "MasterEnhancementESP", "", Color3.fromRGB(0, 255, 255))
+                        if G and L then
+                            task.spawn(
+                                function()
+                                    while G and G.Parent and getgenv().EspMasterEnhancement do
+                                        pcall(
+                                            function()
+                                                local Cp = Npc:FindFirstChild("HumanoidRootPart") or Npc.PrimaryPart
+                                                if
+                                                    Cp and game.Players.LocalPlayer.Character and
+                                                        game.Players.LocalPlayer.Character:FindFirstChild(
+                                                            "HumanoidRootPart"
+                                                        )
+                                                 then
+                                                    local D =
+                                                        math.floor(
+                                                        (game.Players.LocalPlayer.Character.HumanoidRootPart.Position -
+                                                            Cp.Position).Magnitude
+                                                    )
+                                                    L.Text = "Master of Enhancement\n[" .. D .. "m]"
+                                                end
+                                            end
+                                        )
+                                        task.wait(0.5)
+                                    end
+                                end
+                            )
+                        end
+                    elseif not Val and P:FindFirstChild("MasterEnhancementESP") then
+                        P.MasterEnhancementESP:Destroy()
+                    end
+                end
+            end
+        end
+    end
+)
+
+Toggles.ToggleMirageIslandEsp =
+    Tabs.T:AddToggle("ToggleMirageIslandEsp", {Title = "ESP Mirage Island", Default = false})
+Toggles.ToggleMirageIslandEsp:OnChanged(
+    function(Val)
+        getgenv().EspMirageIsland = Val
+        for _, Loc in pairs(workspace._WorldOrigin.Locations:GetChildren()) do
+            if Loc.Name == "Mirage Island" then
+                if Val and not Loc:FindFirstChild("MirageIslandESP") then
+                    local G, L = CreateESP(Loc, "MirageIslandESP", "", Color3.fromRGB(0, 191, 255))
+                    if G and L then
+                        task.spawn(
+                            function()
+                                while G and G.Parent and getgenv().EspMirageIsland do
+                                    pcall(
+                                        function()
+                                            if
+                                                game.Players.LocalPlayer.Character and
+                                                    game.Players.LocalPlayer.Character:FindFirstChild(
+                                                        "HumanoidRootPart"
+                                                    )
+                                             then
+                                                local D =
+                                                    math.floor(
+                                                    (game.Players.LocalPlayer.Character.HumanoidRootPart.Position -
+                                                        Loc.Position).Magnitude
+                                                )
+                                                L.Text = "Mirage Island\n[" .. D .. "m]"
+                                            end
+                                        end
+                                    )
+                                    task.wait(0.5)
+                                end
+                            end
+                        )
+                    end
+                elseif not Val and Loc:FindFirstChild("MirageIslandESP") then
+                    Loc.MirageIslandESP:Destroy()
+                end
+            end
+        end
+    end
+)
+
+Toggles.ToggleAdvancedFruitEsp =
+    Tabs.T:AddToggle("ToggleAdvancedFruitEsp", {Title = "ESP Advanced Fruit Dealer", Default = false})
+Toggles.ToggleAdvancedFruitEsp:OnChanged(
+    function(Val)
+        getgenv().EspAdvancedFruit = Val
+        for _, Npc in pairs(workspace.NPCs:GetChildren()) do
+            if Npc.Name == "Advanced Fruit Dealer" then
+                local P = Npc:FindFirstChild("HumanoidRootPart") or Npc.PrimaryPart
+                if P then
+                    if Val and not P:FindFirstChild("AdvancedFruitESP") then
+                        local G, L = CreateESP(P, "AdvancedFruitESP", "", Color3.fromRGB(128, 0, 128))
+                        if G and L then
+                            task.spawn(
+                                function()
+                                    while G and G.Parent and getgenv().EspAdvancedFruit do
+                                        pcall(
+                                            function()
+                                                local Cp = Npc:FindFirstChild("HumanoidRootPart") or Npc.PrimaryPart
+                                                if
+                                                    Cp and game.Players.LocalPlayer.Character and
+                                                        game.Players.LocalPlayer.Character:FindFirstChild(
+                                                            "HumanoidRootPart"
+                                                        )
+                                                 then
+                                                    local D =
+                                                        math.floor(
+                                                        (game.Players.LocalPlayer.Character.HumanoidRootPart.Position -
+                                                            Cp.Position).Magnitude
+                                                    )
+                                                    L.Text = "Advanced Fruit Dealer\n[" .. D .. "m]"
+                                                end
+                                            end
+                                        )
+                                        task.wait(0.5)
+                                    end
+                                end
+                            )
+                        end
+                    elseif not Val and P:FindFirstChild("AdvancedFruitESP") then
+                        P.AdvancedFruitESP:Destroy()
+                    end
+                end
+            end
+        end
+    end
+)
 
 Toggles.ToggleGearEsp = Tabs.T:AddToggle("ToggleGearEsp", {Title = "ESP Gear", Default = false})
-Toggles.ToggleGearEsp:OnChanged(function(Val)
-    getgenv().EspGear = Val
-    local Mystic = workspace.Map:FindFirstChild("MysticIsland")
-    if Mystic then
-        for _, Gear in pairs(Mystic:GetChildren()) do
-            if Gear.Name == "MeshPart" then
-                if Val and not Gear:FindFirstChild("GearESP") then
-                    local G, L = CreateESP(Gear, "GearESP", "", Color3.fromRGB(255, 165, 0))
-                    if G and L then
-                        task.spawn(function()
-                            while G and G.Parent and getgenv().EspGear do
-                                pcall(function()
-                                    if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
-                                        local D = math.floor((game.Players.LocalPlayer.Character.HumanoidRootPart.Position - Gear.Position).Magnitude)
-                                        L.Text = "Gear\n[" .. D .. "m]"
+Toggles.ToggleGearEsp:OnChanged(
+    function(Val)
+        getgenv().EspGear = Val
+        local Mystic = workspace.Map:FindFirstChild("MysticIsland")
+        if Mystic then
+            for _, Gear in pairs(Mystic:GetChildren()) do
+                if Gear.Name == "MeshPart" then
+                    if Val and not Gear:FindFirstChild("GearESP") then
+                        local G, L = CreateESP(Gear, "GearESP", "", Color3.fromRGB(255, 165, 0))
+                        if G and L then
+                            task.spawn(
+                                function()
+                                    while G and G.Parent and getgenv().EspGear do
+                                        pcall(
+                                            function()
+                                                if
+                                                    game.Players.LocalPlayer.Character and
+                                                        game.Players.LocalPlayer.Character:FindFirstChild(
+                                                            "HumanoidRootPart"
+                                                        )
+                                                 then
+                                                    local D =
+                                                        math.floor(
+                                                        (game.Players.LocalPlayer.Character.HumanoidRootPart.Position -
+                                                            Gear.Position).Magnitude
+                                                    )
+                                                    L.Text = "Gear\n[" .. D .. "m]"
+                                                end
+                                            end
+                                        )
+                                        task.wait(0.5)
                                     end
-                                end)
-                                task.wait(0.5)
-                            end
-                        end)
+                                end
+                            )
+                        end
+                    elseif not Val and Gear:FindFirstChild("GearESP") then
+                        Gear.GearESP:Destroy()
                     end
-                elseif not Val and Gear:FindFirstChild("GearESP") then
-                    Gear.GearESP:Destroy()
                 end
             end
         end
     end
-end)
+)
+
+local PlayerTeam = Tabs.MM:AddSection("Player Misc")
+
+Tabs.MM:AddButton(
+    {
+        Title = "Join Pirates Team",
+        Description = "",
+        Callback = function()
+            game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("SetTeam", "Pirates")
+        end
+    }
+)
+
+Tabs.MM:AddButton(
+    {
+        Title = "Join Marines Team",
+        Description = "",
+        Callback = function()
+            game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("SetTeam", "Marines")
+        end
+    }
+)
+
+Tabs.MM:AddButton(
+    {
+        Title = "Remove Fog",
+        Description = "Destroy Lighting Sky",
+        Callback = function()
+            game:GetService("Lighting").LightingLayers:Destroy()
+            game:GetService("Lighting").Sky:Destroy()
+        end
+    }
+)
+
+Tabs.MM:AddButton(
+    {
+        Title = "Always Day",
+        Description = "",
+        Callback = function()
+            game:GetService("RunService").Heartbeat:wait()
+            do
+                game:GetService("Lighting").ClockTime = 12
+            end
+        end
+    }
+)
+
+Dropdowns.DropdownState =
+    Tabs.MM:AddDropdown(
+    "DropdownState",
+    {
+        Title = "Select Player Haki State",
+        Values = {"State 0", "State 1", "State 2", "State 3", "State 4", "State 5"},
+        Multi = false,
+        Default = 1
+    }
+)
+
+Dropdowns.DropdownState:OnChanged(
+    function(Value)
+        getgenv().StateHaki = Value
+    end
+)
+
+Tabs.MM:AddButton(
+    {
+        Title = "Change State",
+        Description = "",
+        Callback = function()
+            local StateMapping = {
+                ["State 0"] = 0,
+                ["State 1"] = 1,
+                ["State 2"] = 2,
+                ["State 3"] = 3,
+                ["State 4"] = 4,
+                ["State 5"] = 5
+            }
+
+            local Stage = StateMapping[getgenv().StateHaki]
+            if Stage ~= nil then
+                game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("ChangeBusoStage", Stage)
+            end
+        end
+    }
+)
+
+Toggles.ToggleWalkOnWater = Tabs.MM:AddToggle("ToggleWalkOnWater", {Title = "Walk On Water", Default = true})
+Toggles.ToggleWalkOnWater:OnChanged(
+    function(Value)
+        getgenv().WalkOnWater = Value
+    end
+)
+
+Toggles.InfGeppoToggle = Tabs.MM:AddToggle("InfGeppoToggle", {Title = "Infinity Geppo", Default = false})
+Toggles.InfGeppoToggle:OnChanged(
+    function(Value)
+        getgenv().InfGeppo = Value
+    end
+)
+
+Toggles.InfDogeToggle = Tabs.MM:AddToggle("InfDogeToggle", {Title = "Infinity Dodges", Default = false})
+Toggles.InfDogeToggle:OnChanged(
+    function(Value)
+        getgenv().InfDoge = Value
+    end
+)
+
+Toggles.InfSoruToggle = Tabs.MM:AddToggle("InfSoruToggle", {Title = "Infinity Soru", Default = false})
+Toggles.InfSoruToggle:OnChanged(
+    function(Value)
+        getgenv().InfSoru = Value
+    end
+)
+
+local Guiiiiiii = Tabs.MM:AddSection("Gui Misc")
+
+Tabs.MM:AddButton(
+    {
+        Title = "Open Devil Shop",
+        Description = "",
+        Callback = function()
+            game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("GetFruits")
+            game:GetService("Players").LocalPlayer.PlayerGui.Main.FruitShop.Visible = true
+        end
+    }
+)
+
+Tabs.MM:AddButton(
+    {
+        Title = "Open Color Haki",
+        Description = "",
+        Callback = function()
+            game.Players.localPlayer.PlayerGui.Main.Colors.Visible = true
+        end
+    }
+)
+
+Tabs.MM:AddButton(
+    {
+        Title = "Open Title Gui",
+        Description = "",
+        Callback = function()
+            local args = {
+                [1] = "getTitles"
+            }
+            game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
+            game.Players.localPlayer.PlayerGui.Main.Titles.Visible = true
+        end
+    }
+)
+
+Tabs.MM:AddButton(
+    {
+        Title = "Open Awakening Gui",
+        Description = "",
+        Callback = function()
+            game:GetService("Players").LocalPlayer.PlayerGui.Main.AwakeningToggler.Visible = true
+        end
+    }
+)
 
 local Queue = {
     {
@@ -6420,8 +9056,30 @@ local Queue = {
         end
     },
     {
-        Name = "BossFarm",
+        Name = "AutoRaceV2Quest",
         Prio = 3,
+        LastResult = false,
+        Running = false,
+        ConditionCheck = function()
+            if not getgenv().AutoRaceV2Quest then
+                return false
+            end
+            if game.Players.LocalPlayer.Data.Race:FindFirstChild("Evolved") then
+                return false
+            end
+            return true
+        end,
+        Func = function()
+            local result = AutoRaceV2Quest()
+            if ShouldInterrupt("AutoRaceV2Quest") then
+                return false
+            end
+            return result
+        end
+    },
+    {
+        Name = "BossFarm",
+        Prio = 4,
         LastResult = false,
         ConditionCheck = function()
             if not getgenv().BossFarm then
@@ -6453,7 +9111,7 @@ local Queue = {
     },
     {
         Name = "KillPlayerNear",
-        Prio = 4,
+        Prio = 5,
         LastResult = false,
         Running = false,
         ConditionCheck = function()
@@ -6485,8 +9143,40 @@ local Queue = {
         end
     },
     {
+        Name = "KillAfterTrial",
+        Prio = 6,
+        LastResult = false,
+        Running = false,
+        ConditionCheck = function()
+            if not getgenv().KillAfterTrial then
+                return false
+            end
+            for _, v in pairs(game:GetService("Players"):GetPlayers()) do
+                if v.Name ~= game.Players.LocalPlayer.Name and v.Character then
+                    if
+                        v.Character:FindFirstChild("HumanoidRootPart") and
+                            game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") and
+                            v.Character:FindFirstChild("Humanoid")
+                     then
+                        if
+                            (v.Character.HumanoidRootPart.Position -
+                                game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude <= 100 and
+                                v.Character.Humanoid.Health > 0
+                         then
+                            return true, v.Character
+                        end
+                    end
+                end
+            end
+            return false, nil
+        end,
+        Func = function()
+            return KillAfterTrial()
+        end
+    },
+    {
         Name = "FarmLevel",
-        Prio = 5,
+        Prio = 7,
         LastResult = false,
         ConditionCheck = nil,
         Func = function()
@@ -6551,7 +9241,7 @@ local Queue = {
     },
     {
         Name = "FarmBone",
-        Prio = 6,
+        Prio = 8,
         LastResult = false,
         ConditionCheck = nil,
         Func = function()
@@ -6564,7 +9254,7 @@ local Queue = {
     },
     {
         Name = "FarmNearest",
-        Prio = 7,
+        Prio = 9,
         LastResult = false,
         ConditionCheck = nil,
         Func = function()
@@ -6577,7 +9267,7 @@ local Queue = {
     },
     {
         Name = "StartFarmChest",
-        Prio = 8,
+        Prio = 10,
         LastResult = false,
         ConditionCheck = nil,
         Func = function()
@@ -6590,7 +9280,7 @@ local Queue = {
     },
     {
         Name = "AutoRaid",
-        Prio = 9,
+        Prio = 11,
         LastResult = false,
         ConditionCheck = nil,
         Func = function()
@@ -6603,7 +9293,7 @@ local Queue = {
     },
     {
         Name = "TweenIsland",
-        Prio = 10,
+        Prio = 12,
         LastResult = false,
         ConditionCheck = nil,
         Func = function()
@@ -6616,7 +9306,7 @@ local Queue = {
     },
     {
         Name = "TweenToNpc",
-        Prio = 11,
+        Prio = 13,
         LastResult = false,
         ConditionCheck = nil,
         Func = function()
@@ -6630,9 +9320,12 @@ local Queue = {
 }
 
 local function Sort()
-    table.sort(Queue, function(a, b)
-        return a.Prio < b.Prio
-    end)
+    table.sort(
+        Queue,
+        function(a, b)
+            return a.Prio < b.Prio
+        end
+    )
 end
 
 function ShouldInterrupt(currentTaskName)
@@ -6685,111 +9378,128 @@ local function GetActiveHighestPriorityTask()
 end
 
 local function Run()
-    task.spawn(function()
-        local lastTask = nil
-        local errorCount = {}
-        local MAX_ERRORS = 5
-        while true do
-            local success = pcall(function()
-                local priorityTask = GetActiveHighestPriorityTask()
-                if priorityTask then
-                    if not errorCount[priorityTask.Name] then
-                        errorCount[priorityTask.Name] = 0
-                    end
-                    if errorCount[priorityTask.Name] >= MAX_ERRORS then
-                        warn(string.format(
-                            "[Priority Queue] Task '%s' disabled due to %d consecutive errors",
-                            priorityTask.Name,
-                            MAX_ERRORS
-                        ))
-                        getgenv()[priorityTask.Name] = false
-                        task.wait(1)
-                        return
-                    end
-                    priorityTask.Running = true
-                    local taskSuccess, result = pcall(priorityTask.Func)
+    task.spawn(
+        function()
+            local lastTask = nil
+            local errorCount = {}
+            local MAX_ERRORS = 5
+            while true do
+                local success =
+                    pcall(
+                    function()
+                        local priorityTask = GetActiveHighestPriorityTask()
+                        if priorityTask then
+                            if not errorCount[priorityTask.Name] then
+                                errorCount[priorityTask.Name] = 0
+                            end
+                            if errorCount[priorityTask.Name] >= MAX_ERRORS then
+                                warn(
+                                    string.format(
+                                        "[Priority Queue] Task '%s' disabled due to %d consecutive errors",
+                                        priorityTask.Name,
+                                        MAX_ERRORS
+                                    )
+                                )
+                                getgenv()[priorityTask.Name] = false
+                                task.wait(1)
+                                return
+                            end
+                            priorityTask.Running = true
+                            local taskSuccess, result = pcall(priorityTask.Func)
 
-                    if taskSuccess then
-                        priorityTask.LastResult = result
-                        errorCount[priorityTask.Name] = 0
-                    else
-                        priorityTask.LastResult = false
-                        errorCount[priorityTask.Name] = errorCount[priorityTask.Name] + 1
-                        warn(string.format(
-                            "[Priority Queue] Error in task '%s' (attempt %d/%d): %s",
-                            priorityTask.Name,
-                            errorCount[priorityTask.Name],
-                            MAX_ERRORS,
-                            tostring(result)
-                        ))
-                    end
+                            if taskSuccess then
+                                priorityTask.LastResult = result
+                                errorCount[priorityTask.Name] = 0
+                            else
+                                priorityTask.LastResult = false
+                                errorCount[priorityTask.Name] = errorCount[priorityTask.Name] + 1
+                                warn(
+                                    string.format(
+                                        "[Priority Queue] Error in task '%s' (attempt %d/%d): %s",
+                                        priorityTask.Name,
+                                        errorCount[priorityTask.Name],
+                                        MAX_ERRORS,
+                                        tostring(result)
+                                    )
+                                )
+                            end
 
-                    priorityTask.Running = false
-                    lastTask = priorityTask
-                else
-                    lastTask = nil
+                            priorityTask.Running = false
+                            lastTask = priorityTask
+                        else
+                            lastTask = nil
+                        end
+
+                        task.wait(0.1)
+                    end
+                )
+
+                if not success then
+                    warn("[Priority Queue] Critical error in main loop, recovering...")
+                    task.wait(1)
                 end
-
-                task.wait(0.1)
-            end)
-
-            if not success then
-                warn("[Priority Queue] Critical error in main loop, recovering...")
-                task.wait(1)
             end
         end
-    end)
+    )
 end
 
 local function MonitorTaskStates()
-    task.spawn(function()
-        local lastStates = {}
+    task.spawn(
+        function()
+            local lastStates = {}
 
-        for _, Task in ipairs(Queue) do
-            lastStates[Task.Name] = getgenv()[Task.Name]
-        end
+            for _, Task in ipairs(Queue) do
+                lastStates[Task.Name] = getgenv()[Task.Name]
+            end
 
-        while true do
-            local success = pcall(function()
-                for _, Task in ipairs(Queue) do
-                    local currentState = getgenv()[Task.Name]
-                    local lastState = lastStates[Task.Name]
+            while true do
+                local success =
+                    pcall(
+                    function()
+                        for _, Task in ipairs(Queue) do
+                            local currentState = getgenv()[Task.Name]
+                            local lastState = lastStates[Task.Name]
 
-                    if lastState == true and currentState == false then
-                        Task.LastResult = false
-                        Task.Running = false
+                            if lastState == true and currentState == false then
+                                Task.LastResult = false
+                                Task.Running = false
+                            end
+
+                            if lastState == false and currentState == true then
+                                Task.LastResult = false
+                                Task.Running = false
+                            end
+
+                            lastStates[Task.Name] = currentState
+                        end
+
+                        task.wait(0.05)
                     end
+                )
 
-                    if lastState == false and currentState == true then
-                        Task.LastResult = false
-                        Task.Running = false
-                    end
-
-                    lastStates[Task.Name] = currentState
+                if not success then
+                    warn("[Priority Queue] Error in state monitor, recovering...")
+                    task.wait(0.5)
                 end
-
-                task.wait(0.05)
-            end)
-
-            if not success then
-                warn("[Priority Queue] Error in state monitor, recovering...")
-                task.wait(0.5)
             end
         end
-    end)
+    )
 end
 
 local function GetTaskStatus()
     local status = {}
 
     for _, Task in ipairs(Queue) do
-        table.insert(status, {
-            Name = Task.Name,
-            Priority = Task.Prio,
-            Enabled = getgenv()[Task.Name] or false,
-            Running = Task.Running,
-            LastResult = Task.LastResult
-        })
+        table.insert(
+            status,
+            {
+                Name = Task.Name,
+                Priority = Task.Prio,
+                Enabled = getgenv()[Task.Name] or false,
+                Running = Task.Running,
+                LastResult = Task.LastResult
+            }
+        )
     end
 
     return status
