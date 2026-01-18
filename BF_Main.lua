@@ -1414,34 +1414,42 @@ local function bring(mobName, cframe)
     local mvs = {}
     local count = 0
     for _, mob in next, Enemies:GetChildren() do
-        if count >= 2 then break end
-        if not isModel(mob) or mob.Name ~= mobName then continue end
-        if getDistance(mob.HumanoidRootPart.Position, player.Character.HumanoidRootPart.Position) > 250 then continue end
-        mvs[mob] = mob.HumanoidRootPart.CFrame
-        mob.HumanoidRootPart.CFrame = cframe
-        delay(0.1, freeze, mob)
-        count = count + 1
-    end
-    delay(3, function()
-        for mob, orf in pairs(mvs) do
-            if isModel(mob) then
-                mob.HumanoidRootPart.CFrame = orf
-                mob.HumanoidRootPart.Transparency = 0
-                mob.HumanoidRootPart.Size = Vector3.new(1, 2, 1)
-                mob.Humanoid.WalkSpeed = 16
-                mob.Humanoid.JumpPower = 50
-                for _, part in ipairs(mob:GetDescendants()) do
-                    if part:IsA("BasePart") then
-                        part.CanCollide = true
-                    end
+        if count < 2 then
+            if isModel(mob) and mob.Name == mobName then
+                if getDistance(mob.HumanoidRootPart.Position, player.Character.HumanoidRootPart.Position) <= 250 then
+                    mvs[mob] = mob.HumanoidRootPart.CFrame
+                    mob.HumanoidRootPart.CFrame = cframe
+                    delay(0.1, freeze, mob)
+                    count = count + 1
                 end
-                local bv = findProperty(mob.HumanoidRootPart, 'jacky', true)
-                if bv then
-                    bv:Destroy()
+            end
+        else
+            break
+        end
+    end
+    delay(
+        3,
+        function()
+            for mob, orf in pairs(mvs) do
+                if isModel(mob) then
+                    mob.HumanoidRootPart.CFrame = orf
+                    mob.HumanoidRootPart.Transparency = 0
+                    mob.HumanoidRootPart.Size = Vector3.new(1, 2, 1)
+                    mob.Humanoid.WalkSpeed = 16
+                    mob.Humanoid.JumpPower = 50
+                    for _, part in ipairs(mob:GetDescendants()) do
+                        if part:IsA("BasePart") then
+                            part.CanCollide = true
+                        end
+                    end
+                    local bv = findProperty(mob.HumanoidRootPart, "jacky", true)
+                    if bv then
+                        bv:Destroy()
+                    end
                 end
             end
         end
-    end)
+    )
 end
 
 function SH(target)
@@ -1468,49 +1476,22 @@ function SH(target)
     end
 end
 
-local function deathHook() end
-local function respawnHook() end
-local function changeDisplayedNPCHook() return end
-local function errorHook() end
-local function warnHook() end
-
 local HooksTable = {
-    {
-        Name = "Death",
-        Function = require(game:GetService("ReplicatedStorage").Effect.Container.Death),
-        HookedFunction = deathHook
-    },
-    {
-        Name = "Respawn",
-        Function = require(game:GetService("ReplicatedStorage").Effect.Container.Respawn),
-        HookedFunction = respawnHook
-    },
-    {
-        Name = "ChangeDisplayedNPC",
-        Function = require(game:GetService("ReplicatedStorage"):WaitForChild("GuideModule")).ChangeDisplayedNPC,
-        HookedFunction = changeDisplayedNPCHook
-    },
-    {
-        Name = "Error",
-        Function = error,
-        HookedFunction = errorHook
-    },
-    {
-        Name = "Warn",
-        Function = warn,
-        HookedFunction = warnHook
-    }
+    {Name = "Death", Function = require(game:GetService("ReplicatedStorage").Effect.Container.Death), HookedFunction = function() end},
+    {Name = "Respawn", Function = require(game:GetService("ReplicatedStorage").Effect.Container.Respawn), HookedFunction = function() end},
+    {Name = "ChangeDisplayedNPC", Function = require(game:GetService("ReplicatedStorage"):WaitForChild("GuideModule")).ChangeDisplayedNPC, HookedFunction = function() return end},
+    {Name = "Error", Function = error, HookedFunction = function() end},
+    {Name = "Warn", Function = warn, HookedFunction = function() end}
 }
 
-local function setupHooks()
+task.delay(1, function()
     if hookfunction and not islclosure(hookfunction) then
-        for _, HookData in ipairs(HooksTable) do
-            hookfunction(HookData.Function, HookData.HookedFunction)
+        for _, hook in ipairs(HooksTable) do
+            hookfunction(hook.Function, hook.HookedFunction)
         end
     end
-end
+end)
 
-task.delay(1, setupHooks)
 function DeVer()
     local MainGui = game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("Main")
     if MainGui and MainGui:FindFirstChild("Version") then
@@ -1529,20 +1510,20 @@ end
 
 function RanPos()
     if getgenv().RandomPos then
-            local Angle = 0
-            local Radius = 20
-            while getgenv().RandomPos do
-                Angle = Angle + 15
-                if Angle >= 360 then
-                    Angle = 0
-                end
-                RandomCFrame = CFrame.new(math.cos(math.rad(Angle)) * Radius, 25, math.sin(math.rad(Angle)) * Radius)
-                task.wait(0.03)
+        local Angle = 0
+        local Radius = 20
+        while getgenv().RandomPos do
+            Angle = Angle + 15
+            if Angle >= 360 then
+                Angle = 0
             end
-        else
-            RandomCFrame = CFrame.new(0, 30, 0)
+            RandomCFrame = CFrame.new(math.cos(math.rad(Angle)) * Radius, 25, math.sin(math.rad(Angle)) * Radius)
+            task.wait(0.03)
         end
-        task.wait()
+    else
+        RandomCFrame = CFrame.new(0, 30, 0)
+    end
+    task.wait()
 end
 
 function CaptureMode()
@@ -1606,6 +1587,59 @@ function EnbalePvP()
     if getgenv().AutoEnblePvP then
         if game:GetService("Players").LocalPlayer.PlayerGui.Main.PvpDisabled.Visible == true then
             game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("EnablePvp")
+        end
+    end
+end
+
+function AddPoint(StatName, Amount)
+    if Amount > 0 then
+        StatRemote:InvokeServer("AddPoint", StatName, Amount)
+    end
+end
+
+function AutoStats()
+    if getgenv().AutoStats then
+        local Data = LocalPlayer:FindFirstChild("Data")
+        local Stats = Data and Data:FindFirstChild("Stats")
+
+        if Data and Stats then
+            local Level = Data:FindFirstChild("Level") and Data.Level.Value or 0
+            local Points = Data:FindFirstChild("Points") and Data.Points.Value or 0
+
+            if Points > 0 then
+                local Selected = getgenv().SelectedStats
+                local UseAmount = math.min(getgenv().AmountStats, Points)
+
+                if Selected["Smart Stats"] then
+                    if Level < 1200 then
+                        AddPoint("Melee", UseAmount)
+                    elseif Level < 2200 then
+                        local Half = math.floor(UseAmount / 2)
+                        AddPoint("Melee", Half)
+                        AddPoint("Defense", UseAmount - Half)
+                    else
+                        local Half = math.floor(UseAmount / 2)
+                        AddPoint("Sword", Half)
+                        AddPoint("Demon Fruit", UseAmount - Half)
+                    end
+                else
+                    local EnabledStats = {}
+                    for StatName, Enabled in pairs(Selected) do
+                        if Enabled then
+                            table.insert(EnabledStats, StatName)
+                        end
+                    end
+
+                    if #EnabledStats > 0 then
+                        local PointsPerStat = math.floor(UseAmount / #EnabledStats)
+                        for _, StatName in ipairs(EnabledStats) do
+                            AddPoint(StatName, PointsPerStat)
+                        end
+                    end
+                end
+            end
+        else
+            warn("Data or Stats not found.")
         end
     end
 end
@@ -2082,6 +2116,8 @@ task.spawn(function()
                 CheckLegendarySwordStatus()
                 FlowerItems()
                 DeVer() DeDam() DeNo() RanPos() ReJoin() CaptureMode() FPSLOCK() BuyFruitSniper()
+                AutoStats()
+                EnbalePvP()
             end
         end)
     end
@@ -3495,55 +3531,6 @@ Toggles.AutoStatToggle:OnChanged(function()
     getgenv().AutoStats = Toggles.AutoStatToggle.Value
 end)
 
-function AddPoint(StatName, Amount)
-    if Amount > 0 then
-        StatRemote:InvokeServer("AddPoint", StatName, Amount)
-    end
-end
-
-task.spawn(function()
-    while task.wait(1) do
-        if not getgenv().AutoStats then continue end
-        local Data = LocalPlayer:FindFirstChild("Data")
-        local Stats = Data and Data:FindFirstChild("Stats")
-        if not Data or not Stats then
-            warn("Data or Stats not found.")
-            continue
-        end
-        local Level = Data:FindFirstChild("Level") and Data.Level.Value or 0
-        local Points = Data:FindFirstChild("Points") and Data.Points.Value or 0
-        if Points <= 0 then continue end
-        local Selected = getgenv().SelectedStats
-        local UseAmount = math.min(getgenv().AmountStats, Points)
-        if Selected["Smart Stats"] then
-            if Level < 1200 then
-                AddPoint("Melee", UseAmount)
-            elseif Level < 2200 then
-                 Half = math.floor(UseAmount / 2)
-                AddPoint("Melee", Half)
-                AddPoint("Defense", UseAmount - Half)
-            else
-                 Half = math.floor(UseAmount / 2)
-                AddPoint("Sword", Half)
-                AddPoint("Demon Fruit", UseAmount - Half)
-            end
-        else
-             EnabledStats = {}
-            for StatName, Enabled in pairs(Selected) do
-                if Enabled then
-                    table.insert(EnabledStats, StatName)
-                end
-            end
-            if #EnabledStats > 0 then
-                 PointsPerStat = math.floor(UseAmount / #EnabledStats)
-                for _, StatName in ipairs(EnabledStats) do
-                    AddPoint(StatName, PointsPerStat)
-                end
-            end
-        end
-    end
-end)
-
 local ST = Tabs.Setting:AddSection("Tab Settings Tween")
 
 Sliders.TweenSlider = Tabs.Setting:AddSlider("Tween Speed", {
@@ -4877,7 +4864,7 @@ Tabs.E:AddButton(
             for i, v in pairs(game:GetService("Players"):GetPlayers()) do
                 table.insert(Playerslist, v.Name)
             end
-            SPToggle:SetValues(Playerslist)
+            Toggles.SPToggle:SetValues(Playerslist)
         end
     }
 )
@@ -4976,7 +4963,7 @@ Toggles.SpectateToggle:OnChanged(
     end
 )
 
-Toggles.ToggleTu = Tabs.E:AddToggle("ToggleTu", {Title = "Auto Enable PvP", Default = false })
+Toggles.ToggleTu = Tabs.E:AddToggle("ToggleTu", {Title = "Auto Enable PVP", Default = false })
 Toggles.ToggleTu:OnChanged(
     function(Value)
         getgenv().AutoEnblePvP = Value
@@ -5023,13 +5010,14 @@ function ChichChip()
 end
 
 function GoRaid()
-    if _G.World2 then
+    local success1 = pcall(function()
         fireclickdetector(Workspace.Map.CircleIsland.RaidSummon2.Button.Main.ClickDetector)
-    elseif _G.World3 then
+    end)
+    local success2 = pcall(function()
         local Cd = game.Workspace.Map["Boat Castle"].RaidSummon2.Button.Main.ClickDetector
         Cd.MaxActivationDistance = math.huge
         fireclickdetector(Cd)
-    end
+    end)
 end
 
 local function Us()
@@ -5196,115 +5184,128 @@ Toggles.ToggleAwake:OnChanged(
  Ic = 5
  Ti = false
 function AutoRaid()
-    if not getgenv().AutoRaid then return false end
-             Rv = false
-            pcall(function()
-                local Pg = game:GetService("Players").LocalPlayer.PlayerGui
-                if Pg and Pg:FindFirstChild("Main") then
-                    local M = Pg.Main
-                    if M:FindFirstChild("TopHUDList") and 
-                       M.TopHUDList:FindFirstChild("RaidTimer") then
-                        Rv = M.TopHUDList.RaidTimer.Visible
-                    end
+    if not getgenv().AutoRaid then
+        return false
+    end
+    Rv = false
+    pcall(
+        function()
+            local Pg = game:GetService("Players").LocalPlayer.PlayerGui
+            if Pg and Pg:FindFirstChild("Main") then
+                local M = Pg.Main
+                if M:FindFirstChild("TopHUDList") and M.TopHUDList:FindFirstChild("RaidTimer") then
+                    Rv = M.TopHUDList.RaidTimer.Visible
                 end
-            end)
-            
-            if Rv then
-                pcall(function()
-                    local P = game:GetService("Players").LocalPlayer
-                    local C = P.Character
-                    
-                    if C and C:FindFirstChild("HumanoidRootPart") then
-                        local H = C.HumanoidRootPart
-                        local W = game:GetService("Workspace")
-                        
-                        if not W:FindFirstChild("_WorldOrigin") or 
-                           not W._WorldOrigin:FindFirstChild("Locations") then
-                            return
-                        end
-                        
-                        local L = W._WorldOrigin.Locations
-                        local Cp = H.Position
-                        
-                        local Sp1 = Vector3.new(-6438.73535, 250.645355, -4501.50684)
-                        local Sp2 = Vector3.new(-5017.40869, 314.844055, -2823.0127)
-                        
-                        if (Cp - Sp1).Magnitude < 5 or 
-                           (Cp - Sp2).Magnitude < 5 then
-                            Vi = {}
-                            Ti = false
-                        end
-                        
-                        local E = W.Enemies:GetChildren()
-                        table.sort(E, function(a, b)
+            end
+        end
+    )
+
+    if Rv then
+        pcall(
+            function()
+                local P = game:GetService("Players").LocalPlayer
+                local C = P.Character
+
+                if C and C:FindFirstChild("HumanoidRootPart") then
+                    local H = C.HumanoidRootPart
+                    local W = game:GetService("Workspace")
+
+                    if not W:FindFirstChild("_WorldOrigin") or not W._WorldOrigin:FindFirstChild("Locations") then
+                        return
+                    end
+
+                    local L = W._WorldOrigin.Locations
+                    local Cp = H.Position
+
+                    local Sp1 = Vector3.new(-6438.73535, 250.645355, -4501.50684)
+                    local Sp2 = Vector3.new(-5017.40869, 314.844055, -2823.0127)
+
+                    if (Cp - Sp1).Magnitude < 5 or (Cp - Sp2).Magnitude < 5 then
+                        Vi = {}
+                        Ti = false
+                    end
+
+                    local E = W.Enemies:GetChildren()
+                    table.sort(
+                        E,
+                        function(a, b)
                             return a.Name < b.Name
-                        end)
-                        
-                         Fighting = false
-                        for _, V in ipairs(E) do
-                            if V:FindFirstChild("Humanoid") and V.Humanoid.Health > 0 and V:FindFirstChild("HumanoidRootPart") then
-                                if (P.Character.HumanoidRootPart.Position - V.HumanoidRootPart.Position).Magnitude <= 700 then
-                                    Fighting = true
-                                    SH(V)
-                                    break
-                                end
+                        end
+                    )
+
+                    Fighting = false
+                    for _, V in ipairs(E) do
+                        if
+                            V:FindFirstChild("Humanoid") and V.Humanoid.Health > 0 and
+                                V:FindFirstChild("HumanoidRootPart")
+                         then
+                            if (P.Character.HumanoidRootPart.Position - V.HumanoidRootPart.Position).Magnitude <= 700 then
+                                Fighting = true
+                                SH(V)
+                                break
                             end
                         end
-                        
-                        if not Fighting and not Ti then
-                            for i = 1, Ic do
-                                local In = "Island " .. i
-                                local Is = L:FindFirstChild(In)
-                                
-                                if Is and not Vi[In] then
-                                    Ti = true
-                                    Vi[In] = true
-                                    
-                                    local S = pcall(function()
+                    end
+
+                    if not Fighting and not Ti then
+                        for i = 1, Ic do
+                            local In = "Island " .. i
+                            local Is = L:FindFirstChild(In)
+
+                            if Is and not Vi[In] then
+                                Ti = true
+                                Vi[In] = true
+
+                                local S =
+                                    pcall(
+                                    function()
                                         if type(Tween) == "function" then
                                             Tween(Is.CFrame)
                                         end
-                                    end)
-                                    
-                                    if not S then
-                                        Vi[In] = nil
                                     end
-                                    
-                                    task.wait(3)
-                                    Ti = false
-                                    break
+                                )
+
+                                if not S then
+                                    Vi[In] = nil
                                 end
+
+                                task.wait(3)
+                                Ti = false
+                                break
                             end
                         end
                     end
-                end)
-            else
-                Vi = {}
-                Ti = false
-                if getgenv().Raid_AutoUnStore then
-                    Us()
-                end
-                 HasChip = false
-                pcall(function()
-                    local P = game:GetService("Players").LocalPlayer
-                    if P.Backpack:FindFirstChild("Special Microchip") then
-                        HasChip = true
-                    end
-                end)
-                
-                if HasChip then
-                    GoRaid()
-                else
-                if getgenv().Raid_AutoUnStore then
-                  Us()
-                end
-                    ChichChip()
-                    task.wait(1)
-                    GoRaid()
                 end
             end
-end
-    
+        )
+    else
+        Vi = {}
+        Ti = false
+        if getgenv().Raid_AutoUnStore then
+            Us()
+        end
+        HasChip = false
+        pcall(
+            function()
+                local P = game:GetService("Players").LocalPlayer
+                if P.Backpack:FindFirstChild("Special Microchip") then
+                    HasChip = true
+                end
+            end
+        )
+
+        if HasChip then
+            GoRaid()
+        else
+            if getgenv().Raid_AutoUnStore then
+                Us()
+            end
+            ChichChip()
+            task.wait(1)
+            GoRaid()
+        end
+    end
+end 
 
 Tabs.R:AddButton(
     {
