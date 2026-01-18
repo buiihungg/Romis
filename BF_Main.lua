@@ -5033,38 +5033,53 @@ function GoRaid()
 end
 
 local function Us()
-     FruitPrice = {}
-     FruitStore = {}
-     PriceU = tonumber(getgenv().PriceLimit) or 1000000
+    local FruitPrice = {}
+    local FruitStore = {}
+    local PriceU = tonumber(getgenv().PriceLimit) or 1000000
 
-     getFruitsResult = game.ReplicatedStorage:WaitForChild("Remotes").CommF_:InvokeServer("GetFruits")
+    local getFruitsResult = game.ReplicatedStorage:WaitForChild("Remotes").CommF_:InvokeServer("GetFruits")
+    
     if type(getFruitsResult) == "table" then
         for i, v in pairs(getFruitsResult) do
-            if v.Price <= PriceU then  
+            if v and type(v.Price) == "number" and v.Price <= PriceU and v.Name then
                 table.insert(FruitPrice, v.Name)
             end
         end
+    else
+        warn("GetFruits không trả về table hợp lệ")
+        return
     end
-     getInventoryFruitsResult = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("getInventoryFruits")
+
+    local getInventoryFruitsResult = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("getInventoryFruits")
+    
     if type(getInventoryFruitsResult) == "table" then
         for i, v in pairs(getInventoryFruitsResult) do
-            if type(v) == "table" then
-                for _, x in pairs(v) do
-                    if _ == "Name" then 
-                        table.insert(FruitStore, x)
-                    end
-                end
+            if type(v) == "table" and v.Name then
+                table.insert(FruitStore, v.Name)
             end
         end
+    else
+        warn("getInventoryFruits không trả về table hợp lệ")
+        return
     end
-    for _, y in pairs(FruitPrice) do
-        for _, z in pairs(FruitStore) do
-            if y == z then
+
+    local FruitStoreSet = {}
+    for _, name in pairs(FruitStore) do
+        FruitStoreSet[name] = true
+    end
+
+    for _, fruitName in pairs(FruitPrice) do
+        if FruitStoreSet[fruitName] then
+            local success, err = pcall(function()
                 local args = {
                     [1] = "LoadFruit",
-                    [2] = tostring(y)
+                    [2] = tostring(fruitName)
                 }
                 game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
+            end)
+            
+            if not success then
+                warn("Lỗi khi load fruit:", fruitName, err)
             end
         end
     end
