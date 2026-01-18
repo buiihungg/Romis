@@ -1452,6 +1452,14 @@ local function bring(mobName, cframe)
     )
 end
 
+function EquipWeapon(i)
+    if game.Players.LocalPlayer.Backpack:FindFirstChild(i) then
+        Tool = game.Players.LocalPlayer.Backpack:FindFirstChild(i)
+        wait(0.1)
+        game.Players.LocalPlayer.Character.Humanoid:EquipTool(Tool)
+    end
+end
+
 function SH(target)
     if not isModel(target) then return end
     local character = game:GetService("Players").LocalPlayer.Character
@@ -4831,6 +4839,370 @@ Toggles.ToggleFruitCollect:OnChanged(function(Value)
     getgenv().FruitCollect = Value
 end)
 
+local ItemSec = Tabs.SF:AddSection("Tab Item")
+
+local ItemsConfig = {
+    ["Saber"] = {
+        Enemy = "Mob Leader",
+        BossName = "Mob Leader [Lv. 120] [Boss]",
+        Level = 200,
+        HasComplexQuest = true,
+        NoBossFarm = true
+    },
+    ["Pole"] = {
+        Enemy = "Thunder God",
+        BossName = "Thunder God [Lv. 575] [Boss]",
+        Level = 1
+    },
+    ["Flail"] = {
+        Enemy = "Smoke Admiral",
+        BossName = "Smoke Admiral [Lv. 1150] [Boss]",
+        Level = 1
+    },
+    ["SawSword"] = {
+        Enemy = "The Saw",
+        BossName = "The Saw [Lv. 100] [Boss]",
+        Level = 1
+    },
+    ["WardensSword"] = {
+        Enemy = "Chief Warden",
+        BossName = "Chief Warden [Lv. 230] [Boss]",
+        Level = 1
+    },
+    ["Trident"] = {
+        Enemy = "Fishman Lord",
+        BossName = "Fishman Lord [Lv. 425] [Boss]",
+        Level = 1
+    },
+    ["AcidumRifle"] = {
+        Enemy = "Core",
+        BossName = "Core",
+        Level = 1
+    },
+    ["Rengoku"] = {
+        Enemy = "Awakened Ice Admiral",
+        BossName = "Awakened Ice Admiral [Lv. 1400] [Boss]",
+        Level = 1
+    },
+    ["Koko"] = {
+        Enemy = "Order",
+        BossName = "Order [Lv. 1250] [Raid Boss]",
+        Level = 1,
+        HasComplexQuest = true,
+        NoBossFarm = true
+    },
+    ["TrueTripleKatana"] = {
+        Enemy = "Rip Indra",
+        BossName = "rip_indra True Form [Lv. 5000] [Raid Boss]",
+        Level = 1
+    },
+    ["BuddySword"] = {
+        Enemy = "Cake Prince",
+        BossName = "Cake Prince [Lv. 2300] [Boss]",
+        Level = 1
+    },
+    ["Canvander"] = {
+        Enemy = "Diamond",
+        BossName = "Diamond [Lv. 750] [Boss]",
+        Level = 1
+    },
+    ["Yama"] = {
+        Enemy = "Mythological Pirate",
+        BossName = "Mythological Pirate [Lv. 1850] [Boss]",
+        Level = 1
+    },
+    ["DarkDagger"] = {
+        Enemy = "Admin",
+        BossName = "Darkbeard [Lv. 1000] [Raid Boss]",
+        Level = 1
+    }
+}
+
+function CheckSword(swordName)
+    if swordName == "Koko" then
+        if game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Koko") or 
+           game:GetService("Players").LocalPlayer.Character:FindFirstChild("Koko") then
+            return true
+        end
+    elseif swordName == "Yama" then
+        if game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Yama") or 
+           game:GetService("Players").LocalPlayer.Character:FindFirstChild("Yama") then
+            return true
+        end
+    end
+    return false
+end
+
+function FarmItems()
+    if not getgenv().StartGetItem or not getgenv().ItemsFarmSelect then
+        return false
+    end
+    
+    local itemConfig = ItemsConfig[getgenv().ItemsFarmSelect]
+    if not itemConfig then
+        return false
+    end
+    
+    if game.Players.LocalPlayer.Data.Level.Value < itemConfig.Level then
+        return false
+    end
+    
+    if getgenv().ItemsFarmSelect == "Saber" and itemConfig.HasComplexQuest then
+        return AutoSaberQuest()
+    end
+    
+    if getgenv().ItemsFarmSelect == "Koko" and itemConfig.HasComplexQuest then
+        return AutoKokoQuest()
+    end
+    
+    if getgenv().ItemsFarmSelect == "Yama" and itemConfig.HasComplexQuest then
+        return AutoYamaQuest()
+    end
+    
+    if itemConfig.NoBossFarm then
+        return false
+    end
+    
+    local success = pcall(function()
+        local enemyName = itemConfig.Enemy
+        
+        if game:GetService("Workspace").Enemies:FindFirstChild(enemyName) then
+            for _, v in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
+                if v.Name == enemyName and v:FindFirstChild("Humanoid") and 
+                   v:FindFirstChild("HumanoidRootPart") and v.Humanoid.Health > 0 then
+                    
+                    repeat
+                        task.wait()
+                        
+                        if ShouldInterrupt("FarmItems") then
+                            return false
+                        end
+                        SH(v)
+                    until not getgenv().StartGetItem or not v.Parent or v.Humanoid.Health <= 0
+                    
+                    return true
+                end
+            end
+        elseif game:GetService("ReplicatedStorage"):FindFirstChild(enemyName) then
+            local boss = game:GetService("ReplicatedStorage"):FindFirstChild(enemyName)
+            if boss and boss:FindFirstChild("HumanoidRootPart") then
+                Tween(boss.HumanoidRootPart.CFrame * CFrame.new(5, 10, 2))
+            end
+            return true
+        end
+    end)
+    
+    return success
+end
+
+function AutoKokoQuest()
+    if CheckSword("Koko") then
+        return false
+    end
+    
+    pcall(function()
+        if not game:GetService("Players").LocalPlayer.Character:FindFirstChild("Microchip") and 
+           not game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Microchip") and
+           not game:GetService("Workspace").Enemies:FindFirstChild("Order") and 
+           not game:GetService("ReplicatedStorage"):FindFirstChild("Order") then
+            
+            wait(0.3)
+            game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BlackbeardReward", "Microchip", "1")
+            game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BlackbeardReward", "Microchip", "2")
+            return true
+        end
+        
+        if not game:GetService("Workspace").Enemies:FindFirstChild("Order") and 
+           not game:GetService("ReplicatedStorage"):FindFirstChild("Order") then
+            
+            if game:GetService("Players").LocalPlayer.Character:FindFirstChild("Microchip") or 
+               game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Microchip") then
+                
+                Tween(CFrame.new(-6217.2021484375, 28.047645568848, -5053.1357421875))
+                
+                wait(0.5)
+                if game:GetService("Workspace").Map.CircleIsland.RaidSummon.Button.Main:FindFirstChild("ClickDetector") then
+                    fireclickdetector(game:GetService("Workspace").Map.CircleIsland.RaidSummon.Button.Main.ClickDetector)
+                end
+                return true
+            end
+        end
+        
+        if game:GetService("ReplicatedStorage"):FindFirstChild("Order") or 
+           game:GetService("Workspace").Enemies:FindFirstChild("Order") then
+            
+            if game:GetService("Workspace").Enemies:FindFirstChild("Order") then
+                for i, v in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
+                    if v.Name == "Order" then
+                        if v:FindFirstChild("Humanoid") and v:FindFirstChild("HumanoidRootPart") and v.Humanoid.Health > 0 then
+                            repeat
+                                task.wait()
+                                
+                                if ShouldInterrupt("FarmItems") then
+                                    return false
+                                end
+                                SH(v)
+                            until not v.Parent or v.Humanoid.Health <= 0 or not getgenv().StartGetItem or CheckSword("Koko") == true
+                            
+                            return true
+                        end
+                    end
+                end
+            elseif game:GetService("ReplicatedStorage"):FindFirstChild("Order") then
+                Tween(CFrame.new(-6217.2021484375, 28.047645568848, -5053.1357421875))
+                return true
+            end
+        end
+    end)
+    
+    return true
+end
+
+function AutoSaberQuest()
+    if game.Players.LocalPlayer.Data.Level.Value < 200 then
+        return false
+    end
+    
+    pcall(function()
+        if game:GetService("Workspace").Map.Jungle.Final.Part.Transparency == 0 then
+            if game:GetService("Workspace").Map.Jungle.QuestPlates.Door.Transparency ~= 0 then
+                if game:GetService("Workspace").Map.Desert.Burn.Part.Transparency ~= 0 then
+                    if game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("ProQuestProgress", "SickMan") == 0 then
+                        if game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("ProQuestProgress", "RichSon") ~= "RichSon" then
+                            if game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("ProQuestProgress", "RichSon") == 0 then
+                                if game:GetService("Workspace").Enemies:FindFirstChild("Mob Leader") or 
+                                   game:GetService("ReplicatedStorage"):FindFirstChild("Mob Leader") then
+                                    Tween(CFrame.new(-2967.59521, -4.91089821, 5328.70703))
+                                    
+                                    for _, v in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
+                                        if v.Name == "Mob Leader" then
+                                            if v:FindFirstChild("Humanoid") and v:FindFirstChild("HumanoidRootPart") and v.Humanoid.Health > 0 then
+                                                repeat
+                                                    task.wait()
+                                                    if ShouldInterrupt("FarmItems") then return false end
+                                                    SH(v)
+                                                until v.Humanoid.Health <= 0 or not getgenv().StartGetItem
+                                            end
+                                            
+                                            if game:GetService("ReplicatedStorage"):FindFirstChild("Mob Leader [Lv. 120] [Boss]") then
+                                                Tween(game:GetService("ReplicatedStorage"):FindFirstChild("Mob Leader [Lv. 120] [Boss]").HumanoidRootPart.CFrame * CFrame.new(0, 30, 0))
+                                            end
+                                        end
+                                    end
+                                end
+                            elseif game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("ProQuestProgress", "RichSon") == 1 then
+                                game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("ProQuestProgress", "RichSon")
+                                wait(0.5)
+                                EquipWeapon("Relic")
+                                wait(0.5)
+                                Tween(CFrame.new(-1404.91504, 29.9773273, 3.80598116))
+                            end
+                        else
+                            game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("ProQuestProgress", "RichSon")
+                        end
+                    else
+                        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("ProQuestProgress", "GetCup")
+                        wait(0.5)
+                        EquipWeapon("Cup")
+                        wait(0.5)
+                        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("ProQuestProgress", "FillCup", game:GetService("Players").LocalPlayer.Character.Cup)
+                        wait(0)
+                        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("ProQuestProgress", "SickMan")
+                    end
+                elseif game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Torch") or 
+                       game.Players.LocalPlayer.Character:FindFirstChild("Torch") then
+                    EquipWeapon("Torch")
+                    Tween(CFrame.new(1114.61475, 5.04679728, 4350.22803))
+                else
+                    Tween(CFrame.new(-1610.00757, 11.5049858, 164.001587))
+                end
+            elseif (CFrame.new(-1612.55884, 36.9774132, 148.719543).Position - 
+                    game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude <= 100 then
+                Tween(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame)
+                wait(1)
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game:GetService("Workspace").Map.Jungle.QuestPlates.Plate1.Button.CFrame
+                wait(1)
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game:GetService("Workspace").Map.Jungle.QuestPlates.Plate2.Button.CFrame
+                wait(1)
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game:GetService("Workspace").Map.Jungle.QuestPlates.Plate3.Button.CFrame
+                wait(1)
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game:GetService("Workspace").Map.Jungle.QuestPlates.Plate4.Button.CFrame
+                wait(1)
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game:GetService("Workspace").Map.Jungle.QuestPlates.Plate5.Button.CFrame
+                wait(1)
+            else
+                Tween(CFrame.new(-1612.55884, 36.9774132, 148.719543))
+            end
+        elseif game:GetService("Workspace").Enemies:FindFirstChild("Saber Expert") or 
+               game:GetService("ReplicatedStorage"):FindFirstChild("Saber Expert") then
+            for _, v in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
+                if v:FindFirstChild("Humanoid") and v:FindFirstChild("HumanoidRootPart") and 
+                   v.Humanoid.Health > 0 and v.Name == "Saber Expert" then
+                    repeat
+                        task.wait()
+                        if ShouldInterrupt("FarmItems") then return false end
+                        SH(v)
+                    until v.Humanoid.Health <= 0 or not getgenv().StartGetItem
+                    
+                    if v.Humanoid.Health <= 0 then
+                        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("ProQuestProgress", "PlaceRelic")
+                    end
+                end
+            end
+        end
+    end)
+    
+    return true
+end
+
+function AutoYamaQuest()
+    if CheckSword("Yama") then
+        return false
+    end
+    
+    pcall(function()
+        if game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("EliteHunter", "Progress") >= 30 then
+            repeat
+                wait()
+                fireclickdetector(game:GetService("Workspace").Map.Waterfall.SealedKatana.Handle.ClickDetector)
+            until game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Yama") or 
+                  game:GetService("Players").LocalPlayer.Character:FindFirstChild("Yama") or 
+                  not getgenv().StartGetItem
+            return true
+        end
+    end)
+    
+    return false
+end
+
+Dropdowns.SelectItemsFarm = Tabs.SF:AddDropdown("SelectItemsFarm", {
+    Title = "Select Items",
+    Values = {
+        "Saber", "Pole", "Flail", "SawSword", "WardensSword", 
+        "Trident", "AcidumRifle", "Rengoku", "Koko", "TrueTripleKatana", 
+        "BuddySword", "Canvander", "Yama", "DarkDagger"
+    },
+    Multi = false,
+    Default = 1,
+})
+
+Dropdowns.SelectItemsFarm:OnChanged(function(Value)
+    getgenv().ItemsFarmSelect = Value
+    local itemConfig = ItemsConfig[Value]
+    if itemConfig then
+        getgenv().EnemiesName = itemConfig.Enemy
+    end
+end)
+
+Toggles.ToggleFarmItems = Tabs.SF:AddToggle("StartGetItem", {
+    Title = "Auto Farm Items",
+    Default = false
+})
+
+Toggles.ToggleFarmItems:OnChanged(function(Value)
+    getgenv().StartGetItem = Value
+end)
+
 local GameEventSecction = Tabs.E:AddSection("Tab PvP")
 
 Playerslist = {}
@@ -5941,24 +6313,28 @@ local Queue = {
             return false
         end
     },
-
     {
-        Name = "AutoFarmEliteMob", 
+        Name = "AutoFarmEliteMob",
         Prio = 1,
         LastResult = false,
         ConditionCheck = function()
-            if game:GetService("Workspace").Enemies:FindFirstChild("Diablo") or
-               game:GetService("Workspace").Enemies:FindFirstChild("Deandre") or
-               game:GetService("Workspace").Enemies:FindFirstChild("Urban") then
+            if
+                game:GetService("Workspace").Enemies:FindFirstChild("Diablo") or
+                    game:GetService("Workspace").Enemies:FindFirstChild("Deandre") or
+                    game:GetService("Workspace").Enemies:FindFirstChild("Urban")
+             then
                 for _, v in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
-                    if (v.Name == "Diablo" or v.Name == "Deandre" or v.Name == "Urban") and
-                       v:FindFirstChild("Humanoid") and v:FindFirstChild("HumanoidRootPart") and
-                       v.Humanoid.Health > 0 then
+                    if
+                        (v.Name == "Diablo" or v.Name == "Deandre" or v.Name == "Urban") and
+                            v:FindFirstChild("Humanoid") and
+                            v:FindFirstChild("HumanoidRootPart") and
+                            v.Humanoid.Health > 0
+                     then
                         return true, v
                     end
                 end
             end
-            
+
             if game:GetService("ReplicatedStorage"):FindFirstChild("Diablo") then
                 return true, game:GetService("ReplicatedStorage"):FindFirstChild("Diablo")
             elseif game:GetService("ReplicatedStorage"):FindFirstChild("Deandre") then
@@ -5966,15 +6342,19 @@ local Queue = {
             elseif game:GetService("ReplicatedStorage"):FindFirstChild("Urban") then
                 return true, game:GetService("ReplicatedStorage"):FindFirstChild("Urban")
             end
-            
+
             return false, nil
         end,
         Func = function()
             if game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Visible == true then
-                local questText = game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Container.QuestTitle.Title.Text
-                if string.find(questText, "Diablo") or string.find(questText, "Deandre") or string.find(questText, "Urban") then
+                local questText =
+                    game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Container.QuestTitle.Title.Text
+                if
+                    string.find(questText, "Diablo") or string.find(questText, "Deandre") or
+                        string.find(questText, "Urban")
+                 then
                     local hasTarget, target = Queue[2].ConditionCheck()
-                    
+
                     if hasTarget and target then
                         if target.Parent == game:GetService("Workspace").Enemies then
                             repeat
@@ -5982,7 +6362,7 @@ local Queue = {
                                 if ShouldInterrupt("AutoFarmEliteMob") then
                                     return false
                                 end
-                                
+
                                 if not game.Players.LocalPlayer.Character:FindFirstChild("HasBuso") then
                                     game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("Buso")
                                 end
@@ -5997,7 +6377,10 @@ local Queue = {
                 end
             else
                 local response = game:GetService("ReplicatedStorage").Remotes["CommF_"]:InvokeServer("EliteHunter")
-                if getgenv().SelectTypeFarm == "Hop" and response == "I don't have anything for you right now. Come back later." then
+                if
+                    getgenv().SelectTypeFarm == "Hop" and
+                        response == "I don't have anything for you right now. Come back later."
+                 then
                     Hop()
                     return true
                 else
@@ -6008,40 +6391,69 @@ local Queue = {
             return false
         end
     },
-
     {
-        Name = "BossFarm",
+        Name = "FarmItems",
         Prio = 2,
         LastResult = false,
         ConditionCheck = function()
-            if not getgenv().BossFarm then
-            return false, nil
+            if not getgenv().StartGetItem or not getgenv().ItemsFarmSelect then
+                return false
+            end
+
+            local itemConfig = ItemsConfig[getgenv().ItemsFarmSelect]
+            if not itemConfig then
+                return false
+            end
+
+            if game.Players.LocalPlayer.Data.Level.Value < itemConfig.Level then
+                return false
+            end
+
+            return true
+        end,
+        Func = function()
+            local result = FarmItems()
+            if ShouldInterrupt("FarmItems") then
+                return false
+            end
+            return result
         end
-        if game:GetService("Workspace").Enemies:FindFirstChild(getgenv().SelectBoss) then
-            for _, v in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
-                if v.Name == getgenv().SelectBoss and v:FindFirstChild("Humanoid") and 
-                   v:FindFirstChild("HumanoidRootPart") and v.Humanoid.Health > 0 then
-                    return true, v
+    },
+    {
+        Name = "BossFarm",
+        Prio = 3,
+        LastResult = false,
+        ConditionCheck = function()
+            if not getgenv().BossFarm then
+                return false, nil
+            end
+            if game:GetService("Workspace").Enemies:FindFirstChild(getgenv().SelectBoss) then
+                for _, v in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
+                    if
+                        v.Name == getgenv().SelectBoss and v:FindFirstChild("Humanoid") and
+                            v:FindFirstChild("HumanoidRootPart") and
+                            v.Humanoid.Health > 0
+                     then
+                        return true, v
+                    end
                 end
             end
-        end
-        if game.ReplicatedStorage:FindFirstChild(getgenv().SelectBoss) then
-            return true, game.ReplicatedStorage:FindFirstChild(getgenv().SelectBoss)
-        end
-        return false, nil
-    end,
+            if game.ReplicatedStorage:FindFirstChild(getgenv().SelectBoss) then
+                return true, game.ReplicatedStorage:FindFirstChild(getgenv().SelectBoss)
+            end
+            return false, nil
+        end,
         Func = function()
-        local result = BossFarm()
-        if ShouldInterrupt("BossFarm") then
-            return false
+            local result = BossFarm()
+            if ShouldInterrupt("BossFarm") then
+                return false
+            end
+            return result
         end
-        return result
-    end
     },
-
     {
         Name = "KillPlayerNear",
-        Prio = 3,
+        Prio = 4,
         LastResult = false,
         Running = false,
         ConditionCheck = function()
@@ -6052,14 +6464,15 @@ local Queue = {
                 return false, nil
             end
             for _, v in pairs(game:GetService("Workspace").Characters:GetChildren()) do
-                if v.Name == getgenv().SelectPlayer and 
-                   v:FindFirstChild("Humanoid") and 
-                   v:FindFirstChild("HumanoidRootPart") and 
-                   v.Humanoid.Health > 0 then
+                if
+                    v.Name == getgenv().SelectPlayer and v:FindFirstChild("Humanoid") and
+                        v:FindFirstChild("HumanoidRootPart") and
+                        v.Humanoid.Health > 0
+                 then
                     return true, v
                 end
             end
-            
+
             return false, nil
         end,
         Func = function()
@@ -6067,18 +6480,18 @@ local Queue = {
             if ShouldInterrupt("KillPlayerNear") then
                 return false
             end
-            
+
             return result
         end
     },
-
     {
         Name = "FarmLevel",
-        Prio = 4,
+        Prio = 5,
         LastResult = false,
         ConditionCheck = nil,
         Func = function()
-            repeat task.wait()
+            repeat
+                task.wait()
                 if Players.LocalPlayer.Data.Level.Value == 1 or Players.LocalPlayer.Data.Level.Value <= 9 then
                     getgenv().FFF = true
                 end
@@ -6086,7 +6499,8 @@ local Queue = {
             if getgenv().FFF then
                 getgenv().FFF = false
             end
-            repeat task.wait()
+            repeat
+                task.wait()
                 if Players.LocalPlayer.Data.Level.Value >= 10 then
                     getgenv().FF = true
                 end
@@ -6094,7 +6508,12 @@ local Queue = {
             if getgenv().FF then
                 getgenv().FF = false
             end
-            if not string.find(Players.LocalPlayer.PlayerGui.Main.Quest.Container.QuestTitle.Title.Text, QuestCheck()[6]) then
+            if
+                not string.find(
+                    Players.LocalPlayer.PlayerGui.Main.Quest.Container.QuestTitle.Title.Text,
+                    QuestCheck()[6]
+                )
+             then
                 ReplicatedStorage.Remotes.CommF_:InvokeServer("AbandonQuest")
             end
             if Players.LocalPlayer.PlayerGui.Main.Quest.Visible == false then
@@ -6105,14 +6524,19 @@ local Queue = {
             elseif Players.LocalPlayer.PlayerGui.Main.Quest.Visible == true then
                 if Workspace.Enemies:FindFirstChild(QuestCheck()[3]) then
                     for _, V in pairs(Workspace.Enemies:GetChildren()) do
-                        if V:FindFirstChild("HumanoidRootPart") and V:FindFirstChild("Humanoid") and V.Humanoid.Health > 0 then
+                        if
+                            V:FindFirstChild("HumanoidRootPart") and V:FindFirstChild("Humanoid") and
+                                V.Humanoid.Health > 0
+                         then
                             if V.Name == QuestCheck()[3] then
-                                repeat task.wait()
+                                repeat
+                                    task.wait()
                                     SH(V)
                                     if ShouldInterrupt("FarmLevel") then
                                         return false
                                     end
-                                until not getgenv().FarmLevel or V.Humanoid.Health <= 0 or not V.Parent or Players.LocalPlayer.PlayerGui.Main.Quest.Visible == false
+                                until not getgenv().FarmLevel or V.Humanoid.Health <= 0 or not V.Parent or
+                                    Players.LocalPlayer.PlayerGui.Main.Quest.Visible == false
                                 _B = false
                                 return true
                             end
@@ -6125,10 +6549,9 @@ local Queue = {
             return false
         end
     },
-
     {
         Name = "FarmBone",
-        Prio = 5,
+        Prio = 6,
         LastResult = false,
         ConditionCheck = nil,
         Func = function()
@@ -6139,10 +6562,9 @@ local Queue = {
             return result
         end
     },
-
     {
         Name = "FarmNearest",
-        Prio = 6,
+        Prio = 7,
         LastResult = false,
         ConditionCheck = nil,
         Func = function()
@@ -6153,10 +6575,9 @@ local Queue = {
             return result
         end
     },
-
     {
         Name = "StartFarmChest",
-        Prio = 7,
+        Prio = 8,
         LastResult = false,
         ConditionCheck = nil,
         Func = function()
@@ -6167,10 +6588,9 @@ local Queue = {
             return result
         end
     },
-
     {
         Name = "AutoRaid",
-        Prio = 8,
+        Prio = 9,
         LastResult = false,
         ConditionCheck = nil,
         Func = function()
@@ -6181,10 +6601,9 @@ local Queue = {
             return result
         end
     },
-
     {
         Name = "TweenIsland",
-        Prio = 9,
+        Prio = 10,
         LastResult = false,
         ConditionCheck = nil,
         Func = function()
@@ -6195,10 +6614,9 @@ local Queue = {
             return result
         end
     },
-
     {
         Name = "TweenToNpc",
-        Prio = 10,
+        Prio = 11,
         LastResult = false,
         ConditionCheck = nil,
         Func = function()
