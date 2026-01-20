@@ -1,38 +1,41 @@
 repeat
     task.wait()
 until game:IsLoaded() and game:GetService("Players").LocalPlayer and game:GetService("Players").LocalPlayer.PlayerGui
-Players = game:GetService("Players")
-LocalPlayer = Players.LocalPlayer
-ReplicatedStorage = game:GetService("ReplicatedStorage")
-registerAttack = ReplicatedStorage.Modules.Net:FindFirstChild("RE/RegisterAttack")
-registerHit = ReplicatedStorage.Modules.Net:FindFirstChild("RE/RegisterHit")
-TeleportService = game:GetService("TeleportService")
-HttpService = game:GetService("HttpService")
-TweenService = game:GetService("TweenService")
-StatRemote = game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("CommF_")
-Modules = ReplicatedStorage:WaitForChild("Modules")
-Net = Modules:WaitForChild("Net")
-RegisterAttack = Net:WaitForChild("RE/RegisterAttack")
-RegisterHit = Net:WaitForChild("RE/RegisterHit")
-ShootGunEvent = Net:WaitForChild("RE/ShootGunEvent")
-GunValidator = ReplicatedStorage:WaitForChild("Remotes"):WaitForChild("Validator2")
-VirtualInputManager = game:GetService("VirtualInputManager") 
-Player = Players.LocalPlayer
-Workspace = game:GetService("Workspace")
-RunService = game:GetService("RunService")
-CollectionService = game:GetService("CollectionService")
-CoreGui = game:GetService("CoreGui")
-PROTECTED_NAME = "Romis Hub"
-ProtectedLabels = {}
-MonitoredLabels = {}
-AllIDs = {}
-Toggles = {}
-Sliders = {}
-Dropdowns = {}
-Inputs = {}
-foundAnything = ""
-actualHour = os.date("!*t").hour
-Deleted = false
+if not getgenv().runCounter then getgenv().runCounter = 0 end
+
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Modules = ReplicatedStorage:WaitForChild("Modules")
+local Remotes = ReplicatedStorage:WaitForChild("Remotes")
+local CommF_ = Remotes:WaitForChild("CommF_")
+local Net = Modules:WaitForChild("Net")
+local RegisterAttack = Net:WaitForChild("RE/RegisterAttack")
+local RegisterHit = Net:WaitForChild("RE/RegisterHit")
+local ShootGunEvent = Net:WaitForChild("RE/ShootGunEvent")
+local GunValidator = Remotes:WaitForChild("Validator2")
+local VirtualInputManager = game:GetService("VirtualInputManager") 
+local Workspace = game:GetService("Workspace")
+local RunService = game:GetService("RunService")
+local CollectionService = game:GetService("CollectionService")
+local CoreGui = game:GetService("CoreGui")
+local Lighting = game:GetService("Lighting")
+local HttpService = game:GetService("HttpService")
+local Enemies = Workspace.Enemies
+local PROTECTED_NAME = "Romis Hub"
+local ProtectedLabels = {}
+local MonitoredLabels = {}
+local AllIDs = {}
+local Toggles = {}
+local Sliders = {}
+local Dropdowns = {}
+local Inputs = {}
+local foundAnything = ""
+local actualHour = os.date("!*t").hour
+local Deleted = false
+local RemoteEventCache = nil
+local RemoteEventId = nil
+
 local File =
     pcall(
     function()
@@ -46,6 +49,7 @@ UserInputService = game:GetService("UserInputService")
 RandomCFrame = CFrame.new(0, 30, 0)
 _B = false
 r = game.PlaceId
+
 if UserInputService.TouchEnabled and not UserInputService.KeyboardEnabled then
     print("Mobile")
 else
@@ -89,9 +93,165 @@ if not O then
 end
 
 -- HttpService and other services --
-SECRET_KEY = "hhkujghukhkuesdiojcfoi9sudc9"
-local Req = request or http_request or syn.request
+local SECRET_KEY = "hhkujghukhkuesdiojcfoi9sudc9" -- store as local so not discoverable by enumerating getgenv or _G
+
+local OriginalFunctions = {}
+
+do
+    OriginalFunctions.pcall = pcall
+    OriginalFunctions.getfenv = getfenv
+    OriginalFunctions.setfenv = setfenv
+    OriginalFunctions.debug_getinfo = debug and debug.getinfo
+    OriginalFunctions.debug_getupvalue = debug and debug.getupvalue
+    OriginalFunctions.debug_setupvalue = debug and debug.setupvalue
+    OriginalFunctions.rawget = rawget
+    OriginalFunctions.rawset = rawset
+    OriginalFunctions.type = type
+    OriginalFunctions.tostring = tostring
+end
+
+local function VerifyFunctionIntegrity(func, funcName)
+    local issues = {}
+    
+    if isfunctionhooked then
+        local success, result = OriginalFunctions.pcall(isfunctionhooked, func)
+        if success and result then
+            issues[#issues + 1] = funcName .. " hooked"
+        end
+    end
+    
+    if OriginalFunctions.getfenv then
+        local success, env = OriginalFunctions.pcall(OriginalFunctions.getfenv, func)
+        if success and env then
+            if OriginalFunctions.rawget(env, "__hooked") or OriginalFunctions.rawget(env, "__wrapped") then
+                issues[#issues + 1] = funcName .. " env modified"
+            end
+        end
+    end
+    
+    if OriginalFunctions.debug_getinfo then
+        local success, info = OriginalFunctions.pcall(OriginalFunctions.debug_getinfo, func)
+        if success and info then
+            if info.source and not info.source:match("^=%[") and not info.source:match("^@") then
+                if info.what ~= "C" then
+                    issues[#issues + 1] = funcName .. " source changed"
+                end
+            end
+        end
+    end
+    
+    if getfunctionbytecode or dumpstring then
+        local getBytecode = getfunctionbytecode or dumpstring
+        local success, bytecode = OriginalFunctions.pcall(getBytecode, func)
+        if success and bytecode then
+            if not OriginalFunctions[funcName .. "_bytecode"] then
+                OriginalFunctions[funcName .. "_bytecode"] = bytecode
+            else
+                if OriginalFunctions[funcName .. "_bytecode"] ~= bytecode then
+                    issues[#issues + 1] = funcName .. " bytecode modified"
+                end
+            end
+        end
+    end
+    
+    if getfunctionaddress then
+        local success, address = OriginalFunctions.pcall(getfunctionaddress, func)
+        if success and address then
+            if not OriginalFunctions[funcName .. "_address"] then
+                OriginalFunctions[funcName .. "_address"] = address
+            else
+                if OriginalFunctions[funcName .. "_address"] ~= address then
+                    issues[#issues + 1] = funcName .. " address changed"
+                end
+            end
+        end
+    end
+    
+    return #issues == 0, issues
+end
+
+local function SecureRestore(func)
+    if not func then return nil end
+    
+    if restorefunction then
+        local success = OriginalFunctions.pcall(restorefunction, func)
+        if success then return func end
+    end
+    
+    if hookfunction and unhookfunction then
+        local success = OriginalFunctions.pcall(unhookfunction, func)
+        if success then return func end
+    end
+    
+    if debug and debug.getregistry then
+        local success, registry = OriginalFunctions.pcall(debug.getregistry)
+        if success and OriginalFunctions.type(registry) == "table" then
+            for k, v in pairs(registry) do
+                if OriginalFunctions.type(v) == "function" and v == func then
+                    return v
+                end
+            end
+        end
+    end
+    
+    return func
+end
+
+do
+    local critical_functions = {
+        {name = "request", func = request},
+        {name = "http_request", func = http_request},
+        {name = "syn.request", func = syn and syn.request},
+        {name = "pcall", func = pcall},
+        {name = "task.spawn", func = task and task.spawn},
+        {name = "coroutine.create", func = coroutine and coroutine.create}
+    }
+    
+    for _, funcData in ipairs(critical_functions) do
+        if funcData.func then
+            local isIntact, issues = VerifyFunctionIntegrity(funcData.func, funcData.name)
+            
+            if not isIntact then
+                for _, issue in ipairs(issues) do
+                    warn("[SECURITY] " .. issue)
+                end
+                
+                funcData.func = SecureRestore(funcData.func)
+                
+                local restored, newIssues = VerifyFunctionIntegrity(funcData.func, funcData.name)
+                if not restored then
+                    return
+                end
+            end
+        end
+    end
+    
+    if task and task.spawn then
+        task.spawn(function()
+            while true do
+                task.wait(5)
+                
+                for _, funcData in ipairs(critical_functions) do
+                    if funcData.func then
+                        local isIntact, issues = VerifyFunctionIntegrity(funcData.func, funcData.name)
+                        if not isIntact then
+                            return
+                        end
+                    end
+                end
+            end
+        end)
+    end
+end
+
+local Req = SecureRestore(request or http_request or (syn and syn.request))
 if not Req then return end
+
+local reqIntact, reqIssues = VerifyFunctionIntegrity(Req, "Req")
+if not reqIntact then
+    return
+end
+
 if not LocalPlayer then
     Players:GetPropertyChangedSignal("LocalPlayer"):Wait()
     LocalPlayer = Players.LocalPlayer
@@ -183,17 +343,21 @@ function sha256(msg)
 end
 
 function Encode(str)
-    str = tostring(str):upper()
+    str = tostring(str)
     local LetterArgs = {
         ["A"]="M",["B"]="X",["C"]="Q",["D"]="K",["E"]="W",["F"]="Z",["G"]="P",
         ["H"]="R",["I"]="N",["J"]="V",["K"]="G",["L"]="T",["M"]="H",["N"]="B",
         ["O"]="F",["P"]="J",["Q"]="Y",["R"]="S",["S"]="L",["T"]="C",["U"]="E",
         ["V"]="D",["W"]="U",["X"]="I",["Y"]="O",["Z"]="A",
-
+        ["a"]="m",["b"]="x",["c"]="q",["d"]="k",["e"]="w",["f"]="z",["g"]="p",
+        ["h"]="r",["i"]="n",["j"]="v",["k"]="g",["l"]="t",["m"]="h",["n"]="b",
+        ["o"]="f",["p"]="j",["q"]="y",["r"]="s",["s"]="l",["t"]="c",["u"]="e",
+        ["v"]="d",["w"]="u",["x"]="i",["y"]="o",["z"]="a",
         ["0"]="7G",["1"]="44",["2"]="OS",["3"]="1B",["4"]="B1",
         ["5"]="34AB",["6"]="88AC",["7"]="0BA",["8"]="5AS",["9"]="2Z",
-        ["-"]="G954H",
-        [" "]="G954H"
+        ["-"]="G954H",[" "]="SPACE",["_"]="UNDR",[":"]="COLN",
+        ['"']="QUOT",["'"]="APOS",["{"]="LBRC",["}"]="RBRC",
+        ["["]="LBRK",["]"]="RBRK",[","]="COMA",["."]="PERD"
     }
 
     local out = {}
@@ -272,8 +436,8 @@ function TPWorld(e)
 end
 print("fully")
 VirtualUser = game:GetService("VirtualUser")
-if VirtualUser then
-    game:GetService("Players").LocalPlayer.Idled:Connect(function()
+if VirtualUser and getgenv().runCounter == 0 then -- only start afk if its not already running to prevent excessive threads
+    LocalPlayer.Idled:Connect(function()
         VirtualUser:Button2Down(Vector2.new(0,0), workspace.CurrentCamera.CFrame)
         task.wait(1)
         VirtualUser:Button2Up(Vector2.new(0,0), workspace.CurrentCamera.CFrame)
@@ -281,10 +445,12 @@ if VirtualUser then
 end
 print("active anti afk")
 task.spawn(function()
+    if getgenv().runCounter > 0 then return end; -- dont restart if already running
+    local stun = "Stun" -- cache string as its expensive in loops multiple LOADK ops
     while true do
-        local Character = game.Players.LocalPlayer.Character
+        local Character = LocalPlayer.Character
         if Character then
-            local Stun = Character:FindFirstChild("Stun")
+            local Stun = Character:FindFirstChild(stun)
             if Stun then
                 Stun.Changed:Connect(function()
                     if Stun.Value ~= 0 then
@@ -7799,3 +7965,4 @@ SaveManager:LoadAutoloadConfig()
 Window:SelectTab(1)
 print("load old settings")
 Fluent:Notify({Title = "Romis Hub", Content = "The script has been loaded.", Duration = 5})
+getgenv().runCounter +=1;
