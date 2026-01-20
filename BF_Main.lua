@@ -7959,4 +7959,4 @@ SaveManager:LoadAutoloadConfig()
 Window:SelectTab(1)
 print("load old settings")
 Fluent:Notify({Title = "Romis Hub", Content = "The script has been loaded.", Duration = 5})
-getgenv().runCounter +=1;
+getgenv().runCounter = getgenv().runCounter + 1
