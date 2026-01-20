@@ -1042,18 +1042,6 @@ return {
 end
 
 
--- Fast Attack Modules --
-local Config = {
-    AttackDistance = 60,
-    AttackMobs = true,
-    AttackPlayers = true,
-    AttackCooldown = 0.0001,
-    ComboResetTime = 0.3,
-    MaxCombo = 4,
-    HitboxLimbs = {"RightLowerArm", "RightUpperArm", "LeftLowerArm", "LeftUpperArm", "RightHand", "LeftHand"},
-    AutoClickEnabled = true
-}
-
 RemoteEventCache = nil
 RemoteEventId = nil
 
@@ -1154,7 +1142,7 @@ function FastAttack:GetAllHits()
                 local enemyHumanoid = enemy:FindFirstChild('Humanoid')
                 
                 if enemyHRP and enemyHumanoid and enemyHumanoid.Health > 0 then
-                    if (enemyHRP.Position - HRP.Position).Magnitude <= Config.AttackDistance then
+                    if (enemyHRP.Position - HRP.Position).Magnitude <= 60 then
                         for _, part in ipairs(enemy:GetChildren()) do
                             if part:IsA('BasePart') then
                                 table.insert(AllHits, {enemy, part})
@@ -1166,14 +1154,10 @@ function FastAttack:GetAllHits()
         end
     end
     
-    if Config.AttackMobs then
-        ProcessFolder(Workspace.Enemies)
-    end
-    if Config.AttackPlayers then
+    ProcessFolder(Workspace.Enemies)
     if Workspace:FindFirstChild("Characters") then
         ProcessFolder(Workspace.Characters)
     end
-end
     return AllHits
 end
 
@@ -1196,15 +1180,15 @@ function FastAttack:GetClosestEnemy(Character, Distance)
         end
     end
     
-    if Config.AttackMobs then CheckFolder(Workspace.Enemies) end
-    if Config.AttackPlayers then CheckFolder(Workspace.Characters) end
+    CheckFolder(Workspace.Enemies)
+    CheckFolder(Workspace.Characters)
     
     return Closest
 end
 
 function FastAttack:GetCombo()
-    local Combo = (tick() - self.ComboDebounce) <= Config.ComboResetTime and self.M1Combo or 0
-    Combo = Combo >= Config.MaxCombo and 1 or Combo + 1
+    local Combo = (tick() - self.ComboDebounce) <= 0.3 and self.M1Combo or 0
+    Combo = Combo >= 4 and 1 or Combo + 1
     self.ComboDebounce = tick()
     self.M1Combo = Combo
     return Combo
@@ -1298,8 +1282,6 @@ function FastAttack:UseFruitM1(Character, Equipped, Combo)
 end
 
 function FastAttack:Attack()
-    if not Config.AutoClickEnabled then return end
-    
     if not Player then
     Player = game:GetService("Players").LocalPlayer
     if not Player then
@@ -1368,33 +1350,12 @@ end
     end
 end
 
-local AttackInstance = FastAttack.new()
-
 task.spawn(function()
-    while task.wait(Config.AttackCooldown) do
+    local AttackInstance = FastAttack.new()
+     while math.round(task.wait()) do
         AttackInstance:Attack()
     end
 end)
-
-table.insert(AttackInstance.Connections, RunService.Stepped:Connect(function()
-    pcall(function()
-        AttackInstance:Attack()
-    end)
-end))
-
-for _, v in pairs(getgc(true)) do
-    if typeof(v) == "function" and iscclosure(v) then
-        local name = debug.getinfo(v).name
-        if name == "Attack" or name == "attack" or name == "RegisterHit" then
-            hookfunction(v, function(...)
-                pcall(function()
-                    AttackInstance:Attack()
-                end)
-                return v(...)
-            end)
-        end
-    end
-end
 
 function EQ(Tool)
 	pcall(function()
