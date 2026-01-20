@@ -50,12 +50,6 @@ RandomCFrame = CFrame.new(0, 30, 0)
 _B = false
 r = game.PlaceId
 
-if UserInputService.TouchEnabled and not UserInputService.KeyboardEnabled then
-    print("Mobile")
-else
-    print("PC")
-end
-
 local O, S = pcall(function()
     if not R then return warn("No Main GUI") end
 
@@ -427,6 +421,7 @@ SeaPlaceIds = {
 function CheckSea(e)
     return SeaPlaceIds[game.PlaceId] == e
 end
+
 function TPWorld(e)
     if not CheckSea(e) and SeaTravelCommands[e] then
         local args = {SeaTravelCommands[e]}
@@ -434,7 +429,7 @@ function TPWorld(e)
         task.wait()
     end
 end
-print("fully")
+
 VirtualUser = game:GetService("VirtualUser")
 if VirtualUser and getgenv().runCounter == 0 then -- only start afk if its not already running to prevent excessive threads
     LocalPlayer.Idled:Connect(function()
@@ -462,7 +457,7 @@ task.spawn(function()
         wait(1)
     end
 end)
-print("active anti stun")
+
 function AntiLowHealth(AK)
     game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame =
         CFrame.new(
