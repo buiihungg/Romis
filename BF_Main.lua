@@ -4,6 +4,7 @@ until game:IsLoaded() and game:GetService("Players").LocalPlayer and game:GetSer
 if not getgenv().runCounter then getgenv().runCounter = 0 end
 
 local Players = game:GetService("Players")
+local Player = LocalPlayer
 local LocalPlayer = Players.LocalPlayer
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Modules = ReplicatedStorage:WaitForChild("Modules")
