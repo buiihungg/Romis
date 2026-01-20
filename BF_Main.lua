@@ -280,7 +280,7 @@ if VirtualUser and getgenv().runCounter == 0 then -- only start afk if its not a
         VirtualUser:Button2Up(Vector2.new(0,0), workspace.CurrentCamera.CFrame)
     end)
 end
-print("active anti afk")
+
 task.spawn(function()
     if getgenv().runCounter > 0 then return end; -- dont restart if already running
     local stun = "Stun" -- cache string as its expensive in loops multiple LOADK ops
@@ -857,7 +857,6 @@ end
 end
 for i, v in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
 if v:IsA("Model") and v:FindFirstChild("HumanoidRootPart") then
-	print(v.HumanoidRootPart.Parent)
 	local EnemySpawnsX2 = v.HumanoidRootPart:Clone()
     local result = string.gsub(v.Name, "Lv. ", "")
     local result2 = string.gsub(result, "[%[%]]", "")
@@ -1301,7 +1300,28 @@ end
 function FastAttack:Attack()
     if not Config.AutoClickEnabled then return end
     
-    local Character = Player.Character
+    if not Player then
+    Player = game:GetService("Players").LocalPlayer
+    if not Player then
+        return
+    end
+end
+
+local Character = Player.Character
+if not Character then
+    local success, result =
+        pcall(
+        function()
+            return Player.CharacterAdded:Wait()
+        end
+    )
+
+    if success and result then
+        Character = result
+    else
+        return
+    end
+end
     if not Character or not self:IsEntityAlive(Character) then return end
     
     local Equipped = Character:FindFirstChildOfClass("Tool")
@@ -1967,7 +1987,8 @@ function UseAllWeapon()
     wait(0.5)
 end
 
-print("Build Gui")
+print("[Romis Hub] Build Gui")
+
 local status, Fluent = pcall(function()
     return loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
 end)
@@ -2707,7 +2728,6 @@ end)
 local Lc = Tabs.LC:AddSection("Tab Kaitun Cap")
 
 function CapTureShow()
-print('Capture Items Show')
 local LocalPlayer = game:GetService('Players').LocalPlayer
 local PlayerGui = LocalPlayer:WaitForChild('PlayerGui')
 local MainScreen = PlayerGui:WaitForChild('Main')
@@ -7821,6 +7841,6 @@ SaveManager:LoadAutoSaveConfig()
 SaveManager:StartAutoSave()
 SaveManager:LoadAutoloadConfig()
 Window:SelectTab(1)
-print("load old settings")
+
 Fluent:Notify({Title = "Romis Hub", Content = "The script has been loaded.", Duration = 5})
 getgenv().runCounter = getgenv().runCounter + 1
