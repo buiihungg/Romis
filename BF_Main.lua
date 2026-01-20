@@ -1212,7 +1212,28 @@ function FastAttack:GetCombo()
 end
 
 function FastAttack:ShootInTarget(TargetPosition)
-    local Character = Player.Character
+if not Player then
+    Player = game:GetService("Players").LocalPlayer
+    if not Player then
+        return
+    end
+end
+
+local Character = Player.Character
+if not Character then
+    local success, result =
+        pcall(
+        function()
+            return Player.CharacterAdded:Wait()
+        end
+    )
+
+    if success and result then
+        Character = result
+    else
+        return
+    end
+end
     if not self:IsEntityAlive(Character) then return end
     
     local Equipped = Character:FindFirstChildOfClass("Tool")
