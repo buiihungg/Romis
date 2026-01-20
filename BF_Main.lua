@@ -349,9 +349,9 @@ function Encode(str)
         ["v"]="d",["w"]="u",["x"]="i",["y"]="o",["z"]="a",
         ["0"]="7G",["1"]="44",["2"]="OS",["3"]="1B",["4"]="B1",
         ["5"]="34AB",["6"]="88AC",["7"]="0BA",["8"]="5AS",["9"]="2Z",
-        ["-"]="G954H",[" "]="SPACE",["_"]="UNDR",[":"]="COLN",
+        ["-"]="DASH",[" "]="SPACE",["_"]="UNDR",[":"]="COLN",
         ['"']="QUOT",["'"]="APOS",["{"]="LBRC",["}"]="RBRC",
-        ["["]="LBRK",["]"]="RBRK",[","]="COMA",["."]="PERD"
+        ["["]="LBRK",["]"]="RBRK",[","]="COMA",["."]="PERD",["|"]="PIPE"
     }
 
     local out = {}
@@ -369,7 +369,6 @@ function Encode(str)
     end
     return table.concat(out)
 end
-
 local function encrypt_payload(tbl)
     local json = HttpService:JSONEncode(tbl)
     local encoded = Encode(json)
