@@ -36,18 +36,14 @@ local actualHour = os.date("!*t").hour
 local Deleted = false
 local RemoteEventCache = nil
 local RemoteEventId = nil
-
-local File =
-    pcall(
-    function()
-        AllIDs = game:GetService("HttpService"):JSONDecode(readfile("MainL.SkullHub"))
-    end
-)
+local File = pcall(function()AllIDs = game:GetService("HttpService"):JSONDecode(readfile("MainL.SkullHub"))end)
 PlaceId = game.PlaceId
 MinPlayers = 1
 Remote = game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("CommF_")
 UserInputService = game:GetService("UserInputService")
 RandomCFrame = CFrame.new(0, 30, 0)
+
+
 _B = false
 r = game.PlaceId
 
